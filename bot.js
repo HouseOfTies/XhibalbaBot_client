@@ -4,12 +4,11 @@ Welcome to the 7th.
 
 // Import zone //
 
-// Token //
-const token = process.env.TOKEN;
 // Bot instance //
-const TelegramBot = require('node-telegram-bot-api');
+import TelegramBot from 'node-telegram-bot-api';
+
 // Bot engine //
-const bot = new TelegramBot(token, {polling: true});
+const bot = new TelegramBot(TOKEN, {polling: true});
 
 // S.e.e.d Commands//
 console.log("\nCorriendo bot & conexiones");
