@@ -12,7 +12,7 @@ const bot = new TelegramBot(TOKEN, {polling: true});
 
 // S.e.e.d Commands//
 console.log("\nCorriendo bot & conexiones");
-bot.on("Error catcher", function(error){
+bot.on("Error catcher: ", function(error){
 	console.log(error)
 });
 
