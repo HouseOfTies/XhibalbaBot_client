@@ -8,7 +8,7 @@ Welcome to the 7th.
 import TelegramBot from 'node-telegram-bot-api';
 
 // Bot engine //
-const bot = new TelegramBot(TOKEN, {polling: true});
+const bot = new TelegramBot(process.env.TOKEN, {polling: true});
 
 // S.e.e.d Commands//
 console.log("\nCorriendo bot & conexiones");
