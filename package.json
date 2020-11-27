@@ -21,7 +21,7 @@
   "homepage": "https://github.com/Seventty/Xhibalba#readme",
   "devDependencies": {
     "nodemon": "^2.0.6"
-  }
+  },
   "dependencies":{
      "body-parser":"^1.15.0",
      "dotenv": "^4.0.0",
