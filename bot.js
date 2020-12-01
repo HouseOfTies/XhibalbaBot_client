@@ -32,10 +32,10 @@ bot.onText(/^\/info/, msg => {
 bot.on('message', message => {
 	try{
 		if(message.new_chat_members != undefined){
-			bot.sendMessage(message.chat.id, `Bienvenido a ${message.chat.title}, usuario ${message.new_chat_member.first_name} esperemos que tu estadia sea fructifera.`);
+			bot.sendMessage(message.chat.id, `Bienvenido a ${message.chat.title}, usuario *${message.new_chat_member.first_name}* esperemos que tu estadia sea fructifera.`,{parse_mode : "Markdown"});
 		}
 		else if(message.left_chat_member != undefined){
-			bot.sendMessage(message.chat.id, `Un alma perteneciente a la oscuridad, siempre termina regresando a ella. ${message.left_chat_member.first_name} regresa pronto.`);
+			bot.sendMessage(message.chat.id, `Un alma perteneciente a la oscuridad, siempre termina regresando a ella. *${message.left_chat_member.first_name}* regresa pronto.`);
 		}
 	}catch(error){
 		bot.sendMessage(message.chat.id, `He detectado un error ${error.message}`);
