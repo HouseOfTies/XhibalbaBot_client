@@ -26,7 +26,17 @@ bot.onText(/^\/info/, msg => {
 	bot.sendMessage(msg.chat.id, `🔰System info🔰\n\nRunning in: ${title} 🍃\nVersion: ${version}\nModules: ${modules}\nOpenSSL ${openssl}\nLiving in: ${platform}\nPID: ${pid} READY to kill\nPPID: ${ppid}\nBot version: 0.0.1 s.e.e.d 🌱`);
 });
 
-
+bot.onText(/^\/dado (.+)/, (message, value) => {
+	if(!isNaN(value[1]) && value[1] < 7){	
+		bot.sendMessage(message.chat.id, `Elegiste: *${value[1]}*`,{parse_mode : "Markdown"});
+		bot.sendMessage(message.chat.id, `Lanzando dado...`);
+		bot.sendDice(message.chat.id).then(info =>{
+			setTimeout(()=>{
+				let res = info.dice.value == value[1] ? bot.sendMessage(message.chat.id, 'Vaya, le atinaste.') : bot.sendMessage(message.chat.id, 'No le atinaste, suerte la proxima');
+			},5000);
+		});
+	}else{bot.sendMessage(message.chat.id, "Introduce un numero del 1-6")}
+});
 
 // -- Second-order Commands -- //
 
