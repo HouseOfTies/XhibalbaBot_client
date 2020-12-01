@@ -3,24 +3,19 @@ Welcome to the 7th.
 */
 
 // Import zone //
-
-// Bot instance //
 import TelegramBot from 'node-telegram-bot-api';
 
-// Bot engine //
+// Bot engine / instance //
 const bot = new TelegramBot(process.env.TOKEN, {polling: true});
-
-// S.e.e.d Commands//
 console.log("\nCorriendo bot & conexiones");
-bot.on("Error catcher: ", function(error){
-	console.log(error)
-});
 
-bot.onText(/^\/heya/, (msg) => {
-	bot.sendMessage(msg.chat.id, "Si, si, estoy viva.");
+// -- First-order Commands -- // 
+
+bot.onText(/^\/heya/, msg => {
+	bot.sendMessage(msg.chat.id, "Pendiente a todas las ordenes & lista para recibir un comando");
 })
 
-bot.onText(/^\/info/, function(msg){
+bot.onText(/^\/info/, msg => {
   	let title = process.title,
     	version = process.versions.node,
     	modules = process.versions.modules,
@@ -29,4 +24,16 @@ bot.onText(/^\/info/, function(msg){
     	pid = process.pid,
     	ppid = process.ppid;
 	bot.sendMessage(msg.chat.id, `🔰System info🔰\n\nRunning in: ${title} 🍃\nVersion: ${version}\nModules: ${modules}\nOpenSSL ${openssl}\nLiving in: ${platform}\nPID: ${pid} READY to kill\nPPID: ${ppid}\nBot version: 0.0.1 s.e.e.d 🌱`);
+});
+
+
+// -- Second-order Commands -- //
+
+bot.on('message', message => {
+	if(message.new_chat_members != undefined){
+		bot.sendMessage(message.chat.id, `Bienvenido a ${message.chat.title}, usuario ${message.new_chat_member.first_name} esperemos que tu estadia sea fructifera.`);
+	}
+	else if(message.left_chat_member != undefined){
+		bot.sendMessage(message.chat.id, `Un alma perteneciente a la oscuridad, siempre termina regresando a ella. ${message.left_chat_member.first_name} regresa pronto.`);
+	}
 });
