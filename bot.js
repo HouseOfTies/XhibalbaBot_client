@@ -4,9 +4,11 @@ Welcome to the 7th.
 
 // Import zone //
 import TelegramBot from 'node-telegram-bot-api';
+import dotenv from 'dotenv';
 
 // Bot engine / instance //
-const bot = new TelegramBot(process.env.TOKEN, {polling: true});
+dotenv.config();
+const bot = new TelegramBot(process.env.TOKEN || process.env.localToken, {polling: true}); //It will take heroku TOKEN or localToken
 console.log("\nCorriendo bot & conexiones");
 
 // Errors detector //
@@ -37,7 +39,7 @@ bot.onText(/^\/dado (.+)/, (message, value) => {
 		bot.sendMessage(message.chat.id, `Lanzando dado...`);
 		bot.sendDice(message.chat.id).then(info =>{
 			setTimeout(()=>{
-				let res = info.dice.value == value[1] ? bot.sendMessage(message.chat.id, 'Vaya, le atinaste.') : bot.sendMessage(message.chat.id, 'No le atinaste, suerte la proxima');
+				let res = info.dice.value == value[1] ? bot.sendMessage(message.chat.id, 'Vaya, le atinaste. 🎉🎊') : bot.sendMessage(message.chat.id, 'No le atinaste, suerte la proxima.');
 			},5000);
 		});
 	}else{bot.sendMessage(message.chat.id, "Introduce un numero del 1-6")}
@@ -45,7 +47,7 @@ bot.onText(/^\/dado (.+)/, (message, value) => {
 
 
 
-// -- Second-order Commands -- //
+// -- Second-order Commands -- Events//
 
 bot.on('message', message => {
 	try{
