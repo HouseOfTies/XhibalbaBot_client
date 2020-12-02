@@ -45,6 +45,14 @@ bot.onText(/^\/dado (.+)/, (message, value) => {
 	}else{bot.sendMessage(message.chat.id, "Introduce un numero del 1-6")}
 });
 
+bot.onText(/^\!clima (.+)/, (message, value) => {
+	let config_payload = {
+		search : value[1], // City to search
+		degreeType : 'C', // Temperature format, it can be F too (Celcius or Fahrenheit)
+		lang : 'es-ES' // Language code es = spanish
+	}
+//	weather.find(config_payload, callback);
+});
 
 
 // -- Second-order Commands -- Events//
