@@ -9,6 +9,11 @@ import TelegramBot from 'node-telegram-bot-api';
 const bot = new TelegramBot(process.env.TOKEN, {polling: true});
 console.log("\nCorriendo bot & conexiones");
 
+// Errors detector //
+bot.on('polling_error', error=>{
+	console.log(error);
+});
+
 // -- First-order Commands -- // 
 
 bot.onText(/^\/heya/, msg => {
