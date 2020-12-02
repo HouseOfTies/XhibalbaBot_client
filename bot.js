@@ -31,8 +31,8 @@ bot.onText(/^\/info/, msg => {
 	bot.sendMessage(msg.chat.id, `🔰System info🔰\n\nRunning in: ${title} 🍃\nVersion: ${version}\nModules: ${modules}\nOpenSSL ${openssl}\nLiving in: ${platform}\nPID: ${pid} READY to kill\nPPID: ${ppid}\nBot version: 0.0.1 s.e.e.d 🌱`);
 });
 
-bot.onText(/^\/dado/, message  => {
-  bot.sendDice(message.chat.id);
+bot.onText(/^\/dado/, (msg) => {
+  bot.sendDice(msg.chat.id);
 });
 
 // -- Second-order Commands -- //
