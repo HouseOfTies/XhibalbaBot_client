@@ -5,6 +5,7 @@ Welcome to the 7th.
 // Import zone //
 import TelegramBot from 'node-telegram-bot-api';
 import dotenv from 'dotenv';
+import weather from 'weather-js';
 
 // Bot engine / instance //
 dotenv.config();
@@ -45,15 +46,21 @@ bot.onText(/^\/dado (.+)/, (message, value) => {
 	}else{bot.sendMessage(message.chat.id, "Introduce un numero del 1-6")}
 });
 
+//Still testing, not working.
 bot.onText(/^\!clima (.+)/, (message, value) => {
 	let config_payload = {
 		search : value[1], // City to search
 		degreeType : 'C', // Temperature format, it can be F too (Celcius or Fahrenheit)
 		lang : 'es-ES' // Language code es = spanish
 	}
-//	weather.find(config_payload, callback);
+	 weather.find(config_payload, (err, res) => {
+		if(err){
+			bot.sendMessage(message.chat.id, `Intenta escribir la ciudad de manera correcta`);
+		}else{
+			bot.sendMessage(message.chat.id, `He encontrado algo.`);
+		}
+	 });
 });
-
 
 // -- Second-order Commands -- Events//
 
