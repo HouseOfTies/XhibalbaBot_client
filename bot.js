@@ -28,6 +28,9 @@ bot.onText(/\/rp (.+)/, (message, value) => {
   bot.sendMessage(message.chat.id, `${value[1]}`);
 });
 
+bot.onText(/\/test (.+) (.+)/, (message, value) => {
+  bot.sendMessage(message.chat.id, `Arg1: ${value[1]}\nArg2: ${value[2]}`);
+});
 
 // Dice game
 bot.onText(/^\/dado (.+)/, (message, value) => {
@@ -69,6 +72,38 @@ bot.onText(/\/clima (.+)/, (message, value) => {
 		}
 	};
 	getWeather(url);
+});
+
+bot.onText(/^\/gh (.+)/, (message, value) => {
+	let url = `https://api.github.com/users/${value[1]}`;
+		const getInfo = async url => {
+			try{
+		const info = await axios.get(url);
+		bot.sendMessage(message.chat.id, 
+		`_GitHub Profile_ 😺\n
+*Name:* ${info.data.name}
+------ Primary info
+*User:* ${info.data.login}
+*User ID:* ${info.data.node_id}
+*Pic:* ${info.data.avatar_url}.jpg
+*Type:* ${info.data.type}
+*Url:* ${info.data.html_url}
+*Bio:* ${info.data.bio}
+*Public repos:* ${info.data.public_repos}
+------ Secondary info
+*Followers:* ${info.data.followers}
+*Following:* ${info.data.following}
+*location:* ${info.data.location}
+*company:* ${info.data.company}
+------ Others
+*Created at:* ${info.data.created_at}
+*Last update:* ${info.data.updated_at}
+			`,{parse_mode : "Markdown"});
+			}catch(err){
+				bot.sendMessage(message.chat.id, "No se ha podido encontrar la cuenta solicitada.");
+			}
+	};
+	getInfo(url);
 });
 
 // Info about the bot
