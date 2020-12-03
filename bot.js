@@ -52,9 +52,9 @@ bot.onText(/\/clima (.+)/, (message, value) => {
 	let url = `http://api.openweathermap.org/data/2.5/weather?q=${value[1]}&${payload.unit}&${payload.token}&${payload.lang}`;
 	const getWeather = async url => {
 		try{
-				const res = await axios.get(url.replace(/ /g, "%20"));
-				bot.sendMessage(message.chat.id,
-						` ${res.data.name}, ${res.data.sys.country}\n
+			const res = await axios.get(url.replace(/ /g, "%20"));
+			bot.sendMessage(message.chat.id,
+				` ${res.data.name}, ${res.data.sys.country}\n
 *Temperatura:* ${res.data.main.temp}
 *Temperatura a sentir:* ${res.data.main.feels_like}
 *Temperatura maxima:* ${res.data.main.temp_max}
@@ -62,11 +62,11 @@ bot.onText(/\/clima (.+)/, (message, value) => {
 *Humedad: * ${res.data.main.humidity}%
 *Descripcion* ${res.data.weather[0].description}
 					`,
-					{parse_mode : "Markdown"}
-				);
-			}catch(err){
-				bot.sendMessage(message.chat.id, `Introduce una ciudad correcta, eje: Buenos Aires`);
-			}
+				{parse_mode : "Markdown"}
+			);
+		}catch(err){
+			bot.sendMessage(message.chat.id, `Introduce una ciudad correcta, eje: Buenos Aires`);
+		}
 	};
 	getWeather(url);
 });
