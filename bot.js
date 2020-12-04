@@ -74,6 +74,7 @@ bot.onText(/\/clima (.+)/, (message, value) => {
 	getWeather(url);
 });
 
+//GitHub accounts searcher
 bot.onText(/^\/gh (.+)/, (message, value) => {
 	let url = `https://api.github.com/users/${value[1]}`;
 		const getInfo = async url => {
@@ -82,6 +83,7 @@ bot.onText(/^\/gh (.+)/, (message, value) => {
 		bot.sendMessage(message.chat.id, 
 		`_GitHub Profile_ 😺\n
 *Name:* ${info.data.name}
+
 ------ Primary info
 *User:* ${info.data.login}
 *User ID:* ${info.data.node_id}
@@ -90,11 +92,13 @@ bot.onText(/^\/gh (.+)/, (message, value) => {
 *Url:* ${info.data.html_url}
 *Bio:* ${info.data.bio}
 *Public repos:* ${info.data.public_repos}
+
 ------ Secondary info
 *Followers:* ${info.data.followers}
 *Following:* ${info.data.following}
 *location:* ${info.data.location}
 *company:* ${info.data.company}
+
 ------ Others
 *Created at:* ${info.data.created_at}
 *Last update:* ${info.data.updated_at}
@@ -105,6 +109,14 @@ bot.onText(/^\/gh (.+)/, (message, value) => {
 	};
 	getInfo(url);
 });
+
+bot.onText(/\!reminder (.+) (.+)/, (message, value) => {
+	bot.sendMessage(message.chat.id, `*Recordatorio*\n\n-------\nTiempo: ${value[1]} ms\nNota: ${value[2]}\n-------\n\nRecibiras un tag cuando se haya cumplido el tiempo.`,{reply_to_message_id : message.message_id},{parse_mode : "Markdown"});
+  setTimeout(() =>{
+		bot.sendMessage(message.chat.id, `Oye @${message.from.username}, me encargaste un recordatorio.\n\n*Recordatorio:* ${value[2]}`,{parse_mode : "Markdown"});
+	}, parseInt(value[1]));
+});
+
 
 // Info about the bot
 bot.onText(/^\/info/, message  => {
