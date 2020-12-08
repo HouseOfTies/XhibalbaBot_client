@@ -29,7 +29,7 @@ bot.onText(/\/rp (.+)/, (message, value) => {
 });
 
 bot.onText(/\/test (.+) (.+)/, (message, value) => {
-  bot.sendMessage(message.chat.id, `Arg1: ${value[1]}\nArg2: ${value[2]}`);
+  bot.sendMessage(message.chat.id, `Tiempo: ${value[2]}\nNota: ${value[1]}`);
 });
 
 // Dice game
@@ -55,7 +55,7 @@ bot.onText(/\/clima (.+)/, (message, value) => {
 	let url = `http://api.openweathermap.org/data/2.5/weather?q=${value[1]}&${payload.unit}&${payload.token}&${payload.lang}`;
 	const getWeather = async url => {
 		try{
-			const res = await axios.get(url.replace(/ /g, "%20"));
+			const res = await axios.get(decodeURI(url));
 			bot.sendMessage(message.chat.id,
 				` ${res.data.name}, ${res.data.sys.country}\n
 *Temperatura:* ${res.data.main.temp}
@@ -110,7 +110,8 @@ bot.onText(/^\/gh (.+)/, (message, value) => {
 	getInfo(url);
 });
 
-bot.onText(/\!reminder (.+) (.+)/, (message, value) => {
+
+bot.onText(/reminder (.+) (.+)/, (message, value) => {
 	bot.sendMessage(message.chat.id, `*Recordatorio*\n\n-------\nTiempo: ${value[1]} ms\nNota: ${value[2]}\n-------\n\nRecibiras un tag cuando se haya cumplido el tiempo.`,{reply_to_message_id : message.message_id},{parse_mode : "Markdown"});
   setTimeout(() =>{
 		bot.sendMessage(message.chat.id, `Oye @${message.from.username}, me encargaste un recordatorio.\n\n*Recordatorio:* ${value[2]}`,{parse_mode : "Markdown"});
