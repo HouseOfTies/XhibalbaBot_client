@@ -8,4 +8,4 @@ if you want run your own bot with this bot-code, you need to:
 - Run your bot with node bot.js
 
 ---
-Note: if you want to contribute to the project, use the experimental branch, in case you use the main one, pull the experimental branch in the same way.
+Note: if you want to contribute to the project, fork the repository and pull a request with the new function or the added detail.
