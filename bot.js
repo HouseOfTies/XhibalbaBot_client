@@ -18,10 +18,16 @@ bot.on('polling_error', error=>{
 });
 
 // -- First-order Commands -- // 
+// Start
+bot.onText(/^\/start/, message => {
+	bot.sendMessage(message.chat.id, "Empieza usando uno de mis comandos, la manera correcta de escribirlos es con /comando [argumento]\nEjemplo: /clima santo domingo");
+});
+
 // Greetings
 bot.onText(/^\/heya/, message => {
 	bot.sendMessage(message.chat.id, "Pendiente a todas las ordenes & lista para recibir un comando");
 });
+
 
 // Repeat everything you type
 bot.onText(/\/say (.+)/, (message, value) => {
@@ -76,7 +82,7 @@ bot.onText(/\/clima (.+)/, (message, value) => {
 	getWeather(url);
 });
 
-//GitHub accounts searcher
+// GitHub accounts searcher
 bot.onText(/^\/gh (.+)/, (message, value) => {
 	let url = `https://api.github.com/users/${value[1]}`;
 		const getInfo = async url => {
@@ -113,7 +119,7 @@ bot.onText(/^\/gh (.+)/, (message, value) => {
 });
 
 
-//Wikipedia searcher
+// Wikipedia searcher
 bot.onText(/\/wiki (.+)/, (message, value) => {
 	let url = encodeURI(`https://es.wikipedia.org/api/rest_v1/page/summary/${value[1]}`),
 		extract;
@@ -129,7 +135,7 @@ bot.onText(/\/wiki (.+)/, (message, value) => {
 	getWikiInfo(url);
 });
 
-//Image searcher
+// Image searcher
 bot.onText(/\/img (.+)/, (message, value) => {
 	let payload = {
 		method : 'GET',
@@ -149,7 +155,7 @@ bot.onText(/\/img (.+)/, (message, value) => {
 });
 
 
-//Ip searcher
+// Ip searcher
 bot.onText(/\/ip (.+)/, (message, value) => {
 	var payload = {
  		 method: 'GET',
@@ -200,6 +206,11 @@ ${info.data.type}
 getIpInfo(payload);
 });
 
+
+//Support commands
+bot.onText(/^\/help/, message => {
+	bot.sendMessage(message.chat.id, `Saludos, viajero. Soy *Xhibalba*, poseedora de las ruinas del inframundo. Por lo que veo, no sabes bien como funcionan estas cosas asi que dejame explicarte brevemente.\nPresiona el caracter / para acceder a mi menu de comandos.\nMuchos de mis comandos para poder ser ejecutados requieren de un argumento [arg] el cual puede ser numerico o de letras segun el comando que ejecutes, *ejemplo:*\n/clima santiago o /dado 2\n\nSi necesitas ayuda o has encontrado algun bug 🐞 que manche mi pureza, puedes escribirle a mi creador [ZeroSeven](https://t.me/ZeroSeventty) Haciendo click sobre su nombre. `,{reply_to_message_id : message.message_id, parse_mode : "Markdown"});
+});
 
 // Info about the bot
 bot.onText(/^\/info/, message  => {
