@@ -148,6 +148,59 @@ bot.onText(/\/img (.+)/, (message, value) => {
 	getImg(payload);
 });
 
+
+//Ip searcher
+bot.onText(/\/ip (.+)/, (message, value) => {
+	var payload = {
+ 		 method: 'GET',
+ 		 url: `https://ip-geo-location.p.rapidapi.com/ip/${value[1]}`,
+ 		 params: {format: 'json', language: 'es'},
+  	 headers: {
+   		'x-rapidapi-key': 'e486b8885bmshff68b752d62f77fp181960jsnc4e96d1307ea',
+    	'x-rapidapi-host': 'ip-geo-location.p.rapidapi.com'
+  	}
+};
+	const getIpInfo = async payload => {
+		try{
+			let info = await axios.request(payload);
+			bot.sendMessage(message.chat.id, `
+🕵🏻‍♀️ He encontrado algo.\n
+------ Info ------
+--- Area ---
+*Codigo*: ${info.data.area.code}
+*Geonombre id*: ${info.data.area.geonameid}
+*Nombre*: ${info.data.area.name}
+
+--- ASN ---
+*Numero*: ${info.data.asn.number}
+*Organizacion*: ${info.data.asn.organisation}
+
+--- Region --
+*Latitud/Longitud*: ${info.data.location.latitude} / ${info.data.location.longitude}
+*Ciudad*: ${info.data.city.name}
+*Poblacion*: ${info.data.city.population}
+*Capital*: ${info.data.country.capital}
+*Codigo telefonico* ${info.data.country.phone_code}
+*Moneda*: ${info.data.currency.code} | ${info.data.currency.name}
+*Contienente*: ${info.data.continent.name}
+
+--- Seguridad ---
+*Es crawler*: ${info.data.security.is_crawler}
+*Es proxy*: ${info.data.security.is_proxy}
+*Es thread*:${info.data.security.is_thread}
+*Es tor*: ${info.data.security.is_tor}
+
+--- Tipo ---
+${info.data.type}
+				`,{parse_mode : "Markdown", reply_to_message_id : message.message_id});
+		}catch(e){
+			bot.sendMessage(message.chat.id, 'No he encontrado la direccion ip solicitada');
+		}
+	};
+getIpInfo(payload);
+});
+
+
 // Info about the bot
 bot.onText(/^\/info/, message  => {
 	let title = process.title,
