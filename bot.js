@@ -24,10 +24,12 @@ bot.onText(/^\/heya/, message => {
 });
 
 // Repeat everything you type
-bot.onText(/\/rp (.+)/, (message, value) => {
-  bot.sendMessage(message.chat.id, `${value[1]}`);
+bot.onText(/\/say (.+)/, (message, value) => {
+  bot.sendMessage(message.chat.id, `${value[1]}`,{reply_to_message_id : message.message_id});
 });
 
+
+//Two arguments command test
 bot.onText(/\/test (.+) (.+)/, (message, value) => {
   bot.sendMessage(message.chat.id, `Tiempo: ${value[2]}\nNota: ${value[1]}`);
 });
@@ -39,7 +41,7 @@ bot.onText(/^\/dado (.+)/, (message, value) => {
 		bot.sendMessage(message.chat.id, `Lanzando dado...`);
 		bot.sendDice(message.chat.id).then(info =>{
 			setTimeout(()=>{
-				let res = info.dice.value == value[1] ? bot.sendMessage(message.chat.id, 'Vaya, le atinaste. 🎉🎊') : bot.sendMessage(message.chat.id, 'No le atinaste, suerte la proxima.');
+				let res = info.dice.value == value[1] ? bot.sendMessage(message.chat.id, `Vaya, le atinaste. 🎉🎊`,{reply_to_message_id : message.message_id}) : bot.sendMessage(message.chat.id, `No le atinaste, suerte la proxima.`,{reply_to_message_id : message.message_id});
 			},5000);
 		});
 	}else{bot.sendMessage(message.chat.id, "Introduce un numero del 1-6")}
@@ -111,13 +113,40 @@ bot.onText(/^\/gh (.+)/, (message, value) => {
 });
 
 
-bot.onText(/reminder (.+) (.+)/, (message, value) => {
-	bot.sendMessage(message.chat.id, `*Recordatorio*\n\n-------\nTiempo: ${value[1]} ms\nNota: ${value[2]}\n-------\n\nRecibiras un tag cuando se haya cumplido el tiempo.`,{reply_to_message_id : message.message_id},{parse_mode : "Markdown"});
-  setTimeout(() =>{
-		bot.sendMessage(message.chat.id, `Oye @${message.from.username}, me encargaste un recordatorio.\n\n*Recordatorio:* ${value[2]}`,{parse_mode : "Markdown"});
-	}, parseInt(value[1]));
+//Wikipedia searcher
+bot.onText(/\/wiki (.+)/, (message, value) => {
+	let url = encodeURI(`https://es.wikipedia.org/api/rest_v1/page/summary/${value[1]}`),
+		extract;
+	const getWikiInfo = async url => {
+		try{
+			const info = await axios.get(url);
+			extract = info.data.extract;
+			bot.sendMessage(message.chat.id, `🔍 Resultado de busqueda:\n\n${extract}`, {reply_to_message_id : message.message_id});
+		}catch(e){
+			bot.sendMessage(message.chat.id, 'No he podido encontrar lo que buscabas.\nIntenta escribir correctamente tu busqueda.',{reply_to_message_id : message.message_id});
+		}
+	};
+	getWikiInfo(url);
 });
 
+//Image searcher
+bot.onText(/\/img (.+)/, (message, value) => {
+	let payload = {
+		method : 'GET',
+		url : 'https://bing-image-search1.p.rapidapi.com/images/search',
+		params : {q : value[1], count : '1'},
+		headers : {
+			'x-rapidapi-key': 'e486b8885bmshff68b752d62f77fp181960jsnc4e96d1307ea',
+    'x-rapidapi-host': 'bing-image-search1.p.rapidapi.com'
+		}
+	}
+	const getImg = async payload => {
+		let info = await axios.request(payload),
+			image = info.data.value[0].contentUrl;
+		bot.sendMessage(message.chat.id, `[🔭](${image}) He encontrado esta imagen:\n`, {reply_to_message_id : message.message_id, parse_mode : "Markdown"});
+	}
+	getImg(payload);
+});
 
 // Info about the bot
 bot.onText(/^\/info/, message  => {
