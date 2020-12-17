@@ -18,16 +18,27 @@ bot.on('polling_error', error=>{
 });
 
 // -- First-order Commands -- // 
+// Start
+bot.onText(/^\/start/, message => {
+	bot.sendMessage(message.chat.id, "Empieza usando uno de mis comandos, la manera correcta de escribirlos es con /comando [argumento]\nEjemplo: /clima santo domingo");
+});
+
 // Greetings
 bot.onText(/^\/heya/, message => {
 	bot.sendMessage(message.chat.id, "Pendiente a todas las ordenes & lista para recibir un comando");
 });
 
+
 // Repeat everything you type
-bot.onText(/\/rp (.+)/, (message, value) => {
-  bot.sendMessage(message.chat.id, `${value[1]}`);
+bot.onText(/\/say (.+)/, (message, value) => {
+  bot.sendMessage(message.chat.id, `${value[1]}`,{reply_to_message_id : message.message_id});
 });
 
+
+//Two arguments command test
+bot.onText(/\/test (.+) (.+)/, (message, value) => {
+  bot.sendMessage(message.chat.id, `Tiempo: ${value[2]}\nNota: ${value[1]}`);
+});
 
 // Dice game
 bot.onText(/^\/dado (.+)/, (message, value) => {
@@ -36,7 +47,7 @@ bot.onText(/^\/dado (.+)/, (message, value) => {
 		bot.sendMessage(message.chat.id, `Lanzando dado...`);
 		bot.sendDice(message.chat.id).then(info =>{
 			setTimeout(()=>{
-				let res = info.dice.value == value[1] ? bot.sendMessage(message.chat.id, 'Vaya, le atinaste. 🎉🎊') : bot.sendMessage(message.chat.id, 'No le atinaste, suerte la proxima.');
+				let res = info.dice.value == value[1] ? bot.sendMessage(message.chat.id, `Vaya, le atinaste. 🎉🎊`,{reply_to_message_id : message.message_id}) : bot.sendMessage(message.chat.id, `No le atinaste, suerte la proxima.`,{reply_to_message_id : message.message_id});
 			},5000);
 		});
 	}else{bot.sendMessage(message.chat.id, "Introduce un numero del 1-6")}
@@ -52,7 +63,7 @@ bot.onText(/\/clima (.+)/, (message, value) => {
 	let url = `http://api.openweathermap.org/data/2.5/weather?q=${value[1]}&${payload.unit}&${payload.token}&${payload.lang}`;
 	const getWeather = async url => {
 		try{
-			const res = await axios.get(url.replace(/ /g, "%20"));
+			const res = await axios.get(decodeURI(url));
 			bot.sendMessage(message.chat.id,
 				` ${res.data.name}, ${res.data.sys.country}\n
 *Temperatura:* ${res.data.main.temp}
@@ -69,6 +80,136 @@ bot.onText(/\/clima (.+)/, (message, value) => {
 		}
 	};
 	getWeather(url);
+});
+
+// GitHub accounts searcher
+bot.onText(/^\/gh (.+)/, (message, value) => {
+	let url = `https://api.github.com/users/${value[1]}`;
+		const getInfo = async url => {
+			try{
+		const info = await axios.get(url);
+		bot.sendMessage(message.chat.id, 
+		`_GitHub Profile_ 😺\n
+*Name:* ${info.data.name}
+
+------ Primary info
+*User:* ${info.data.login}
+*User ID:* ${info.data.node_id}
+*Pic:* ${info.data.avatar_url}.jpg
+*Type:* ${info.data.type}
+*Url:* ${info.data.html_url}
+*Bio:* ${info.data.bio}
+*Public repos:* ${info.data.public_repos}
+
+------ Secondary info
+*Followers:* ${info.data.followers}
+*Following:* ${info.data.following}
+*location:* ${info.data.location}
+*company:* ${info.data.company}
+
+------ Others
+*Created at:* ${info.data.created_at}
+*Last update:* ${info.data.updated_at}
+			`,{parse_mode : "Markdown"});
+			}catch(err){
+				bot.sendMessage(message.chat.id, "No se ha podido encontrar la cuenta solicitada.");
+			}
+	};
+	getInfo(url);
+});
+
+
+// Wikipedia searcher
+bot.onText(/\/wiki (.+)/, (message, value) => {
+	let url = encodeURI(`https://es.wikipedia.org/api/rest_v1/page/summary/${value[1]}`),
+		extract;
+	const getWikiInfo = async url => {
+		try{
+			const info = await axios.get(url);
+			extract = info.data.extract;
+			bot.sendMessage(message.chat.id, `🔍 Resultado de busqueda:\n\n${extract}`, {reply_to_message_id : message.message_id});
+		}catch(e){
+			bot.sendMessage(message.chat.id, 'No he podido encontrar lo que buscabas.\nIntenta escribir correctamente tu busqueda.',{reply_to_message_id : message.message_id});
+		}
+	};
+	getWikiInfo(url);
+});
+
+// Image searcher
+bot.onText(/\/img (.+)/, (message, value) => {
+	let payload = {
+		method : 'GET',
+		url : 'https://bing-image-search1.p.rapidapi.com/images/search',
+		params : {q : value[1], count : '1'},
+		headers : {
+			'x-rapidapi-key': 'e486b8885bmshff68b752d62f77fp181960jsnc4e96d1307ea',
+    'x-rapidapi-host': 'bing-image-search1.p.rapidapi.com'
+		}
+	}
+	const getImg = async payload => {
+		let info = await axios.request(payload),
+			image = info.data.value[0].contentUrl;
+		bot.sendMessage(message.chat.id, `[🔭](${image}) He encontrado esta imagen:\n`, {reply_to_message_id : message.message_id, parse_mode : "Markdown"});
+	}
+	getImg(payload);
+});
+
+
+// Ip searcher
+bot.onText(/\/ip (.+)/, (message, value) => {
+	var payload = {
+ 		 method: 'GET',
+ 		 url: `https://ip-geo-location.p.rapidapi.com/ip/${value[1]}`,
+ 		 params: {format: 'json', language: 'es'},
+  	 headers: {
+   		'x-rapidapi-key': 'e486b8885bmshff68b752d62f77fp181960jsnc4e96d1307ea',
+    	'x-rapidapi-host': 'ip-geo-location.p.rapidapi.com'
+  	}
+};
+	const getIpInfo = async payload => {
+		try{
+			let info = await axios.request(payload);
+			bot.sendMessage(message.chat.id, `
+🕵🏻‍♀️ He encontrado algo.\n
+------ Info ------
+--- Area ---
+*Codigo*: ${info.data.area.code}
+*Geonombre id*: ${info.data.area.geonameid}
+*Nombre*: ${info.data.area.name}
+
+--- ASN ---
+*Numero*: ${info.data.asn.number}
+*Organizacion*: ${info.data.asn.organisation}
+
+--- Region --
+*Latitud/Longitud*: ${info.data.location.latitude} / ${info.data.location.longitude}
+*Ciudad*: ${info.data.city.name}
+*Poblacion*: ${info.data.city.population}
+*Capital*: ${info.data.country.capital}
+*Codigo telefonico* ${info.data.country.phone_code}
+*Moneda*: ${info.data.currency.code} | ${info.data.currency.name}
+*Contienente*: ${info.data.continent.name}
+
+--- Seguridad ---
+*Es crawler*: ${info.data.security.is_crawler}
+*Es proxy*: ${info.data.security.is_proxy}
+*Es thread*:${info.data.security.is_thread}
+*Es tor*: ${info.data.security.is_tor}
+
+--- Tipo ---
+${info.data.type}
+				`,{parse_mode : "Markdown", reply_to_message_id : message.message_id});
+		}catch(e){
+			bot.sendMessage(message.chat.id, 'No he encontrado la direccion ip solicitada');
+		}
+	};
+getIpInfo(payload);
+});
+
+
+//Support commands
+bot.onText(/^\/help/, message => {
+	bot.sendMessage(message.chat.id, `Saludos, viajero. Soy *Xhibalba*, poseedora de las ruinas del inframundo. Por lo que veo, no sabes bien como funcionan estas cosas asi que dejame explicarte brevemente.\nPresiona el caracter / para acceder a mi menu de comandos.\nMuchos de mis comandos para poder ser ejecutados requieren de un argumento [arg] el cual puede ser numerico o de letras segun el comando que ejecutes, *ejemplo:*\n/clima santiago o /dado 2\n\nSi necesitas ayuda o has encontrado algun bug 🐞 que manche mi pureza, puedes escribirle a mi creador [ZeroSeven](https://t.me/ZeroSeventty) Haciendo click sobre su nombre. `,{reply_to_message_id : message.message_id, parse_mode : "Markdown"});
 });
 
 // Info about the bot
