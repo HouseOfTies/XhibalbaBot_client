@@ -1,4 +1,4 @@
-# Here rests the heart of the 7th.
+# Here rest the heart of the 7th.
 
 if you want run your own bot with this bot-code, you need to:
 
