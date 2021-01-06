@@ -11,6 +11,7 @@ import axios from 'axios';
 dotenv.config();
 const bot = new TelegramBot(process.env.TOKEN || process.env.localToken, {polling: true}); //It will take heroku TOKEN or localToken
 console.log("\nCorriendo bot & conexiones");
+var alias = {};
 
 // Errors detector //
 bot.on('polling_error', error=>{
@@ -37,7 +38,7 @@ bot.onText(/\/say (.+)/, (message, value) => {
 
 //Two arguments command test
 bot.onText(/\/test (.+) (.+)/, (message, value) => {
-  bot.sendMessage(message.chat.id, `Tiempo: ${value[2]}\nNota: ${value[1]}`);
+  bot.sendMessage(message.chat.id, `Argumento1: ${value[1]}\nArgumento2: ${value[2]}`);
 });
 
 // Dice game
@@ -204,6 +205,74 @@ ${info.data.type}
 		}
 	};
 getIpInfo(payload);
+});
+
+
+// Youtube videos searcher command
+//bot.onText(/\!yt (.+)/, (message, value) => {
+//	let url = encodeURI(`https://youtube-search1.p.rapidapi.com/${value[1]}`);
+//	let payload = {
+//		method : 'GET',
+//		url : url,
+//		headers: {
+//   	'x-rapidapi-key': 'e486b8885bmshff68b752d62f77fp181960jsnc4e96d1307ea',
+//    	'x-rapidapi-host': 'youtube-search1.p.rapidapi.com'
+// 	}
+//	};
+//	const getYoutubeVideo = async payload => {
+//		try{
+//			const info = await axios.request(payload);
+//			let video = `https://www.youtube.com/watch?v=${info.data.items[0].id}`;
+//			bot.sendMessage(message.chat.id, `🔍 Video solicitado:\n\n ${video}`, {reply_to_message_id : message.message_id, parse_mode : 'Markdown'})
+//		}catch(e){
+//			bot.sendMessage(message.chat.id, "No he encontrado tu video solicitado.");
+//			console.log(e);
+//		}
+//	}
+//	getYoutubeVideo(payload);
+//});
+
+// Experimental
+
+// Say alias (nickname)
+bot.onText(/\!alias/, message => {
+	bot.sendMessage(message.chat.id, `Te conozco bajo el nombre de: ${alias.message.from.id}`, {reply_to_message_id : message.message_id});
+});
+
+// Set new alias (nickname)
+bot.onText(/\!setalias (.+)/, (message, value) => {
+  alias [ `${message.from.id}` ] = `${value[1]}`;
+  bot.sendMessage(message.chat.id, `Bien, ahora te conocere bajo el nombre de ${value[1]}.`,{reply_to_message_id : message.message_id, parse_mode : 'Markdown'});
+});
+
+// Pin command 
+bot.onText(/\!pin (.+)/, (message, value) => {
+	(async () =>{
+		let botInfo = await bot.getMe(),
+			botStats = await bot.getChatMember(message.chat.id,botInfo.id),
+			userStats = await bot.getChatMember(message.chat.id, message.from.id);
+		console.log(userStats);
+		if(botStats.status != "administrator" || userStats.status == "member" ||  botStats.can_pin_messages == false){
+			bot.sendMessage(message.chat.id,"No tengo permisos para pinear mensajes. (esto se debe a que no soy administradora {o no tengo permisos para anclar mensajes} o no eres un administrador del grupo)");
+		}else{
+			bot.pinChatMessage(message.chat.id, message.message_id);
+			bot.sendMessage(message.chat.id,`Anclado 📌\nPin ID: ${message.message_id}`);
+		}
+	})();
+});
+
+// Unpin command
+bot.onText(/\!unpin (.+)/, (message, value) => {
+	(async () =>{
+		let botInfo = await bot.getMe(),
+			botStats = await bot.getChatMember(message.chat.id,botInfo.id),
+			userStats = await bot.getChatMember(message.chat.id, message.from.id);
+		if(botStats.status != "administrator" || userStats.status == "member" ||  botStats.can_pin_messages == false){
+			bot.sendMessage(message.chat.id,"No tengo permisos para despinear mensajes. (esto se debe a que no soy administradora {o no tengo permisos para anclar mensajes} o no eres un administrador del grupo)");
+		}else{
+			bot.sendMessage(message.chat.id, `Se ha desanclado el mensaje.`, {reply_to_message_id : message.message_id});
+		}
+	})();
 });
 
 
