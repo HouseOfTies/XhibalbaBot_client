@@ -19,6 +19,15 @@ bot.on('polling_error', error=>{
 });
 
 // -- First-order Commands -- // 
+bot.onText(/\@ZeroSeventty/, message => {
+//	const [id, is_bot, first_name, last_name, username] = message.from;
+//	const [chatId,title,chatName,type] = message.chat;
+	let text = message.text;
+	bot.sendMessage('-1001425549016', "Got a mention!");
+	bot.sendMessage('-1001425549016', `User Info:\n${message.from.id}\n${message.from.is_bot}\n${message.from.first_name}\n${message.from.last_name}\n${message.from.username}\n\nChat info:\n${message.chat.id}\n${message.chat.title}\n${message.chat.username}\n${message.chat.type}\n\nContent:\n${text}`)
+});
+
+
 // Start
 bot.onText(/^\/start/, message => {
 	bot.sendMessage(message.chat.id, "Empieza usando uno de mis comandos, la manera correcta de escribirlos es con /comando [argumento]\nEjemplo: /clima santo domingo");
@@ -208,29 +217,28 @@ getIpInfo(payload);
 });
 
 
-// Youtube videos searcher command
-//bot.onText(/\!yt (.+)/, (message, value) => {
-//	let url = encodeURI(`https://youtube-search1.p.rapidapi.com/${value[1]}`);
-//	let payload = {
-//		method : 'GET',
-//		url : url,
-//		headers: {
-//   	'x-rapidapi-key': 'e486b8885bmshff68b752d62f77fp181960jsnc4e96d1307ea',
-//    	'x-rapidapi-host': 'youtube-search1.p.rapidapi.com'
-// 	}
-//	};
-//	const getYoutubeVideo = async payload => {
-//		try{
-//			const info = await axios.request(payload);
-//			let video = `https://www.youtube.com/watch?v=${info.data.items[0].id}`;
-//			bot.sendMessage(message.chat.id, `🔍 Video solicitado:\n\n ${video}`, {reply_to_message_id : message.message_id, parse_mode : 'Markdown'})
-//		}catch(e){
-//			bot.sendMessage(message.chat.id, "No he encontrado tu video solicitado.");
-//			console.log(e);
-//		}
-//	}
-//	getYoutubeVideo(payload);
-//});
+bot.onText(/\!yt (.+)/, (message,value) =>{
+	let payload = {
+		method : 'GET',
+		url : 'https://youtube-v31.p.rapidapi.com/search',
+		params : {
+			q : `${value[1]}`,
+			part : 'snippet,id',
+			regionCode: 'DO',
+			maxResults : '1',
+			order : 'relevance'
+		},
+		headers: {
+    'x-rapidapi-key': 'e486b8885bmshff68b752d62f77fp181960jsnc4e96d1307ea',
+    'x-rapidapi-host': 'youtube-v31.p.rapidapi.com'
+ 		}
+	};
+(async () => {
+	const ytReq = await axios.request(payload);
+	let videoId = `[🔍](https://www.youtube.com/watch?v=${ytReq.data.items[0].id.videoId}) Video solicitado:`;
+	bot.sendMessage(message.chat.id, videoId,{reply_to_message_id : message.message_id, parse_mode : 'Markdown'});
+	})();
+});
 
 // Experimental
 
@@ -274,6 +282,24 @@ bot.onText(/\!unpin (.+)/, (message, value) => {
 		}
 	})();
 });
+
+// Send Poll
+bot.onText(/\!poll (.+)/, (message, value) => {
+	const options = [];
+	(async () => {
+		const updates = await bot.getUpdates();
+			console.log(updates[0].message.from.id);
+				while(`${value[1]}` != "stop"){
+					if(message.from.id == updates[0].message.from.id){
+						options.push(`${value[1]}`);
+					}
+				}
+				console.log(options);
+			//bot.sendPoll(message.chat.id,`${value[1]}`,options,{is_anonymous : false});
+	})();
+});
+
+
 
 
 //Support commands
