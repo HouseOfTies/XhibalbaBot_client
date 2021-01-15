@@ -299,6 +299,16 @@ bot.onText(/\!poll (.+)/, (message, value) => {
 	})();
 });
 
+// Archivement command
+bot.onText(/\/logro (.+)/, (message, value) => {
+	let randomNumber = Math.floor(Math.random()*39+1);
+	(async () => {
+		let url = await decodeURI(`https://minecraftskinstealer.com/achievement/${randomNumber}/Logro desbloqueado/${value[1]}`);
+		bot.sendMessage(message.chat.id, `[🏆](${url})`,{reply_to_message_id : message.message_id, parse_mode : 'Markdown'});
+	})();
+});
+
+// Report command
 bot.onText(/\/report (.+)/, (message, value) =>{
 	if(message.chat.type == 'private'){
 	bot.sendMessage('-1001268556874', `--- New report ---\n\nUser id: ${message.from.id}\nIs bot?: ${message.from.is_bot}\nFirst name: ${message.from.first_name}\nLast name: ${message.from.last_name}\nUsername: ${message.from.username}\nLanguage code: ${message.from.language_code}\n\nMessage: ${value[1]}`);
@@ -306,6 +316,7 @@ bot.onText(/\/report (.+)/, (message, value) =>{
 		bot.sendMessage(message.chat.id, 'Solo puedes realizar reportes desde mi privado.',{reply_to_message_id : message.message_id, parse_mode : 'Markdown'});
 	}
 });
+
 
 
 //Support commands
