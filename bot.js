@@ -19,15 +19,6 @@ bot.on('polling_error', error=>{
 });
 
 // -- First-order Commands -- // 
-bot.onText(/\@ZeroSeventty/, message => {
-//	const [id, is_bot, first_name, last_name, username] = message.from;
-//	const [chatId,title,chatName,type] = message.chat;
-	let text = message.text;
-	bot.sendMessage('-1001425549016', "Got a mention!");
-	bot.sendMessage('-1001425549016', `User Info:\n${message.from.id}\n${message.from.is_bot}\n${message.from.first_name}\n${message.from.last_name}\n${message.from.username}\n\nChat info:\n${message.chat.id}\n${message.chat.title}\n${message.chat.username}\n${message.chat.type}\n\nContent:\n${text}`)
-});
-
-
 // Start
 bot.onText(/^\/start/, message => {
 	bot.sendMessage(message.chat.id, "Empieza usando uno de mis comandos, la manera correcta de escribirlos es con /comando [argumento]\nEjemplo: /clima santo domingo");
@@ -284,20 +275,20 @@ bot.onText(/\!unpin (.+)/, (message, value) => {
 });
 
 // Send Poll
-bot.onText(/\!poll (.+)/, (message, value) => {
-	const options = [];
-	(async () => {
-		const updates = await bot.getUpdates();
-			console.log(updates[0].message.from.id);
-				while(`${value[1]}` != "stop"){
-					if(message.from.id == updates[0].message.from.id){
-						options.push(`${value[1]}`);
-					}
-				}
-				console.log(options);
-			//bot.sendPoll(message.chat.id,`${value[1]}`,options,{is_anonymous : false});
-	})();
-});
+//bot.onText(/\!poll (.+)/, (message, value) => {
+//	const options = [];
+//	(async () => {
+//		const updates = await bot.getUpdates();
+//			console.log(updates[0].message.from.id);
+//				while(`${value[1]}` != "stop"){
+//					if(message.from.id == updates[0].message.from.id){
+//						options.push(`${value[1]}`);
+//					}
+//				}
+//				console.log(options);
+//			//bot.sendPoll(message.chat.id,`${value[1]}`,options,{is_anonymous : false});
+//	})();
+//});
 
 // Archivement command
 bot.onText(/\/logro (.+)/, (message, value) => {
@@ -308,21 +299,23 @@ bot.onText(/\/logro (.+)/, (message, value) => {
 	})();
 });
 
+
+//Support commands
+// Help message
+bot.onText(/^\/help/, message => {
+	bot.sendMessage(message.chat.id, `Saludos, viajero. Soy *Xhibalba*, poseedora de las ruinas del inframundo. Por lo que veo, no sabes bien como funcionan estas cosas asi que dejame explicarte brevemente.\nPresiona el caracter / para acceder a mi menu de comandos.\nMuchos de mis comandos para poder ser ejecutados requieren de un argumento [arg] el cual puede ser numerico o de letras segun el comando que ejecutes, *ejemplo:*\n/clima santiago o /dado 2\n\nSi necesitas ayuda o has encontrado algun bug 🐞o usuario que manche mi pureza, puedes escribirle a mi creador [ZeroSeven](https://t.me/ZeroSeventty) Haciendo click sobre su nombre.\n\nComo tambien puedes mandar un reporte al buzon haciendo uso del comando /report tu reporte.`,{reply_to_message_id : message.message_id, parse_mode : "Markdown"});
+});
+
 // Report command
 bot.onText(/\/report (.+)/, (message, value) =>{
 	if(message.chat.type == 'private'){
+	bot.sendMessage(message.chat.id, "He enviado tu reporte al buzón de reportes");
 	bot.sendMessage('-1001268556874', `--- New report ---\n\nUser id: ${message.from.id}\nIs bot?: ${message.from.is_bot}\nFirst name: ${message.from.first_name}\nLast name: ${message.from.last_name}\nUsername: ${message.from.username}\nLanguage code: ${message.from.language_code}\n\nMessage: ${value[1]}`);
 	}else{
-		bot.sendMessage(message.chat.id, 'Solo puedes realizar reportes desde mi privado.',{reply_to_message_id : message.message_id, parse_mode : 'Markdown'});
+		bot.sendMessage(message.from.id, 'Solo puedes realizar reportes desde aqui.');
 	}
 });
 
-
-
-//Support commands
-bot.onText(/^\/help/, message => {
-	bot.sendMessage(message.chat.id, `Saludos, viajero. Soy *Xhibalba*, poseedora de las ruinas del inframundo. Por lo que veo, no sabes bien como funcionan estas cosas asi que dejame explicarte brevemente.\nPresiona el caracter / para acceder a mi menu de comandos.\nMuchos de mis comandos para poder ser ejecutados requieren de un argumento [arg] el cual puede ser numerico o de letras segun el comando que ejecutes, *ejemplo:*\n/clima santiago o /dado 2\n\nSi necesitas ayuda o has encontrado algun bug 🐞 que manche mi pureza, puedes escribirle a mi creador [ZeroSeven](https://t.me/ZeroSeventty) Haciendo click sobre su nombre. `,{reply_to_message_id : message.message_id, parse_mode : "Markdown"});
-});
 
 // Info about the bot
 bot.onText(/^\/info/, message  => {
