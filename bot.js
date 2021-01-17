@@ -244,6 +244,19 @@ bot.onText(/\!setalias (.+)/, (message, value) => {
   bot.sendMessage(message.chat.id, `Bien, ahora te conocere bajo el nombre de ${value[1]}.`,{reply_to_message_id : message.message_id, parse_mode : 'Markdown'});
 });
 
+
+// Archivement command
+bot.onText(/\/logro (.+)/, (message, value) => {
+	let randomNumber = Math.floor(Math.random()*39+1);
+	(async () => {
+		let url = await decodeURI(`https://minecraftskinstealer.com/achievement/${randomNumber}/Logro desbloqueado/${value[1]}`);
+		bot.sendMessage(message.chat.id, `[🏆](${url})`,{reply_to_message_id : message.message_id, parse_mode : 'Markdown'});
+	})();
+});
+
+
+// -- Adm commands -- //
+
 // Pin command 
 bot.onText(/\!pin (.+)/, (message, value) => {
 	(async () =>{
@@ -290,14 +303,28 @@ bot.onText(/\!unpin (.+)/, (message, value) => {
 //	})();
 //});
 
-// Archivement command
-bot.onText(/\/logro (.+)/, (message, value) => {
-	let randomNumber = Math.floor(Math.random()*39+1);
-	(async () => {
-		let url = await decodeURI(`https://minecraftskinstealer.com/achievement/${randomNumber}/Logro desbloqueado/${value[1]}`);
-		bot.sendMessage(message.chat.id, `[🏆](${url})`,{reply_to_message_id : message.message_id, parse_mode : 'Markdown'});
-	})();
+// Change title of group command
+bot.onText(/\/chtitle (.+)/, (message, value) => {
+ (async () => {
+		bot.setChatTitle(message.chat.id, value[1]);
+	 	bot.sendMessage(message.chat.id, "He cambiado el titulo de este espacio.");
+ })();
 });
+
+bot.onText(/\/chdescription (.+)/, (message, value) => {
+ (async () => {
+		bot.setChatDescription(message.chat.id, value[1]);
+	 	bot.sendMessage(message.chat.id, "He cambiado la descripcion de este espacio.");
+ })();
+});
+
+bot.onText(/\/getadm/, message => {
+ (async () => {
+		const adms = await bot.getChatAdministrators(message.chat.id);
+	 	console.log(adms);
+ })();
+});
+
 
 
 //Support commands
