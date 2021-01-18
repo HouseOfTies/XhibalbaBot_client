@@ -11,7 +11,7 @@ import axios from 'axios';
 dotenv.config();
 const bot = new TelegramBot(process.env.TOKEN || process.env.localToken, {polling: true}); //It will take heroku TOKEN or localToken
 console.log("\nCorriendo bot & conexiones");
-var alias = {};
+
 
 // Errors detector //
 bot.on('polling_error', error=>{
@@ -254,6 +254,22 @@ bot.onText(/\/logro (.+)/, (message, value) => {
 	})();
 });
 
+// Full webshot command
+bot.onText(/\!fullsnap (.+)/, (message, value) => {
+	(async () => {
+		const url = await `https://webshot.deam.io/${value[1]}`
+		bot.sendMessage(message.chat.id, `[👁‍🗨](${url})Mis ojos han llegado a este lugar.`,{parse_mode : "Markdown"});
+	})();
+});
+
+// Webshot command
+bot.onText(/\!snap (.+)/, (message, value) => {
+	(async () => {
+		const url = await `https://webshot.deam.io/${value[1]}?height=1000&width=1000`
+		bot.sendMessage(message.chat.id, `[👁‍🗨](${url})Mis ojos han llegado a este lugar.`,{parse_mode : "Markdown"});
+	})();
+});
+
 
 // -- Adm commands -- //
 
@@ -311,6 +327,7 @@ bot.onText(/\/chtitle (.+)/, (message, value) => {
  })();
 });
 
+// Change descripcion command
 bot.onText(/\/chdescription (.+)/, (message, value) => {
  (async () => {
 		bot.setChatDescription(message.chat.id, value[1]);
@@ -318,11 +335,12 @@ bot.onText(/\/chdescription (.+)/, (message, value) => {
  })();
 });
 
-bot.onText(/\/getadm/, message => {
+// Generate invitation link
+bot.onText(/\/invite/, message => {
  (async () => {
-		const adms = await bot.getChatAdministrators(message.chat.id);
-	 	console.log(adms);
- })();
+		let chatInfo = await bot.getChat(message.chat.id);
+	 	bot.sendMessage(message.chat.id, `Aqui tienes un ticket de entrada [🎟](${chatInfo.invite_link})`, {parse_mode : "Markdown"});
+	 })();
 });
 
 
@@ -357,16 +375,48 @@ bot.onText(/^\/info/, message  => {
 });
 
 // -- Second-order Commands -- Events//
-
+// Welcomes and farewells
 bot.on('message', message => {
 	try{
-		if(message.new_chat_members != undefined){
-			bot.sendMessage(message.chat.id, `Bienvenido a ${message.chat.title}, usuario *${message.new_chat_member.first_name}* esperemos que tu estadia sea fructifera.`,{parse_mode : "Markdown"});
-		}
-		else if(message.left_chat_member != undefined){
-			bot.sendMessage(message.chat.id, `Un alma perteneciente a la oscuridad, siempre termina regresando a ella. *${message.left_chat_member.first_name}* regresa pronto.`,{parse_mode : "Markdown"});
-		}
+		(async () => {
+			let botInfo = await bot.getMe(),
+				botStats = await bot.getChatMember(message.chat.id,botInfo.id),
+				chatInfo = await bot.getChat(message.chat.id);
+			if(botStats.status == 'administrator' && message.new_chat_members != undefined){
+				bot.sendMessage(message.chat.id, `Bienvenido a *${message.chat.title}*, usuario @*${message.new_chat_member.username}* soy quien resguarda este lugar; Para entrar, primero tienes que mostrar quien eras antes de perder tu vida. Presiona el boton para ver la info que trae tu alma.`,
+						{ parse_mode : "Markdown", reply_markup : {
+								inline_keyboard: [
+									[
+										// Send user id as callback_data to callback_query
+										{text: "Mostrar alma-pasaporte", callback_data: message.from.id}
+									]
+								]
+							}
+						}
+				);
+					bot.on('callback_query', function onCallbackQuery(btn){
+						if(btn.data == message.from.id){
+							bot.sendMessage(message.chat.id, `Bienvenido.\nEl lugar que entraste tiene como descripcion: ${chatInfo.description}`);
+						}
+					});
+			}else if(botStats.status == 'member' && message.new_chat_member != undefined){
+				bot.sendMessage(message.chat.id, `Bienvenido a *${message.chat.title}*, usuario @*${message.new_chat_member.username}* esperemos que tu estadia sea fructifera.`,{parse_mode : "Markdown"});
+			}else if(message.left_chat_member != undefined){
+				bot.sendMessage(message.chat.id, `Un alma perteneciente al vacio siempre termina regresando a el, @*${message.left_chat_member.username}* regresa pronto.`,{parse_mode : "Markdown"});
+			}
+		})();
 	}catch(error){
-		bot.sendMessage(message.chat.id, `He detectado un error ${error.message}`);
-	}
+		bot.sendMessage(message.chat.id, "Ha ocurrido un error al recibir o despedir.");
+		console.log(error);
+	}	
 });
+
+bot.onText(/\!getDescription/, message => {
+	(async () => {
+		const chatInfo = await bot.getChat(message.chat.id);
+		bot.sendMessage(message.chat.id, chatInfo.description);
+	})();
+});
+
+
+// -- Bot's end -- //
