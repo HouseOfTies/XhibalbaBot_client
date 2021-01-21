@@ -270,8 +270,25 @@ bot.onText(/\!snap (.+)/, (message, value) => {
 	})();
 });
 
+// Dictionary searcher
+bot.onText(/\!dic (.+)/, (message, value) => {
+	const payload = {
+			method: 'GET',
+			url: 'https://mashape-community-urban-dictionary.p.rapidapi.com/define',
+			params: { term: value[1] },
+			headers: {
+    		'x-rapidapi-key': 'e486b8885bmshff68b752d62f77fp181960jsnc4e96d1307ea',
+    		'x-rapidapi-host': 'mashape-community-urban-dictionary.p.rapidapi.com'
+ 	 }
+	};
+ (async () => {
+		const dicReq = await axios.request(payload);
+	 	console.log(dicReq);
+	 })();
+});
 
 // -- Adm commands -- //
+
 
 // Pin command 
 bot.onText(/\!pin (.+)/, (message, value) => {
