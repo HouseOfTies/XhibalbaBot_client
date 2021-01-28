@@ -70,15 +70,14 @@ bot.onText(/\/whois/, message => {
 
 // Dice game
 bot.onText(/^\/dado (.+)/, (message, value) => {
-	if(!isNaN(value[1]) && value[1] < 7){	
-		bot.sendMessage(message.chat.id, `Elegiste: *${value[1]}*`,{parse_mode : "Markdown"});
-		bot.sendMessage(message.chat.id, `Lanzando dado...`);
+	if(!isNaN(value[1]) && value[1] < 7 && value[1] > 0){	
+		bot.sendMessage(message.chat.id, `Elegiste: *${value[1]}* ¿Cual será el resultado?`,{parse_mode : "Markdown", reply_to_message : message.message_id},);
 		bot.sendDice(message.chat.id).then(info =>{
 			setTimeout(()=>{
-				let res = info.dice.value == value[1] ? bot.sendMessage(message.chat.id, `Vaya, le atinaste. 🎉🎊`,{reply_to_message_id : message.message_id}) : bot.sendMessage(message.chat.id, `No le atinaste, suerte la proxima.`,{reply_to_message_id : message.message_id});
+				let res = info.dice.value == value[1] ? bot.sendMessage(message.chat.id, `Oe oeee, le atinaste. 🥳 🎉🎊`,{reply_to_message_id : message.message_id}) : bot.sendMessage(message.chat.id, `No le atinaste, deberías intentarlo otra vez.`,{reply_to_message_id : message.message_id});
 			},5000);
 		});
-	}else{bot.sendMessage(message.chat.id, "Introduce un numero del 1-6")}
+	}else{bot.sendMessage(message.chat.id, "Introduce un numero del 1-6",{reply_to_message : message.message_id})}
 });
 
 // Weather command
@@ -371,8 +370,8 @@ bot.onText(/\/pin (.+)/, message => {
 		let botInfo = await bot.getMe(),
 			botStats = await bot.getChatMember(message.chat.id,botInfo.id),
 			userStats = await bot.getChatMember(message.chat.id, message.from.id);
-		if(botStats.status != "administrator" || userStats.status == "member" ||  botStats.can_pin_messages == false){
-			bot.sendMessage(message.chat.id,"No tengo permisos para pinear mensajes. (esto se debe a que no soy administradora {o no tengo permisos para anclar mensajes} o no eres un administrador del grupo)");
+		if(botStats.status != "administrator" ||  botStats.can_pin_messages == false){
+			bot.sendMessage(message.chat.id,"No tengo permisos para pinear mensajes. (esto se debe a que no soy administradora { o no tengo permisos para anclar mensajes })");
 		}else{
 			bot.pinChatMessage(message.chat.id, message.message_id);
 			bot.sendMessage(message.chat.id,`Anclado 📌\nPin ID: ${message.message_id}`);
@@ -485,26 +484,12 @@ bot.on('message', message => {
 				botStats = await bot.getChatMember(message.chat.id,botInfo.id),
 				chatInfo = await bot.getChat(message.chat.id);
 			if(botStats.status == 'administrator' && message.new_chat_members != undefined){
-				bot.sendMessage(message.chat.id, `Bienvenido a *${message.chat.title}*, usuario @*${message.new_chat_member.username}* soy quien resguarda este lugar; Para entrar, primero tienes que mostrar quien eras antes de perder tu vida. Presiona el boton para ver la info que trae tu alma.`,
-						{ parse_mode : "Markdown", reply_markup : {
-								inline_keyboard: [
-									[
-										// Send user id as callback_data to callback_query
-										{text: "Mostrar alma-pasaporte", callback_data: message.from.id}
-									]
-								]
-							}
-						}
-				);
-					bot.on('callback_query', function onCallbackQuery(btn){
-						if(btn.data == message.from.id){
-							bot.sendMessage(message.chat.id, `Bienvenido.\nEl lugar que entraste tiene como descripcion: ${chatInfo.description}`);
-						}
-					});
+				bot.sendMessage(message.chat.id, `Bienvenido a *${message.chat.title}*, usuario *${message.new_chat_member.username === undefined ? message.new_chat_member.first_name : '@'+message.new_chat_member.username}* soy quien resguarda este lugar. Recuerda siempre mantenerte al margen con las reglas.`, {parse_mode : "Markdown"});
+					
 			}else if(botStats.status == 'member' && message.new_chat_member != undefined){
-				bot.sendMessage(message.chat.id, `Bienvenido a *${message.chat.title}*, usuario @*${message.new_chat_member.username}* esperemos que tu estadia sea fructifera.`,{parse_mode : "Markdown"});
+				bot.sendMessage(message.chat.id, `Bienvenido a *${message.chat.title}*, usuario *${message.new_chat_member.username === undefined ? message.new_chat_member.first_name : '@'+message.new_chat_member.username}* esperemos que tu estadia sea fructifera.`,{parse_mode : "Markdown"});
 			}else if(message.left_chat_member != undefined){
-				bot.sendMessage(message.chat.id, `Un alma perteneciente al vacio siempre termina regresando a el, @*${message.left_chat_member.username}* regresa pronto.`,{parse_mode : "Markdown"});
+				bot.sendMessage(message.chat.id, `Un alma perteneciente al vacio siempre termina regresando a el, *${message.left_chat_member.username === undefined ? message.left_chat_member.first_name : '@'+message.left_chat_member.username}* regresa pronto.`,{parse_mode : "Markdown"});
 			}
 		})();
 	}catch(error){
