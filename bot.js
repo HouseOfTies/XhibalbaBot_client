@@ -6,6 +6,7 @@ Welcome to the 7th.
 import TelegramBot from 'node-telegram-bot-api';
 import dotenv from 'dotenv';
 import axios from 'axios';
+import ms from 'ms';
 
 // Bot engine / instance //
 dotenv.config();
@@ -32,14 +33,40 @@ bot.onText(/^\/heya/, message => {
 
 // Repeat everything you type
 bot.onText(/\/say (.+)/, (message, value) => {
-  bot.sendMessage(message.chat.id, `${value[1]}`,{reply_to_message_id : message.message_id});
+  bot.sendMessage(message.chat.id, `${value[1]}`,{parse_mode : "Markdown",reply_to_message_id : message.message_id});
 });
 
-
-//Two arguments command test
-bot.onText(/\/test (.+) (.+)/, (message, value) => {
-  bot.sendMessage(message.chat.id, `Argumento1: ${value[1]}\nArgumento2: ${value[2]}`);
+// Whoami command
+bot.onText(/\/whoami/, message => {
+	const getPhoto = async () => {
+		try{
+		const photo = await bot.getUserProfilePhotos(message.from.id),
+			userStats = await bot.getChatMember(message.chat.id, message.from.id),
+			userCard = `⚜️ *Perfil usuario* ⚜️\n\n*Usuario:* ${userStats.user.username}\n*First name:* ${userStats.user.first_name}\n*Last name:* ${userStats.user.last_name}\n*Language:* ${userStats.user.language_code}\n*Status:* ${userStats.status}`;
+			try{
+		bot.sendPhoto(message.chat.id, photo.photos[0][0].file_id, {caption : userCard, parse_mode : "Markdown"});
+			}catch(e){bot.sendMessage(message.chat.id, userCard, {parse_mode : "Markdown"});}
+	}catch(e){} 
+};
+	getPhoto();
 });
+
+// Whois the user command
+bot.onText(/\/whois/, message => {
+	const getPhoto = async () => {
+		try{
+		const photo = await bot.getUserProfilePhotos(message.reply_to_message.from.id),
+			userStats = await bot.getChatMember(message.chat.id, message.reply_to_message.from.id),
+			userCard = `⚜️ *Perfil usuario* ⚜️\n\n*User Id:* ${message.reply_to_message.from.id}\n*Usuario:* ${userStats.user.username}\n*First name:* ${userStats.user.first_name}\n*Last name:* ${userStats.user.last_name}\n*Language:* ${userStats.user.language_code}\n*Status:* ${userStats.status}`;
+			try{
+		bot.sendPhoto(message.chat.id, photo.photos[0][0].file_id, {caption : userCard, parse_mode : "Markdown"});}
+			catch(e){bot.sendMessage(message.chat.id, useCard, {parse_mode : "Markdown"});}
+		}catch(e){}
+	}; 
+	getPhoto();
+});
+
+// - Entertainment - //
 
 // Dice game
 bot.onText(/^\/dado (.+)/, (message, value) => {
@@ -136,25 +163,6 @@ bot.onText(/\/wiki (.+)/, (message, value) => {
 	getWikiInfo(url);
 });
 
-// Image searcher
-bot.onText(/\/img (.+)/, (message, value) => {
-	let payload = {
-		method : 'GET',
-		url : 'https://bing-image-search1.p.rapidapi.com/images/search',
-		params : {q : value[1], count : '1'},
-		headers : {
-			'x-rapidapi-key': 'e486b8885bmshff68b752d62f77fp181960jsnc4e96d1307ea',
-    'x-rapidapi-host': 'bing-image-search1.p.rapidapi.com'
-		}
-	}
-	const getImg = async payload => {
-		let info = await axios.request(payload),
-			image = info.data.value[0].contentUrl;
-		bot.sendMessage(message.chat.id, `[🔭](${image}) He encontrado esta imagen:\n`, {reply_to_message_id : message.message_id, parse_mode : "Markdown"});
-	}
-	getImg(payload);
-});
-
 
 // Ip searcher
 bot.onText(/\/ip (.+)/, (message, value) => {
@@ -207,43 +215,81 @@ ${info.data.type}
 getIpInfo(payload);
 });
 
+// - Multimedia commands - //
 
-bot.onText(/\!yt (.+)/, (message,value) =>{
+// Image searcher
+bot.onText(/\/img (.+)/, (message, value) => {
 	let payload = {
 		method : 'GET',
-		url : 'https://youtube-v31.p.rapidapi.com/search',
-		params : {
-			q : `${value[1]}`,
-			part : 'snippet,id',
-			regionCode: 'DO',
-			maxResults : '1',
-			order : 'relevance'
-		},
-		headers: {
-    'x-rapidapi-key': 'e486b8885bmshff68b752d62f77fp181960jsnc4e96d1307ea',
-    'x-rapidapi-host': 'youtube-v31.p.rapidapi.com'
- 		}
+		url : 'https://bing-image-search1.p.rapidapi.com/images/search',
+		params : {q : value[1], count : '1'},
+		headers : {
+			'x-rapidapi-key': 'e486b8885bmshff68b752d62f77fp181960jsnc4e96d1307ea',
+    'x-rapidapi-host': 'bing-image-search1.p.rapidapi.com'
+		}
+	}
+	const getImg = async payload => {
+		try{
+			let info = await axios.request(payload),
+				image = info.data.value[0].contentUrl;
+			bot.sendMessage(message.chat.id, `[🔭](${image}) He encontrado esta imagen:\n`, {reply_to_message_id : message.message_id, parse_mode : "Markdown"});
+		}catch{
+			bot.sendMessage(message.chat.id, "Tuve un error al intentar buscar la foto");
+		}
+	}
+	getImg(payload);
+});
+
+// youtube searcher command
+bot.onText(/\/yt (.+)/, (message, value) => {
+	const apikey = 'AIzaSyCS-MYAmiUs1JGl4RDJJvBlcgUXib7d0z8',
+		url = decodeURI(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=${value[1]}&type=video&key=${apikey}`);
+		const getVideo = async ()  => {
+			try{
+			const res = await axios.request(url);
+			let video = `https://www.youtube.com/watch?v=${res.data.items[0].id.videoId}`,
+				title = res.data.items[0].snippet.title;
+		//Stadistics
+			let stadistics = `https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${res.data.items[0].id.videoId}&key=${apikey}`;
+			const statisticRes = await axios.request(stadistics);
+			let viewCount = statisticRes.data.items[0].statistics.viewCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+				likeCount = statisticRes.data.items[0].statistics.likeCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+				dislikeCount = statisticRes.data.items[0].statistics.dislikeCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+			  commentCount = statisticRes.data.items[0].statistics.commentCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+				videoCard = `Video solicitado: [▶️](${video})\n\n*${title}*\n\n👁 ${viewCount}\n\n  👍🏼${likeCount}  👎🏼${dislikeCount}\n\n💬 ${commentCount}`;
+			bot.sendMessage(message.chat.id, videoCard, {reply_to_message_id : message.message_id, parse_mode : 'Markdown'});	
+		}catch{
+		bot.sendMessage(message.chat.id,"No he encontrado el video solicitado");
+		}
 	};
-(async () => {
-	const ytReq = await axios.request(payload);
-	let videoId = `[🔍](https://www.youtube.com/watch?v=${ytReq.data.items[0].id.videoId}) Video solicitado:`;
-	bot.sendMessage(message.chat.id, videoId,{reply_to_message_id : message.message_id, parse_mode : 'Markdown'});
-	})();
+	getVideo();
 });
 
-// Experimental
-
-// Say alias (nickname)
-bot.onText(/\!alias/, message => {
-	bot.sendMessage(message.chat.id, `Te conozco bajo el nombre de: ${alias.message.from.id}`, {reply_to_message_id : message.message_id});
+//Urban dictionary command
+bot.onText(/\/dic (.+)/, (message, value) => {
+	const payload = {
+			method: 'GET',
+			url: 'https://mashape-community-urban-dictionary.p.rapidapi.com/define',
+			params: { term: value[1] },
+			headers: {
+    		'x-rapidapi-key': 'e486b8885bmshff68b752d62f77fp181960jsnc4e96d1307ea',
+    		'x-rapidapi-host': 'mashape-community-urban-dictionary.p.rapidapi.com'
+ 	 }
+	};
+	const getInfo = async () => {
+	try{
+			const dicReq = await axios.request(payload),
+			word = dicReq.data.list[0].word,
+			definition = dicReq.data.list[0].definition,
+			example = dicReq.data.list[0].example,
+			dictionaryCard = `📖 He encontrado en el diccionario:\n\n*Word:* ${word}\n*Definition:* ${definition}\n*Example:* ${example}`
+			bot.sendMessage(message.chat.id, dictionaryCard, {reply_to_message : message.message_id, parse_mode : "Markdown"});
+		}catch{
+			bot.sendMessage(message.chat.id, "No he encontrado la palabra solicitada");
+		}
+	}
+	getInfo();
 });
-
-// Set new alias (nickname)
-bot.onText(/\!setalias (.+)/, (message, value) => {
-  alias [ `${message.from.id}` ] = `${value[1]}`;
-  bot.sendMessage(message.chat.id, `Bien, ahora te conocere bajo el nombre de ${value[1]}.`,{reply_to_message_id : message.message_id, parse_mode : 'Markdown'});
-});
-
 
 // Archivement command
 bot.onText(/\/logro (.+)/, (message, value) => {
@@ -254,49 +300,77 @@ bot.onText(/\/logro (.+)/, (message, value) => {
 	})();
 });
 
+
 // Full webshot command
-bot.onText(/\!fullsnap (.+)/, (message, value) => {
+bot.onText(/\/fullsnap (.+)/, (message, value) => {
 	(async () => {
 		const url = await `https://webshot.deam.io/${value[1]}`
 		bot.sendMessage(message.chat.id, `[👁‍🗨](${url})Mis ojos han llegado a este lugar.`,{parse_mode : "Markdown"});
 	})();
 });
 
+
 // Webshot command
-bot.onText(/\!snap (.+)/, (message, value) => {
+bot.onText(/\/snap (.+)/, (message, value) => {
 	(async () => {
 		const url = await `https://webshot.deam.io/${value[1]}?height=1000&width=1000`
 		bot.sendMessage(message.chat.id, `[👁‍🗨](${url})Mis ojos han llegado a este lugar.`,{parse_mode : "Markdown"});
 	})();
 });
 
-// Dictionary searcher
-bot.onText(/\!dic (.+)/, (message, value) => {
-	const payload = {
-			method: 'GET',
-			url: 'https://mashape-community-urban-dictionary.p.rapidapi.com/define',
-			params: { term: value[1] },
-			headers: {
-    		'x-rapidapi-key': 'e486b8885bmshff68b752d62f77fp181960jsnc4e96d1307ea',
-    		'x-rapidapi-host': 'mashape-community-urban-dictionary.p.rapidapi.com'
- 	 }
-	};
- (async () => {
-		const dicReq = await axios.request(payload);
-	 	console.log(dicReq);
-	 })();
-});
+
 
 // -- Adm commands -- //
 
 
+// Ban user command 
+bot.onText(/\/ban (.+)/, (message, value) => {
+	if(message.reply_to_message == undefined){
+		return;
+	}
+	const getUser = async () => {
+		const user = await bot.getChatMember(message.chat.id, message.from.id);
+		if((user.status == 'creator') || (user.status == 'administrator')){
+			try{
+			bot.kickChatMember(message.chat.id, message.reply_to_message.from.id, {until_date : Math.round((Date.now() + ms(value[1] + " days"))/1000)});
+				bot.deleteMessage(message.chat.id, message.message_id);
+				bot.sendMessage(message.chat.id, `El usuario ${message.from.username} ha sido baneado durante: *${value[1]} dias.*`,{parse_mode : "Markdown"});
+			}catch{bot.sendMessage(message.chat.id, `No he podido banear al usuario.`);}
+		}else{
+			bot.sendMessage(message.chat.id, "No eres administrador.");
+		}
+	};
+	getUser();
+});
+
+// Unban user command
+bot.onText(/\/unban (.+)/, (message, value) => {
+	if(message.reply_to_message == undefined){
+		return;
+	}
+	const getUser = async () => {
+		const user = await bot.getChatMember(message.chat.id, message.from.id);
+		if((user.status == 'creator') || (user.status == 'administrator')){
+			try{
+			bot.unbanChatMember(message.chat.id, message.reply_to_message.from.id);
+				bot.deleteMessage(message.chat.id, message.message_id);
+				bot.sendMessage(message.chat.id, `El usuario ${message.from.username} ha sido desbaneado. `);
+			}catch{bot.sendMessage(message.chat.id, `No he podido desbanear al usuario.`);}
+		}else{
+			bot.sendMessage(message.chat.id, "No eres administrador.");
+		}
+	};
+	getUser();
+});
+
+
+
 // Pin command 
-bot.onText(/\!pin (.+)/, (message, value) => {
+bot.onText(/\/pin (.+)/, message => {
 	(async () =>{
 		let botInfo = await bot.getMe(),
 			botStats = await bot.getChatMember(message.chat.id,botInfo.id),
 			userStats = await bot.getChatMember(message.chat.id, message.from.id);
-		console.log(userStats);
 		if(botStats.status != "administrator" || userStats.status == "member" ||  botStats.can_pin_messages == false){
 			bot.sendMessage(message.chat.id,"No tengo permisos para pinear mensajes. (esto se debe a que no soy administradora {o no tengo permisos para anclar mensajes} o no eres un administrador del grupo)");
 		}else{
@@ -307,56 +381,67 @@ bot.onText(/\!pin (.+)/, (message, value) => {
 });
 
 // Unpin command
-bot.onText(/\!unpin (.+)/, (message, value) => {
-	(async () =>{
+bot.onText(/\/unpin (.+)/, (message, value) => {
+	const unpinMessage = async () => {
+	try{
 		let botInfo = await bot.getMe(),
 			botStats = await bot.getChatMember(message.chat.id,botInfo.id),
 			userStats = await bot.getChatMember(message.chat.id, message.from.id);
 		if(botStats.status != "administrator" || userStats.status == "member" ||  botStats.can_pin_messages == false){
-			bot.sendMessage(message.chat.id,"No tengo permisos para despinear mensajes. (esto se debe a que no soy administradora {o no tengo permisos para anclar mensajes} o no eres un administrador del grupo)");
+			bot.sendMessage(message.chat.id,"No tengo permisos para despinear mensajes. (esto se debe a que no soy administradora {o no tengo permisos para desanclar mensajes} o no eres un administrador del grupo.)");
 		}else{
+		  bot.unpinChatMessage(message.chat.id, {message_id : parseInt(value[1])});
 			bot.sendMessage(message.chat.id, `Se ha desanclado el mensaje.`, {reply_to_message_id : message.message_id});
+			}
+		}catch{
+			bot.sendMessage(message.chat.id, "No he encontrado el pin a remover.");
 		}
-	})();
+	};
+unpinMessage();
 });
-
-// Send Poll
-//bot.onText(/\!poll (.+)/, (message, value) => {
-//	const options = [];
-//	(async () => {
-//		const updates = await bot.getUpdates();
-//			console.log(updates[0].message.from.id);
-//				while(`${value[1]}` != "stop"){
-//					if(message.from.id == updates[0].message.from.id){
-//						options.push(`${value[1]}`);
-//					}
-//				}
-//				console.log(options);
-//			//bot.sendPoll(message.chat.id,`${value[1]}`,options,{is_anonymous : false});
-//	})();
-//});
 
 // Change title of group command
 bot.onText(/\/chtitle (.+)/, (message, value) => {
- (async () => {
-		bot.setChatTitle(message.chat.id, value[1]);
-	 	bot.sendMessage(message.chat.id, "He cambiado el titulo de este espacio.");
- })();
+	(async () => {
+		let botInfo = await bot.getMe(),
+			botStats = await bot.getChatMember(message.chat.id,botInfo.id),
+			userStats = await bot.getChatMember(message.chat.id, message.from.id);
+		if(botStats.status != "administrator" || userStats.status == "member" ||  botStats.can_change_info == false){
+			bot.sendMessage(message.chat.id,"No tengo permisos. (esto se debe a que no soy administradora {o no tengo permisos para anclar mensajes} o no eres administrador del grupo.)");
+		}else{
+			bot.setChatTitle(message.chat.id, value[1]);
+			bot.sendMessage(message.chat.id, "He cambiado el titulo de este espacio.");
+		}
+	})();
 });
 
 // Change descripcion command
 bot.onText(/\/chdescription (.+)/, (message, value) => {
  (async () => {
-		bot.setChatDescription(message.chat.id, value[1]);
-	 	bot.sendMessage(message.chat.id, "He cambiado la descripcion de este espacio.");
+		let botInfo = await bot.getMe(),
+			botStats = await bot.getChatMember(message.chat.id,botInfo.id),
+			userStats = await bot.getChatMember(message.chat.id, message.from.id);
+		if(botStats.status != "administrator" || userStats.status == "member" ||  botStats.can_change_info == false){
+			bot.sendMessage(message.chat.id,"No tengo permisos. (esto se debe a que no soy soy administradora o no tengo permisos de cambiar descripcion) O no eres administrador");
+		}else{
+			bot.setChatDescription(message.chat.id, value[1]);
+			bot.sendMessage(message.chat.id, "He cambiado la descripcion de este espacio.");
+		}
  })();
 });
 
 // Generate invitation link
 bot.onText(/\/invite/, message => {
  (async () => {
-		let chatInfo = await bot.getChat(message.chat.id);
-	 	bot.sendMessage(message.chat.id, `Aqui tienes un ticket de entrada [🎟](${chatInfo.invite_link})`, {parse_mode : "Markdown"});
+		let botInfo = await bot.getMe(),
+			botStats = await bot.getChatMember(message.chat.id,botInfo.id);
+		if(botStats.status != "administrator" || botStats.can_invite_users == false){
+			bot.sendMessage(message.chat.id,"No tengo permisos. (esto se debe a que no soy administradora o no tengo permisos de invitar)");
+		}else{
+			bot.exportChatInviteLink(message.chat.id);
+			let chatInfo = await bot.getChat(message.chat.id);
+			bot.sendMessage(message.chat.id, `Aqui tienes un ticket de entrada [🎟](${chatInfo.invite_link})`, {parse_mode : "Markdown"});
+		}
 	 })();
 });
 
@@ -428,12 +513,7 @@ bot.on('message', message => {
 	}	
 });
 
-bot.onText(/\!getDescription/, message => {
-	(async () => {
-		const chatInfo = await bot.getChat(message.chat.id);
-		bot.sendMessage(message.chat.id, chatInfo.description);
-	})();
+bot.on('message',function(message){
+    console.log(`\nUser: ${message.from.username} ${message.from.first_name} | ${message.from.id}\nChat: ${message.chat.title} | ${message.chat.username} | ${message.chat.type}\nMessage: ${message.message_id} | ${message.text}\n`);
 });
-
-
 // -- Bot's end -- //
