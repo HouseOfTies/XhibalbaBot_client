@@ -47,7 +47,7 @@ Example: /dado 1 or /clima Santo Domingo
 | WhoIs | Wanna see the information of another one? type this one replying any message of her/him | /whois
 | YouTube | Surf in the quite multimedia ocean doing youtube video request and play in the same chat that you are | /youtube cats
 
-I must to be a group administrator for the following commands. 
+I must to be a group administrator 👑 for the following commands. 
 
   | Command | Description | Example |
 | ------ | ------ | ------ |
