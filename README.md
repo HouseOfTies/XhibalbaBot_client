@@ -62,12 +62,12 @@ I must to be a group administrator 👑 for the following commands.
 | ChatTitle | Let me change the name of your group for you, just tell me what you want | /chtitle the new title
 | ChatDescription | Let me change the description of your group for you, just tell me what you want | /chdescription the new description
 | Invite | Your own chat invitation? Got u, take a ticket | /invite
----
 
 ### Snap
 ![whois](https://imgur.com/q0V30Zl.png)<br>
 whois demostration.
 
+---
 ### Installation / Usage / Requirements
 
 - [Node.js](https://nodejs.org/) v10+ to run (running in v15.4.0)
