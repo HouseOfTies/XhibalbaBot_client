@@ -46,15 +46,15 @@ Example: /dado 1 or /clima Santo Domingo
 | Whoami | If you want to see your user information, type this one | /whoami
 | WhoIs | Wanna see the information of another one? type this one replying any message of her/him | /whois
 | YouTube | Surf in the quite multimedia ocean doing youtube video request and play in the same chat that you are | /youtube cats
+| Dictionary | Don't you know the meaning of a word? Look it up in the dictionary | /dic something
+| Logro | celebrate your achievements with random images minecraft style | /logro kill some zombies
+| Snap | Take a webshot shot at the greatness of the internet | /snap google.com
+| FullSnap | Take a webshot shot more complete at the greatness of the internet | /fullsnap google.com
 
 I must to be a group administrator 👑 for the following commands. 
 
   | Command | Description | Example |
 | ------ | ------ | ------ |
-| Dictionary | Don't you know the meaning of a word? Look it up in the dictionary | /dic something
-| Logro | celebrate your achievements with random images minecraft style | /logro kill some zombies
-| Snap | Take a webshot shot at the greatness of the internet | /snap google.com
-| FullSnap | Take a webshot shot more complete at the greatness of the internet | /fullsnap google.com
 | Ban | Position yourself on the message of a user and select the days to ban typing | /ban 3
 | UnBan |Position yourself on the message of a user and unban typing | /unban
 | Pin | Pin a message in the chat, i'll remember it | /pin any message
@@ -65,7 +65,7 @@ I must to be a group administrator 👑 for the following commands.
 ---
 
 ### Snap
-![whois](https://imgur.com/q0V30Zl.png)
+![whois](https://imgur.com/q0V30Zl.png)<br>
 whois demostration.
 
 ### Installation / Usage / Requirements
@@ -93,8 +93,7 @@ local_rapidapi_TOKEN='YOUR-API-FROM-RAPIDAPI'
 ```
 ---
 ### Giving a house to your bot in !["Heroku"](https://img.shields.io/badge/heroku%20-%23430098.svg?&style=for-the-badge&logo=heroku&logoColor=white/>)
-#
-#
+
 >You have to be registered in heroku or have an account before starting with the following commands.
 
 Remember: You just need to type the lines with $ behind.
