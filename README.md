@@ -72,8 +72,7 @@ whois demostration.
 
 - [Node.js](https://nodejs.org/) v10+ to run (running in v15.4.0)
 - Your own bot token, example: [bot123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11](#) from [BotFather](https://t.me/botfather)
-- create a .env file and put inside your own token in a enviroment variable. Something like: [localToken='998778278:AAFA_YuJfTh6caJUalyo1V5msq70pAGJQbo'
-](#)
+- create a .env file
 
 Install the dependencies and devDependencies and start the server.
 
