@@ -17,7 +17,7 @@ XhibalbaBot is a telegram bot with which you can do many interesting things usin
 ---
 You have to write the command using the / symbol
 Some commands require an argument [arg] to work.
-Example: /dado 1 or /dado Santo Domingo 
+Example: /dado 1 or /clima Santo Domingo 
 
 
   | Command | Description | Example |
