@@ -79,7 +79,7 @@ Install the dependencies and devDependencies and start the server.
 ```sh
 $ git clone https://github.com/SoftDevsCommunity/XhibalbaBot
 $ cd XhibalbaBot
-$ npm install -d
+$ npm install
 $ node bot.js
 ```
 
