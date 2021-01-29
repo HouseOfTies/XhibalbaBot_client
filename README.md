@@ -34,9 +34,9 @@ Example: /dado 1 or /clima Santo Domingo
 
 
 # New commands arrive to 7th!
-#
+
 ![newFeatures](https://i.imgur.com/4Bt1oxS.png)
-#
+
 > Administrative commands arrive at the caretaker of the soul and chats, commands such as: Ban, Unban and Whois require you to be on top of the user to perform what said command does.
 #
 #
@@ -46,7 +46,9 @@ Example: /dado 1 or /clima Santo Domingo
 | Whoami | If you want to see your user information, type this one | /whoami
 | WhoIs | Wanna see the information of another one? type this one replying any message of her/him | /whois
 | YouTube | Surf in the quite multimedia ocean doing youtube video request and play in the same chat that you are | /youtube cats
+
 I must to be a group administrator for the following commands. 
+
   | Command | Description | Example |
 | ------ | ------ | ------ |
 | Dictionary | Don't you know the meaning of a word? Look it up in the dictionary | /dic something
