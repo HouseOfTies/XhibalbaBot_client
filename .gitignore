@@ -10,7 +10,7 @@ node_modules
 
 # misc
 .DS_Store
-.envHidden
+.env
 .env.development.local
 .env.test.local
 env.production.local
