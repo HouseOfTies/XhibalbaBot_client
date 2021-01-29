@@ -1,11 +1,172 @@
-# Here rests the heart of the 7th.
+![Xhiba](https://papers.co/wallpaper/papers.co-au99-ilya-kuvshinov-girl-cute-pink-illustration-art-36-3840x2400-4k-wallpaper.jpg)
+# The heart of the 7th
+#### XhibalbaBot
+###
+[![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)](https://forthebadge.com)
+![nodejsbadge](https://img.shields.io/badge/Runing%20in%20node.js%20-%2343853D.svg?&style=for-the-badge&logo=node.js&logoColor=white")
 
-if you want run your own bot with this bot-code, you need to:
+[![https://telegram.me/ZeroSeventty](https://img.shields.io/badge/💬%20Telegram-Zero%20Seventty-e6005c.svg?style=flat-square)](https://telegram.me/ZeroSeventty)
+[![https://t.me/Inferno7th](https://img.shields.io/badge/💬%20Telegram-Group-e6005c.svg?style=flat-square)](https://t.me/Inferno7th)
+[![https://t.me/inferno1st](https://img.shields.io/badge/💬%20Telegram-Channel-e6005c.svg?style=flat-square)](https://t.me/inferno1st)
 
-- Clone this repository with >> git clone https://github.com/SoftDevsCommunity/XhibalbaBot
-- Install everything executing >> npm install (run this one inside the repository path)
-- Create a .env file and write inside >> localToken='Token-obtained-from-the-botfather'
-- Run your bot with node bot.js
+!["Heroku"](https://img.shields.io/badge/Living%20In%20heroku%20-%23430098.svg?&style=for-the-badge&logo=heroku&logoColor=white/>)
+
+XhibalbaBot is a telegram bot with which you can do many interesting things using its multiple commands; having both administrative commands and multimedia commands. Try it!
+
+#### How to run a command?
+---
+You have to write the command using the / symbol
+Some commands require an argument [arg] to work.
+Example: /dado 1 or /dado Santo Domingo 
+
+
+  | Command | Description | Example |
+| ------ | ------ | ------ |
+| Heya | The bot will greet you back if you write that to her | /heya |
+| Help | Bot's manual | /help |
+| Say | Type something and the bot will repeat it | /say something |
+| Dado | Throw a dice using numbers between 1 or 6 | /dado 6
+| Clima | Want to see how is the weather in any place? | /clima Santiago |
+| GH | Find the profiles of your programmer friends on github | /gh seventty
+| Wiki | Look up anything on wikipedia, the universal encyclopedia of the universe | /wiki bot
+| Img | Let's look for images together, just tell me what you want us to see | /img apples
+| IP | Now I am a special agent in IP addresses, lets look for the information that is behind that secret IP. Write an IP (public) to search  | /ip 109.252.66.82 |
+
+![newFeatures](https://i.imgur.com/4Bt1oxS.png)
+# New commands arrive to 7th!
+
+> Administrative commands arrive at the caretaker of the soul and chats, commands such as: Ban, Unban and Whois require you to be on top of the user to perform what said command does.
+
+...
 
 ---
-Note: if you want to contribute to the project, use the experimental branch, in case you use the main one, pull the experimental branch in the same way.
+### Installation / Usage / Requirements
+
+- [Node.js](https://nodejs.org/) v10+ to run (running in v15.4.0)
+- Your own bot token, example: [bot123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11](#) from [BotFather](https://t.me/botfather)
+- create a .env file and put inside your own token in a enviroment variable. Something like: [localToken='998778278:AAFA_YuJfTh6caJUalyo1V5msq70pAGJQbo'
+](#)
+
+Install the dependencies and devDependencies and start the server.
+
+```sh
+$ git clone https://github.com/SoftDevsCommunity/XhibalbaBot
+$ cd XhibalbaBot
+$ npm install -d
+$ node bot.js
+```
+
+Open the file .env and set the enviromental variables with your tokens
+
+```sh
+local_bot_TOKEN='YOUR-BOT-TOKEN-FROM-BOTFATHER'
+local_openweather_TOKEN='YOUR-TOKEN-FROM-OPENWEATHER'
+local_youtube_TOKEN='YOUR-YOUTUBE-TOKEN-FROM-GOOGLE-DEVELOPER-CONSOLE'
+local_rapidapi_TOKEN='YOUR-API-FROM-RAPIDAPI'
+```
+---
+### Giving a house to your bot in !["Heroku"](https://img.shields.io/badge/heroku%20-%23430098.svg?&style=for-the-badge&logo=heroku&logoColor=white/>)
+#
+#
+>You have to be registered in heroku or have an account before starting with the following commands.
+
+Remember: You just need to type the lines with $ behind.
+
+###### After installing heroku CLI you have to type the following commands
+#
+- Step: 1
+```sh
+$heroku login
+
+heroku: Press any key to open up the browser to login or q to exit
+ ›   Warning: If browser does not open, visit
+ ›   https://cli-auth.heroku.com/auth/browser/***
+heroku: Waiting for login...
+Logging in... done
+Logged in as me@example.com
+```
+- Step: 2
+```sh
+$ cd XhibalbaBot
+$heroku create yourbotename
+
+Creating app... done, ⬢  yourbotename
+Creating sharp-rain-871... done, stack is heroku-18
+http://sharp-rain-871.herokuapp.com/ | https://git.heroku.com/sharp-rain-871.git
+Git remote heroku added
+```
+- Setp 3:
+
+```sh
+$git push heroku main
+
+Counting objects: 488, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (367/367), done.
+Writing objects: 100% (488/488), 231.85 KiB | 115.92 MiB/s, done.
+Total 488 (delta 86), reused 488 (delta 86)
+remote: Compressing source files... done.
+remote: Building source:
+remote:
+remote: -----> Node.js app detected
+remote:
+remote: -----> Creating runtime environment
+remote:
+remote:        NPM_CONFIG_LOGLEVEL=error
+remote:        NODE_VERBOSE=false
+remote:        NODE_ENV=production
+remote:        NODE_MODULES_CACHE=true
+remote:
+remote: -----> Installing binaries
+remote:        engines.node (package.json):  14.x
+remote:        engines.npm (package.json):   unspecified (use default)
+remote:
+remote:        Resolving node version 14.x...
+remote:        Downloading and installing node 14.15.4...
+remote:        Using default npm version: 6.14.11
+       ....
+remote: -----> Build succeeded!
+remote: -----> Discovering process types
+remote:        Procfile declares types -> web
+remote:
+remote: -----> Compressing...
+remote:        Done: 19M
+remote: -----> Launching...
+remote:        Released v3
+remote:        http://sharp-rain-871.herokuapp.com deployed to Heroku
+remote:
+remote: Verifying deploy... done.
+To https://git.heroku.com/nameless-savannah-4829.git
+ * [new branch]      main -> main
+```
+
+# Note:
+#### You have to set your tokens in heroku too.
+![herokuCapture](https://imgur.com/fQRbFuh.png)
+![herokuCapture](https://imgur.com/nNXvWfv.png)
+
+- Step: 4
+
+---
+### Development / Support
+
+Want to contribute? That's great!
+
+If you have knowledge of javascript you can start directly by forking this repository and after the changes, request a pull request. 
+
+You haven't any knowledge in programming? dont' worry, you can support me inviting me a Koffee.
+
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/xhibalbabot)
+
+![me](https://i.imgur.com/ZMBOY4N.png)
+License
+
+----
+
+MIT © 2021 Rainiery Valerio
+
+
+**Welcome to the divine comedy**
+
+[//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
+

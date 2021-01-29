@@ -8,16 +8,26 @@ import dotenv from 'dotenv';
 import axios from 'axios';
 import ms from 'ms';
 
-// Bot engine / instance //
+
+
+// --- Key Chain --- //
 dotenv.config();
-const bot = new TelegramBot(process.env.TOKEN || process.env.localToken, {polling: true}); //It will take heroku TOKEN or localToken
-console.log("\nCorriendo bot & conexiones");
+const botEngineTOKEN = process.env.remote_bot_TOKEN || process.env.local_bot_TOKEN;
+const openweatherTOKEN = process.env.remote_openweather_TOKEN || process.env.local_openweather_TOKEN;
+const youtubeTOKEN = process.env.remote_youtube_TOKEN || process.env.local_youtube_TOKEN;
+const rapidapiTOKEN = process.env.remote_rapidapi_TOKEN || process.env.local_rapidapi_TOKEN;
+
+
+// --  Bot engine / instance -- //
+const bot = new TelegramBot(botEngineTOKEN, {polling: true}); //It will take heroku TOKEN or localToken
+console.log("\nRunning bot...");
 
 
 // Errors detector //
 bot.on('polling_error', error=>{
 	console.log(error);
 });
+
 
 // -- First-order Commands -- // 
 // Start
@@ -83,7 +93,7 @@ bot.onText(/^\/dado (.+)/, (message, value) => {
 // Weather command
 bot.onText(/\/clima (.+)/, (message, value) => {
 	const payload = {
-		token : "appid=4bd7d205123e24502a47a7812095629d",
+		token : `appid=${openweatherTOKEN}`,
 		unit : "units=metric",
 		lang : "lang=es"
 	};
@@ -170,7 +180,7 @@ bot.onText(/\/ip (.+)/, (message, value) => {
  		 url: `https://ip-geo-location.p.rapidapi.com/ip/${value[1]}`,
  		 params: {format: 'json', language: 'es'},
   	 headers: {
-   		'x-rapidapi-key': 'e486b8885bmshff68b752d62f77fp181960jsnc4e96d1307ea',
+   		'x-rapidapi-key': rapidapiTOKEN,
     	'x-rapidapi-host': 'ip-geo-location.p.rapidapi.com'
   	}
 };
@@ -223,7 +233,7 @@ bot.onText(/\/img (.+)/, (message, value) => {
 		url : 'https://bing-image-search1.p.rapidapi.com/images/search',
 		params : {q : value[1], count : '1'},
 		headers : {
-			'x-rapidapi-key': 'e486b8885bmshff68b752d62f77fp181960jsnc4e96d1307ea',
+			'x-rapidapi-key': rapidapiTOKEN,
     'x-rapidapi-host': 'bing-image-search1.p.rapidapi.com'
 		}
 	}
@@ -241,7 +251,7 @@ bot.onText(/\/img (.+)/, (message, value) => {
 
 // youtube searcher command
 bot.onText(/\/yt (.+)/, (message, value) => {
-	const apikey = 'AIzaSyCS-MYAmiUs1JGl4RDJJvBlcgUXib7d0z8',
+	const apikey = youtubeTOKEN,
 		url = decodeURI(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=${value[1]}&type=video&key=${apikey}`);
 		const getVideo = async ()  => {
 			try{
@@ -271,7 +281,7 @@ bot.onText(/\/dic (.+)/, (message, value) => {
 			url: 'https://mashape-community-urban-dictionary.p.rapidapi.com/define',
 			params: { term: value[1] },
 			headers: {
-    		'x-rapidapi-key': 'e486b8885bmshff68b752d62f77fp181960jsnc4e96d1307ea',
+    		'x-rapidapi-key': rapidapiTOKEN,
     		'x-rapidapi-host': 'mashape-community-urban-dictionary.p.rapidapi.com'
  	 }
 	};
@@ -333,7 +343,7 @@ bot.onText(/\/ban (.+)/, (message, value) => {
 			try{
 			bot.kickChatMember(message.chat.id, message.reply_to_message.from.id, {until_date : Math.round((Date.now() + ms(value[1] + " days"))/1000)});
 				bot.deleteMessage(message.chat.id, message.message_id);
-				bot.sendMessage(message.chat.id, `El usuario ${message.from.username} ha sido baneado durante: *${value[1]} dias.*`,{parse_mode : "Markdown"});
+				bot.sendMessage(message.chat.id, `El usuario ${message.reply_to_message.from.username === undefined ? message.reply_to_message.from.first_name : '@'+message.reply_to_message.from.username} ha sido baneado durante: *${value[1]} dias.*`,{parse_mode : "Markdown"});
 			}catch{bot.sendMessage(message.chat.id, `No he podido banear al usuario.`);}
 		}else{
 			bot.sendMessage(message.chat.id, "No eres administrador.");
@@ -353,7 +363,7 @@ bot.onText(/\/unban (.+)/, (message, value) => {
 			try{
 			bot.unbanChatMember(message.chat.id, message.reply_to_message.from.id);
 				bot.deleteMessage(message.chat.id, message.message_id);
-				bot.sendMessage(message.chat.id, `El usuario ${message.from.username} ha sido desbaneado. `);
+				bot.sendMessage(message.chat.id, `El usuario ${message.reply_to_message.username} ha sido desbaneado. `);
 			}catch{bot.sendMessage(message.chat.id, `No he podido desbanear al usuario.`);}
 		}else{
 			bot.sendMessage(message.chat.id, "No eres administrador.");
