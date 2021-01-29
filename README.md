@@ -36,10 +36,34 @@ Example: /dado 1 or /dado Santo Domingo
 # New commands arrive to 7th!
 
 > Administrative commands arrive at the caretaker of the soul and chats, commands such as: Ban, Unban and Whois require you to be on top of the user to perform what said command does.
+#
+#
 
-...
-
+  | Command | Description | Example |
+| ------ | ------ | ------ |
+| Whoami | If you want to see your user information, type this one | /whoami
+| WhoIs | Wanna see the information of another one? type this one replying any message of her/him | /whois
+| YouTube | Surf in the quite multimedia ocean doing youtube video request and play in the same chat that you are | /youtube cats
+I must to be a group administrator for the following commands. 
+  | Command | Description | Example |
+| ------ | ------ | ------ |
+| Dictionary | Don't you know the meaning of a word? Look it up in the dictionary | /dic something
+| Logro | celebrate your achievements with random images minecraft style | /logro kill some zombies
+| Snap | Take a webshot shot at the greatness of the internet | /snap google.com
+| FullSnap | Take a webshot shot more complete at the greatness of the internet | /fullsnap google.com
+| Ban | Position yourself on the message of a user and select the days to ban typing | /ban 3
+| UnBan |Position yourself on the message of a user and unban typing | /unban
+| Pin | Pin a message in the chat, i'll remember it | /pin any message
+| UnPin| The pin's command makes me return a pin ID, with that pin you can unpin the pin | /unpin pinID
+| ChatTitle | Let me change the name of your group for you, just tell me what you want | /chtitle the new title
+| ChatDescription | Let me change the description of your group for you, just tell me what you want | /chdescription the new description
+| Invite | Your own chat invitation? Got u, take a ticket | /invite
 ---
+
+### Snap
+![whois](https://imgur.com/q0V30Zl.png)
+whois demostration.
+
 ### Installation / Usage / Requirements
 
 - [Node.js](https://nodejs.org/) v10+ to run (running in v15.4.0)
@@ -143,9 +167,26 @@ To https://git.heroku.com/nameless-savannah-4829.git
 # Note:
 #### You have to set your tokens in heroku too.
 ![herokuCapture](https://imgur.com/fQRbFuh.png)
-![herokuCapture](https://imgur.com/nNXvWfv.png)
+
+![herokuCapture2](https://imgur.com/nNXvWfv.png)
 
 - Step: 4
+
+```sh
+$ heroku ps:scale web=1
+```
+
+#### The bot isn't running?
+##### You can see the log of the bot in heroku doing:
+
+```sh
+$ heroku logs --tail
+
+2011-03-10T10:22:30-08:00 heroku[web.1]: State changed from created to starting
+2011-03-10T10:22:32-08:00 heroku[web.1]: Running process with command: `npm start`
+2011-03-10T10:22:33-08:00 heroku[web.1]: Listening on 18320
+2011-03-10T10:22:34-08:00 heroku[web.1]: State changed from starting to up
+```
 
 ---
 ### Development / Support
@@ -169,4 +210,5 @@ MIT © 2021 Rainiery Valerio
 **Welcome to the divine comedy**
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
+
 
