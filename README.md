@@ -32,9 +32,11 @@ Example: /dado 1 or /clima Santo Domingo
 | Img | Let's look for images together, just tell me what you want us to see | /img apples
 | IP | Now I am a special agent in IP addresses, lets look for the information that is behind that secret IP. Write an IP (public) to search  | /ip 109.252.66.82 |
 
-![newFeatures](https://i.imgur.com/4Bt1oxS.png)
-# New commands arrive to 7th!
 
+# New commands arrive to 7th!
+#
+![newFeatures](https://i.imgur.com/4Bt1oxS.png)
+#
 > Administrative commands arrive at the caretaker of the soul and chats, commands such as: Ban, Unban and Whois require you to be on top of the user to perform what said command does.
 #
 #
