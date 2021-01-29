@@ -46,6 +46,31 @@ bot.onText(/\/say (.+)/, (message, value) => {
   bot.sendMessage(message.chat.id, `${value[1]}`,{parse_mode : "Markdown",reply_to_message_id : message.message_id});
 });
 
+//btn
+bot.onText(/\/btn (.+)/, (message, value) => {
+	
+	let messageID = message.message_id + 1,
+		chatID = message.chat.id,
+	botones = {
+		reply_markup : {
+			inline_keyboard : [
+				[
+					{text : "botoncito", callback_data : 'boton1'}
+				]
+			]
+		}
+	}
+  bot.sendMessage(message.chat.id, `${value[1]}`, botones);
+
+	bot.on('callback_query', function onCallbackQuery(trigger){
+		if(trigger.data == 'boton1'){
+			bot.editMessageText('Mensaje cambiado', {chat_id : chatID, message_id : messageID });
+		}
+	})
+});
+
+
+
 // Whoami command
 bot.onText(/\/whoami/, message => {
 	const getPhoto = async () => {
@@ -228,26 +253,76 @@ getIpInfo(payload);
 
 // Image searcher
 bot.onText(/\/img (.+)/, (message, value) => {
-	let payload = {
+	let decorator = {
+		parse_mode : "Markdown",
+		reply_to_message : message.message_id,
+		reply_markup : {
+			inline_keyboard : [
+					[
+						{text : "⬅️ Back", callback_data : 'back'},
+						{text : "Next ➡️", callback_data : 'next'},
+					]
+			]
+		}
+	};
+	
+	let index = 0,
+		messageID = message.message_id + 1,
+		chatID = message.chat.id,
+	payload = {
 		method : 'GET',
 		url : 'https://bing-image-search1.p.rapidapi.com/images/search',
-		params : {q : value[1], count : '1'},
+		params : {q : value[1], count : '100'},
 		headers : {
-			'x-rapidapi-key': rapidapiTOKEN,
+			'x-rapidapi-key': 'e486b8885bmshff68b752d62f77fp181960jsnc4e96d1307ea',
     'x-rapidapi-host': 'bing-image-search1.p.rapidapi.com'
 		}
 	}
 	const getImg = async payload => {
-		try{
-			let info = await axios.request(payload),
-				image = info.data.value[0].contentUrl;
-			bot.sendMessage(message.chat.id, `[🔭](${image}) He encontrado esta imagen:\n`, {reply_to_message_id : message.message_id, parse_mode : "Markdown"});
-		}catch{
-			bot.sendMessage(message.chat.id, "Tuve un error al intentar buscar la foto");
+		let info = await axios.request(payload),
+			image = `[🔭](${info.data.value[index].contentUrl}) He encontrado esta imagen:\n`;
+
+
+		let replyDecorator = {
+		chat_id : chatID,
+		message_id : messageID,
+		parse_mode : "Markdown",
+		reply_markup : {
+			inline_keyboard : [
+					[
+						{text : "⬅️ Back", callback_data : 'back'},
+						{text : "Next ➡️", callback_data : 'next'},
+					]
+			]
 		}
 	}
+
+
+
+		bot.sendMessage(message.chat.id, image, decorator);
+
+		bot.on('callback_query', function onCallbackQuery(button){
+			if(button.data == 'next'){
+				index++;
+				bot.editMessageText(`[🔭](${info.data.value[index].contentUrl}) He encontrado esta imagen:\n`, replyDecorator);
+			}
+			if(button.data == 'back'){
+				index--;
+				if(index < 0){
+					bot.editMessageText("No puedo ir mas atras, intenta ir a la siguiente.", replyDecorator);
+				}else{
+				bot.editMessageText(`[🔭](${info.data.value[index].contentUrl}) He encontrado esta imagen:\n`, replyDecorator);
+				}
+			}
+		});	
+	
+
+
+	};
 	getImg(payload);
 });
+
+
 
 // youtube searcher command
 bot.onText(/\/yt (.+)/, (message, value) => {
