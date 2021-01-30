@@ -191,7 +191,7 @@ $ heroku logs --tail
 2011-03-10T10:22:34-08:00 heroku[web.1]: State changed from starting to up
 ```
 
-###### [Click here to see a examplebot with better construction](https://github.com/wilmerterrero/charles-bot) thanks to Wilmer Terrero for the contrib, visit his account and give him love. <3
+###### [Click here to see a examplebot with better construction](https://github.com/wilmerterrero/charles-bot) thanks to [Wilmer Terrero](https://github.com/wilmerterrero) for the contrib, visit his account and give him love. <3
 ---
 ### Development / Support
 
