@@ -59,7 +59,9 @@ bot.onText(/\/whoami/, message => {
     try {
       const [photo, userStats] = await Promise.all([
         // documentacion: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
-        bot.getUserProfilePhotos(message.from.id),
+        bot.getUserProfilePhotos(message.from.id, {
+          limit: 1,
+        }),
         bot.getChatMember(message.chat.id, message.from.id),
       ]);
 
