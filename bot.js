@@ -2,12 +2,14 @@
 Welcome to the 7th.
 */
 
-// Import zone //
+// Import & unpacking zone //
 import TelegramBot from 'node-telegram-bot-api';
 import dotenv from 'dotenv';
 import axios from 'axios';
 import ms from 'ms';
+import responses from './src/fragments/first-order-commands/responses.js';
 
+const { start, heya, help, say, options } = responses;
 
 
 // --- Key Chain --- //
@@ -24,7 +26,7 @@ console.log("\nRunning bot...");
 
 
 // Errors detector //
-bot.on('polling_error', error=>{
+bot.on('polling_error', error => {
 	console.log(error);
 });
 
@@ -32,20 +34,34 @@ bot.on('polling_error', error=>{
 // -- First-order Commands -- // 
 // Start
 bot.onText(/^\/start/, message => {
-	bot.sendMessage(message.chat.id, "Empieza usando uno de mis comandos, la manera correcta de escribirlos es con /comando [argumento]\nEjemplo: /clima santo domingo");
+	(async () => {
+		await bot.sendMessage(message.chat.id, start, options(message));
+	})();
 });
 
 // Greetings
 bot.onText(/^\/heya/, message => {
-	bot.sendMessage(message.chat.id, "Pendiente a todas las ordenes & lista para recibir un comando");
+	(async () => {
+		await bot.sendMessage(message.chat.id, heya, options(message));
+	})();
 });
 
 
 // Repeat everything you type
 bot.onText(/\/say (.+)/, (message, value) => {
-  bot.sendMessage(message.chat.id, `${value[1]}`,{parse_mode : "Markdown",reply_to_message_id : message.message_id});
+	(async () => {
+		await bot.sendMessage(message.chat.id, say(value), options(message));
+	})();
 });
 
+// Help message
+bot.onText(/^\/help/, message => {
+	(async () => {
+		await bot.sendMessage(message.chat.id, help, options(message));
+	})();
+});
+
+/* 
 
 // Whoami command
 bot.onText(/\/whoami/, message => {
@@ -559,10 +575,6 @@ bot.onText(/\/invite/, message => {
 
 
 //Support commands
-// Help message
-bot.onText(/^\/help/, message => {
-	bot.sendMessage(message.chat.id, `Saludos, viajero. Soy *Xhibalba*, poseedora de las ruinas del inframundo. Por lo que veo, no sabes bien como funcionan estas cosas asi que dejame explicarte brevemente.\nPresiona el caracter / para acceder a mi menu de comandos.\nMuchos de mis comandos para poder ser ejecutados requieren de un argumento [arg] el cual puede ser numerico o de letras segun el comando que ejecutes, *ejemplo:*\n/clima santiago o /dado 2\n\nSi necesitas ayuda o has encontrado algun bug 🐞o usuario que manche mi pureza, puedes escribirle a mi creador [ZeroSeven](https://t.me/ZeroSeventty) Haciendo click sobre su nombre.\n\nComo tambien puedes mandar un reporte al buzon haciendo uso del comando /report tu reporte.`,{reply_to_message_id : message.message_id, parse_mode : "Markdown"});
-});
 
 // Report command
 bot.onText(/\/report (.+)/, (message, value) =>{
@@ -612,5 +624,5 @@ bot.on('message', message => {
 
 bot.on('message',function(message){
     console.log(`\nUser: ${message.from.username} ${message.from.first_name} | ${message.from.id}\nChat: ${message.chat.title} | ${message.chat.username} | ${message.chat.type}\nMessage: ${message.message_id} | ${message.text}\n`);
-});
+}); */
 // -- Bot's end -- //
