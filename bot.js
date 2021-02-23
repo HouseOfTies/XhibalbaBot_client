@@ -81,7 +81,6 @@ bot.onText(/^\/whois/, message => {
 });
 
 
-
 // - Assistance - //
 
 	//Weather
@@ -94,7 +93,6 @@ bot.onText(/^\/whois/, message => {
 
 	//Dictionary
 
-	//Logro
 
 
 // - Random Games - //
@@ -110,6 +108,8 @@ bot.onText(/^\/whois/, message => {
 
 	//Snap
 		//FullSnap
+
+	//Logro
 
 
 
@@ -128,6 +128,7 @@ bot.onText(/^\/whois/, message => {
 	//ChangeDescription
 
 	//GenerateInvitation
+
 
 
 // - Support commands - //

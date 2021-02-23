@@ -165,3 +165,12 @@ bot.onText(/\/snap (.+)/, (message, value) => {
 		bot.sendMessage(message.chat.id, `[👁‍🗨](${url})Mis ojos han llegado a este lugar.`,{parse_mode : "Markdown"});
 	})();
 });
+
+// Archivement command
+bot.onText(/\/logro (.+)/, (message, value) => {
+	let randomNumber = Math.floor(Math.random()*39+1);
+	(async () => {
+		let url = await decodeURI(`https://minecraftskinstealer.com/achievement/${randomNumber}/Logro desbloqueado/${value[1]}`);
+		bot.sendMessage(message.chat.id, `[🏆](${url})`,{reply_to_message_id : message.message_id, parse_mode : 'Markdown'});
+	})();
+});

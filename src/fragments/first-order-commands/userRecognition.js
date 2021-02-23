@@ -45,4 +45,4 @@ async function whois(bot,message){
 };
 
 
-export {whoami, whois};
+export { whoami, whois };
