@@ -1,46 +1,42 @@
-// Dice game
-bot.onText(/^\/dado (.+)/, (message, value) => {
-	if(!isNaN(value[1]) && value[1] < 7 && value[1] > 0){	
-		bot.sendMessage(message.chat.id, `Elegiste: *${value[1]}* ¿Cual será el resultado?`,{parse_mode : "Markdown", reply_to_message : message.message_id},);
-		bot.sendDice(message.chat.id).then(info =>{
-			setTimeout(()=>{
-				let res = info.dice.value == value[1] ? bot.sendMessage(message.chat.id, `Oe oeee, le atinaste. 🥳 🎉🎊`,{reply_to_message_id : message.message_id}) : bot.sendMessage(message.chat.id, `No le atinaste, deberías intentarlo otra vez.`,{reply_to_message_id : message.message_id});
-			},5000);
-		});
-	}else{bot.sendMessage(message.chat.id, "Introduce un numero del 1-6",{reply_to_message : message.message_id})}
-});
+import responses from './responses.js';
+import axios from 'axios';
+import dotenv from 'dotenv';
 
+dotenv.config();
+
+const { options } = responses;
+const openweatherTOKEN = process.env.remote_openweather_TOKEN || process.env.local_openweather_TOKEN;
+
+
+// -- Assistance commands -- //
 // Weather command
-bot.onText(/\/clima (.+)/, (message, value) => {
+async function weather(bot, message, value){
+
 	const payload = {
 		token : `appid=${openweatherTOKEN}`,
 		unit : "units=metric",
-		lang : "lang=es"
+		lang : "lang=es",
+		query : value[1]
 	};
-	let url = `http://api.openweathermap.org/data/2.5/weather?q=${value[1]}&${payload.unit}&${payload.token}&${payload.lang}`;
-	const getWeather = async url => {
-		try{
-			const res = await axios.get(decodeURI(url));
-			bot.sendMessage(message.chat.id,
-				` ${res.data.name}, ${res.data.sys.country}\n
-*Temperatura:* ${res.data.main.temp}
-*Temperatura a sentir:* ${res.data.main.feels_like}
-*Temperatura maxima:* ${res.data.main.temp_max}
-*Temperatura minima:* ${res.data.main.temp_min}
-*Humedad: * ${res.data.main.humidity}%
-*Descripcion* ${res.data.weather[0].description}
-					`,
-				{parse_mode : "Markdown"}
-			);
+
+	let url = `http://api.openweathermap.org/data/2.5/weather?q=${payload.query}&${payload.unit}&${payload.token}&${payload.lang}`;
+	try{
+		const res = await axios.get(decodeURI(url));
+
+		const { name, main: { temp, feels_like, temp_min, temp_max, humidity}, sys: { country } } = res.data;
+		const { description, icon } = res.data.weather[0];
+		
+		let weatherCard = `${name}, ${country}\n\n*Temperatura:* ${temp}\n*Temperatura a sentir:* ${feels_like}\n*Temperatura maxima:* ${temp_max}\n*Temperatura minima:* ${temp_min}\n*Humedad:* ${humidity}\n\n Descripcion: ${description}`;
+			
+		return bot.sendMessage(message.chat.id, weatherCard, options(message));
 		}catch(err){
-			bot.sendMessage(message.chat.id, `Introduce una ciudad correcta, eje: Buenos Aires`);
-		}
-	};
-	getWeather(url);
-});
+			return bot.sendMessage(message.chat.id, `Introduce una ciudad correcta, eje: Buenos Aires`);
+		} 
+};
+
 
 // GitHub accounts searcher
-bot.onText(/^\/gh (.+)/, (message, value) => {
+async function GitHub(bot, message, value){
 	let url = `https://api.github.com/users/${value[1]}`;
 		const getInfo = async url => {
 			try{
@@ -73,9 +69,9 @@ bot.onText(/^\/gh (.+)/, (message, value) => {
 			}
 	};
 	getInfo(url);
-});
+};
 
-
+/* 
 // Wikipedia searcher
 bot.onText(/\/wiki (.+)/, (message, value) => {
 	let url = encodeURI(`https://es.wikipedia.org/api/rest_v1/page/summary/${value[1]}`),
@@ -168,5 +164,7 @@ bot.onText(/\/dic (.+)/, (message, value) => {
 		}
 	}
 	getInfo();
-});
+}); */
 
+
+export { weather };
