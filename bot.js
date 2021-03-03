@@ -12,6 +12,8 @@ import responses from './src/fragments/first-order-commands/responses.js';
 import { whoami, whois } from './src/fragments/first-order-commands/userRecognition.js';
 import { dice, dart, jackpot } from './src/fragments/first-order-commands/randomGames.js';
 import { weather, GitHub, wiki, dictionary, ip } from './src/fragments/first-order-commands/assistance.js';
+import { snap, fullSnap, logro } from './src/fragments/first-order-commands/multimedia.js';
+
 
 
 const { start, heya, help, say, options } = responses;
@@ -64,8 +66,6 @@ bot.onText(/^\/help/, message => {
 	})();
 });
 
-
-
 // - UserRecognition - //
 
 	//Whoami
@@ -81,7 +81,6 @@ bot.onText(/^\/whois/, message => {
 		await whois(bot,message);
 	})();
 });
-
 
 // - Assistance - //
 
@@ -120,7 +119,6 @@ bot.onText(/^\/dic (.+)/, (message,value) => {
 	})();
 });
 
-
 // - Random Games - //
 
 	// Dice Game
@@ -158,10 +156,25 @@ bot.onText(/^\/jackpot/, (message) => {
 	//YoutTube
 
 	//Snap
-		//FullSnap
+bot.onText(/^\/snap (.+)/, (message,value) => {
+	(async() => {
+		await snap(bot, message, value);
+	})();
+});
+
+	//FullSnap
+bot.onText(/^\/fullsnap (.+)/, (message,value) => {
+	(async() => {
+		await fullSnap(bot, message, value);
+	})();
+});
 
 	//Logro
-
+bot.onText(/^\/logro (.+)/, (message,value) => {
+	(async() => {
+		await logro(bot, message, value);
+	})();
+});
 
 
 // -- Adm commands -- //

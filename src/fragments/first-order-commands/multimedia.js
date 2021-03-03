@@ -1,4 +1,6 @@
-// Image searcher
+import responses from './responses.js';
+const { options } = responses;
+/* // Image searcher
 bot.onText(/\/img (.+)/, (message, value) => {
 	let decorator = {
 		parse_mode : "Markdown",
@@ -146,31 +148,31 @@ bot.onText(/\/yt (.+)/, (message, value) => {
 	};
 	getVideo();
 });
+ */
 
 
 
-// Full webshot command
-bot.onText(/\/fullsnap (.+)/, (message, value) => {
-	(async () => {
-		const url = await `https://webshot.deam.io/${value[1]}`
-		bot.sendMessage(message.chat.id, `[👁‍🗨](${url})Mis ojos han llegado a este lugar.`,{parse_mode : "Markdown"});
-	})();
-});
 
 
 // Webshot command
-bot.onText(/\/snap (.+)/, (message, value) => {
-	(async () => {
-		const url = await `https://webshot.deam.io/${value[1]}?height=1000&width=1000`
-		bot.sendMessage(message.chat.id, `[👁‍🗨](${url})Mis ojos han llegado a este lugar.`,{parse_mode : "Markdown"});
-	})();
-});
+function snap(bot, message,value) {
+	const url = `https://webshot.deam.io/${value[1]}?height=1000&width=1000`
+	bot.sendMessage(message.chat.id, `[👁‍🗨](${url})Mis ojos han llegado a este lugar.`,options(message));
+}
+		
 
+// Full webshot command
+function fullSnap(bot, message, value) {
+	const url = `https://webshot.deam.io/${value[1]}`
+	bot.sendMessage(message.chat.id, `[👁‍🗨](${url})Mis ojos han llegado a este lugar.`,options(message));
+
+}
+		
 // Archivement command
-bot.onText(/\/logro (.+)/, (message, value) => {
+function logro(bot, message, value){
 	let randomNumber = Math.floor(Math.random()*39+1);
-	(async () => {
-		let url = await decodeURI(`https://minecraftskinstealer.com/achievement/${randomNumber}/Logro desbloqueado/${value[1]}`);
-		bot.sendMessage(message.chat.id, `[🏆](${url})`,{reply_to_message_id : message.message_id, parse_mode : 'Markdown'});
-	})();
-});
+	const url = decodeURI(`https://minecraftskinstealer.com/achievement/${randomNumber}/Logro desbloqueado/${value[1]}`);
+	bot.sendMessage(message.chat.id, `[🏆](${url})`,options(message));
+}
+
+export { snap, fullSnap, logro }
