@@ -155,24 +155,24 @@ bot.onText(/\/yt (.+)/, (message, value) => {
 
 
 // Webshot command
-function snap(bot, message,value) {
+async function snap(bot, message,value) {
 	const url = `https://webshot.deam.io/${value[1]}?height=1000&width=1000`
-	bot.sendMessage(message.chat.id, `[👁‍🗨](${url})Mis ojos han llegado a este lugar.`,options(message));
+	await bot.sendMessage(message.chat.id, `[👁‍🗨](${url})Mis ojos han llegado a este lugar.`,options(message));
 }
 		
 
 // Full webshot command
-function fullSnap(bot, message, value) {
+async function fullSnap(bot, message, value) {
 	const url = `https://webshot.deam.io/${value[1]}`
-	bot.sendMessage(message.chat.id, `[👁‍🗨](${url})Mis ojos han llegado a este lugar.`,options(message));
+	await bot.sendMessage(message.chat.id, `[👁‍🗨](${url})Mis ojos han llegado a este lugar.`,options(message));
 
 }
 		
 // Archivement command
-function logro(bot, message, value){
+async function logro(bot, message, value){
 	let randomNumber = Math.floor(Math.random()*39+1);
 	const url = decodeURI(`https://minecraftskinstealer.com/achievement/${randomNumber}/Logro desbloqueado/${value[1]}`);
-	bot.sendMessage(message.chat.id, `[🏆](${url})`,options(message));
+	await bot.sendMessage(message.chat.id, `[🏆](${url})`,options(message));
 }
 
 export { snap, fullSnap, logro }

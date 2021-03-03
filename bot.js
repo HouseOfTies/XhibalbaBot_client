@@ -13,6 +13,9 @@ import { whoami, whois } from './src/fragments/first-order-commands/userRecognit
 import { dice, dart, jackpot } from './src/fragments/first-order-commands/randomGames.js';
 import { weather, GitHub, wiki, dictionary, ip } from './src/fragments/first-order-commands/assistance.js';
 import { snap, fullSnap, logro } from './src/fragments/first-order-commands/multimedia.js';
+import { ban, unban, pin, unpin, chtitle, chdescription, invite } from './src/fragments/first-order-commands/administration.js';
+import report from './src/fragments/first-order-commands/support.js';
+import welcomeAndFarewells from './src/fragments/second-order-commands/welcome-farewells.js';
 
 
 
@@ -180,28 +183,73 @@ bot.onText(/^\/logro (.+)/, (message,value) => {
 // -- Adm commands -- //
 
 	//Ban
+bot.onText(/^\/ban/, (message,value) => {
+	(async() => {
+		await ban(bot, message, value);
+	})();
+});
 
 	//UnBan
+bot.onText(/^\/unban/, message => {
+	(async() => {
+		await unban(bot, message);
+	})();
+});
 
 	//Pin
+bot.onText(/^\/pin (.+)/, message => {
+	(async() => {
+		await pin(bot, message);
+	})();
+});
 
 	//UnPin
+bot.onText(/^\/unpin (.+)/, (message,value) => {
+	(async() => {
+		await unpin(bot, message, value);
+	})();
+});
 
 	//ChangeTitle
+bot.onText(/^\/chtitle (.+)/, (message,value) => {
+	(async() => {
+		await chtitle(bot, message, value);
+	})();
+});
 
 	//ChangeDescription
+bot.onText(/^\/chdescription (.+)/, (message,value) => {
+	(async() => {
+		await chdescription(bot, message, value);
+	})();
+});
 
 	//GenerateInvitation
-
+bot.onText(/^\/invite/, message => {
+	(async() => {
+		await invite(bot, message);
+	})();
+});
 
 
 // - Support commands - //
 
 	//Report
-
+bot.onText(/^\/report (.+)/, (message,value) => {
+	(async() => {
+		await report(bot, message, value);
+	})();
+});
 
 // -- Second-order Commands -- Events//
 	// Welcome and farewells
 
+bot.on('message', message => {
+	welcomeAndFarewells(bot, message);
+});
+
+bot.on('message',function(message){
+    console.log(`\nUser: ${message.from.username} ${message.from.first_name} | ${message.from.id}\nChat: ${message.chat.title} | ${message.chat.username} | ${message.chat.type}\nMessage: ${message.message_id} | ${message.text}\n`);
+});
 
 // -- Bot's end -- //
