@@ -11,7 +11,7 @@ import ms from 'ms';
 import responses from './src/fragments/first-order-commands/responses.js';
 import { whoami, whois } from './src/fragments/first-order-commands/userRecognition.js';
 import { dice, dart, jackpot } from './src/fragments/first-order-commands/randomGames.js';
-import { weather } from './src/fragments/first-order-commands/assistance.js';
+import { weather, GitHub, wiki, dictionary } from './src/fragments/first-order-commands/assistance.js';
 
 
 const { start, heya, help, say, options } = responses;
@@ -20,7 +20,7 @@ const { start, heya, help, say, options } = responses;
 dotenv.config();
 const botEngineTOKEN = process.env.remote_bot_TOKEN || process.env.local_bot_TOKEN;
 const youtubeTOKEN = process.env.remote_youtube_TOKEN || process.env.local_youtube_TOKEN;
-const rapidapiTOKEN = process.env.remote_rapidapi_TOKEN || process.env.local_rapidapi_TOKEN;
+
 
 
 // --  Bot engine / instance -- //
@@ -65,6 +65,7 @@ bot.onText(/^\/help/, message => {
 });
 
 
+
 // - UserRecognition - //
 
 	//Whoami
@@ -92,13 +93,32 @@ bot.onText(/^\/weather (.+)/, (message,value) => {
 });
 
 	//GitHub
+bot.onText(/^\/gh (.+)/, (message,value) => {
+	(async() => {
+		await GitHub(bot, message, value);
+	})();
+});
 
 	//WikiPedia
+bot.onText(/^\/wiki (.+)/, (message,value) => {
+	(async() => {
+		await wiki(bot, message, value);
+	})();
+});
 
 	//Ip-searcher
+bot.onText(/^\/ip (.+)/, (message,value) => {
+	(async() => {
+		await ipSearcher(bot, message, value);
+	})();
+});
 
 	//Dictionary
-
+bot.onText(/^\/dic (.+)/, (message,value) => {
+	(async() => {
+		await dictionary(bot, message, value);
+	})();
+});
 
 
 // - Random Games - //

@@ -30,6 +30,7 @@
     "livereload": "^0.9.1",
     "ms": "^2.1.3",
     "node-telegram-bot-api": "0.50.0",
-    "package.json": "^2.0.1"
+    "package.json": "^2.0.1",
+    "pg": "^8.5.1"
   }
 }

@@ -8,10 +8,10 @@ async function dice(bot, message, value) {
 	
 	?
 		(
-			bot.sendMessage(message.chat.id, `Elegiste: *${value[1]}* ¿Cual será el resultado?`, options(message)),
+			bot.sendMessage(message.chat.id, `Elegiste: *${value[1]}* ¿Cual será el resultado? (-50 DC por lanzamiento)`, options(message)),
 			bot.sendDice(message.chat.id).then(info =>{
 				setTimeout(()=>{
-					let res = info.dice.value == value[1] ? bot.sendMessage(message.chat.id, `Oe oeee, le atinaste. 🥳 🎉🎊`,options(message)) : bot.sendMessage(message.chat.id, `No le atinaste, deberías intentarlo otra vez.`,options(message));
+					let res = info.dice.value == value[1] ? bot.sendMessage(message.chat.id, `Oe oeee, le atinaste. 🥳 🎉🎊 Ganas 100 DC`,options(message)) : bot.sendMessage(message.chat.id, `No le atinaste, deberías intentarlo otra vez.`,options(message));
 				},5000);
 			})
 		)
