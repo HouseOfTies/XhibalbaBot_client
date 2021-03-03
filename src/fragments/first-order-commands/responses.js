@@ -7,7 +7,7 @@ export default {
 		parse_mode: 'Markdown',
 		reply_to_message_id: message.message_id,
     }},
-
+    dictionaryCard : function(word, definition, example){return `📖 He encontrado en el diccionario:\n\n*Word:* ${word}\n*Definition:* ${definition}\n*Example:* ${example}`},
 
     GHTemplate : function(info){const { name, login, node_id, avatar_url, type, html_url, bio, public_repos, followers, following, location, company, created_at, updated_at} = info.data;
       return `_GitHub Profile_ 😺\n
@@ -33,41 +33,53 @@ export default {
 *Last update:* ${updated_at}
       `},
 
-      dictionaryCard : function(word, definition, example){return `📖 He encontrado en el diccionario:\n\n*Word:* ${word}\n*Definition:* ${definition}\n*Example:* ${example}`}
+    ipTemplate : function(info) {
 
+      const { type, 
+          area: { code, geonameid, name},
+          asn: { number, organisation },
+          location:{  latitude, longitude },
+          city: { cityName = name, population},
+          country: { capital, phone_code },
+          currency: { currencyCode = code, currencyName = name},
+          continent: { continentName = name },
+          security: { is_crawler, is_proxy, is_thread, is_tor }
+      } = info.data;
+
+      return `
+🕵🏻‍♀️ He encontrado algo.\n
+------ Info ------
+--- Area ---
+*Codigo*: ${code}
+*Geonombre id*: ${geonameid}
+*Nombre*: ${name}
+
+--- ASN ---
+*Numero*: ${number}
+*Organizacion*: ${organisation}
+
+--- Region --
+*Latitud/Longitud*: ${latitude} / ${longitude}
+*Ciudad*: ${cityName}
+*Poblacion*: ${population}
+*Capital*: ${capital}
+*Codigo telefonico* ${phone_code}
+*Moneda*: ${currencyCode} | ${currencyName}
+*Contienente*: ${continentName}
+
+--- Seguridad ---
+*Es crawler*: ${is_crawler}
+*Es proxy*: ${is_proxy}
+*Es thread*:${is_thread}
+*Es tor*: ${is_tor}
+
+--- Tipo ---
+${type}`}
       
 
 }
 
 
 
-/* ``
-🕵🏻‍♀️ He encontrado algo.\n
------- Info ------
---- Area ---
-*Codigo*: ${info.data.area.code}
-*Geonombre id*: ${info.data.area.geonameid}
-*Nombre*: ${info.data.area.name}
 
---- ASN ---
-*Numero*: ${info.data.asn.number}
-*Organizacion*: ${info.data.asn.organisation}
-
---- Region --
-*Latitud/Longitud*: ${info.data.location.latitude} / ${info.data.location.longitude}
-*Ciudad*: ${info.data.city.name}
-*Poblacion*: ${info.data.city.population}
-*Capital*: ${info.data.country.capital}
-*Codigo telefonico* ${info.data.country.phone_code}
-*Moneda*: ${info.data.currency.code} | ${info.data.currency.name}
-*Contienente*: ${info.data.continent.name}
-
---- Seguridad ---
-*Es crawler*: ${info.data.security.is_crawler}
-*Es proxy*: ${info.data.security.is_proxy}
-*Es thread*:${info.data.security.is_thread}
-*Es tor*: ${info.data.security.is_tor}
-
---- Tipo ---
-${info.data.type}` */
 

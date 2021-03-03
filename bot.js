@@ -11,7 +11,7 @@ import ms from 'ms';
 import responses from './src/fragments/first-order-commands/responses.js';
 import { whoami, whois } from './src/fragments/first-order-commands/userRecognition.js';
 import { dice, dart, jackpot } from './src/fragments/first-order-commands/randomGames.js';
-import { weather, GitHub, wiki, dictionary } from './src/fragments/first-order-commands/assistance.js';
+import { weather, GitHub, wiki, dictionary, ip } from './src/fragments/first-order-commands/assistance.js';
 
 
 const { start, heya, help, say, options } = responses;
@@ -109,7 +109,7 @@ bot.onText(/^\/wiki (.+)/, (message,value) => {
 	//Ip-searcher
 bot.onText(/^\/ip (.+)/, (message,value) => {
 	(async() => {
-		await ipSearcher(bot, message, value);
+		await ip(bot, message, value);
 	})();
 });
 

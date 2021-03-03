@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const { options, GHTemplate, dictionaryCard } = responses;
+const { options, GHTemplate, ipTemplate, dictionaryCard } = responses;
 
 const openweatherTOKEN = process.env.remote_openweather_TOKEN || process.env.local_openweather_TOKEN;
 const rapidapiTOKEN = process.env.remote_rapidapi_TOKEN || process.env.local_rapidapi_TOKEN;
@@ -80,12 +80,9 @@ async function ip(bot, message, value){
 };
 		try{
 			const info = await axios.request(payload);
-
-			/* area{ code, geonameid, name }, asn{ number, organisation }, location{ latitude, longitude}, city{ name, population }, 
-country{ capital, phone_code }, currency{ code, name}, continent{ name }, security{ is_crawler, is_proxy, is_thread, is_tor}
- */
-			bot.sendMessage(message.chat.id, options(message));
+			bot.sendMessage(message.chat.id, ipTemplate(info), options(message));
 		}catch(e){
+			console.log(e);
 			bot.sendMessage(message.chat.id, 'No he encontrado la direccion ip solicitada', options(message));
 		}
 };
@@ -113,4 +110,4 @@ async function dictionary(bot, message, value){
 	};
 
 
-export { weather, GitHub, wiki, dictionary };
+export { weather, GitHub, wiki, ip, dictionary };
