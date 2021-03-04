@@ -1,4 +1,5 @@
 import responses from './responses.js';
+import ms from 'ms';
 const { options } = responses;
 
 // Ban user command 
@@ -18,7 +19,6 @@ async function ban(bot, message, value) {
 	}
 };
 
-
 // Unban user command
 async function unban (bot, message){
 	if(message.reply_to_message == undefined){
@@ -35,8 +35,6 @@ async function unban (bot, message){
 			bot.sendMessage(message.chat.id, "No eres administrador.");
 	}
 };
-
-
 
 // Pin command 
 async function pin(bot, message){
@@ -67,8 +65,6 @@ async function unpin(bot, message, value){
 			bot.sendMessage(message.chat.id, "No he encontrado el pin a remover.");
 		}
 };
-
-
 
 // Change title of group command
 async function chtitle(bot, message, value){

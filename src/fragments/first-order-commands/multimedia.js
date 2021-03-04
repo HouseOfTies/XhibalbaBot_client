@@ -1,5 +1,13 @@
 import responses from './responses.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const youtubeTOKEN = process.env.remote_youtube_TOKEN || process.env.local_youtube_TOKEN;
+const rapidapiTOKEN = process.env.remote_rapidapi_TOKEN || process.env.local_rapidapi_TOKEN;
+
 const { options } = responses;
+
 /* // Image searcher
 bot.onText(/\/img (.+)/, (message, value) => {
 	let decorator = {

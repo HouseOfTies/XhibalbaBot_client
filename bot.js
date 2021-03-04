@@ -6,9 +6,11 @@ Welcome to the 7th.
 import TelegramBot from 'node-telegram-bot-api';
 
 import dotenv from 'dotenv';
-import ms from 'ms';
 
 import responses from './src/fragments/first-order-commands/responses.js';
+
+import buttonGenerator from './src/fragments/buttons/buttonGenerator.js';
+
 import { whoami, whois } from './src/fragments/first-order-commands/userRecognition.js';
 import { dice, dart, jackpot } from './src/fragments/first-order-commands/randomGames.js';
 import { weather, GitHub, wiki, dictionary, ip } from './src/fragments/first-order-commands/assistance.js';
@@ -17,21 +19,15 @@ import { ban, unban, pin, unpin, chtitle, chdescription, invite } from './src/fr
 import report from './src/fragments/first-order-commands/support.js';
 import welcomeAndFarewells from './src/fragments/second-order-commands/welcome-farewells.js';
 
-
-
 const { start, heya, help, say, options } = responses;
 
 // --- Key Chain --- //
 dotenv.config();
 const botEngineTOKEN = process.env.remote_bot_TOKEN || process.env.local_bot_TOKEN;
-const youtubeTOKEN = process.env.remote_youtube_TOKEN || process.env.local_youtube_TOKEN;
-
-
 
 // --  Bot engine / instance -- //
 const bot = new TelegramBot(botEngineTOKEN, {polling: true}); //It will take heroku TOKEN or localToken
 console.log("\nRunning bot...");
-
 
 // Errors detector //
 bot.on('polling_error', error => {
@@ -231,7 +227,6 @@ bot.onText(/^\/invite/, message => {
 	})();
 });
 
-
 // - Support commands - //
 
 	//Report
@@ -240,6 +235,18 @@ bot.onText(/^\/report (.+)/, (message,value) => {
 		await report(bot, message, value);
 	})();
 });
+
+
+/* bot.onText(/^\/test/, message => {
+	(async() => {
+		const controls = [];
+		const back = {text: "< back", callback_query: Symbol('data').toString};
+		const next = {text: "Next >", callback_query: Symbol('data').toString};
+		controls.push(back, next);
+		bot.sendMessage(message.chat.id, "Texto de prueba", buttonGenerator(message, controls));
+	})();
+}); */
+
 
 // -- Second-order Commands -- Events//
 	// Welcome and farewells
