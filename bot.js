@@ -9,12 +9,12 @@ import dotenv from 'dotenv';
 
 import responses from './src/fragments/first-order-commands/responses.js';
 
-import buttonGenerator from './src/fragments/buttons/buttonGenerator.js';
+import { idGenerator, buttonMaker } from './src/fragments/buttons/buttonGenerator.js';
 
 import { whoami, whois } from './src/fragments/first-order-commands/userRecognition.js';
 import { dice, dart, jackpot } from './src/fragments/first-order-commands/randomGames.js';
 import { weather, GitHub, wiki, dictionary, ip } from './src/fragments/first-order-commands/assistance.js';
-import { snap, fullSnap, logro } from './src/fragments/first-order-commands/multimedia.js';
+import { imgSearcher, snap, fullSnap, logro } from './src/fragments/first-order-commands/multimedia.js';
 import { ban, unban, pin, unpin, chtitle, chdescription, invite } from './src/fragments/first-order-commands/administration.js';
 import report from './src/fragments/first-order-commands/support.js';
 import welcomeAndFarewells from './src/fragments/second-order-commands/welcome-farewells.js';
@@ -151,7 +151,14 @@ bot.onText(/^\/jackpot/, (message) => {
 // - Multimedia commands - //
 
 	//Img
-
+bot.onText(/^\/img (.+)/, (message,value) => {
+	(async() => {
+		await imgSearcher(bot, message, value, buttonMaker(message, 
+			{text: "⬅️ Back", callback_data: idGenerator(message.chat.id)},
+			{text: "Next ➡️", callback_data: idGenerator(message.chat.id)}
+			));
+	})();
+});
 	//YoutTube
 
 	//Snap
@@ -237,15 +244,12 @@ bot.onText(/^\/report (.+)/, (message,value) => {
 });
 
 
-/* bot.onText(/^\/test/, message => {
-	(async() => {
-		const controls = [];
-		const back = {text: "< back", callback_query: Symbol('data').toString};
-		const next = {text: "Next >", callback_query: Symbol('data').toString};
-		controls.push(back, next);
-		bot.sendMessage(message.chat.id, "Texto de prueba", buttonGenerator(message, controls));
-	})();
-}); */
+bot.onText(/^\/test/, message => {
+	bot.sendMessage(message.chat.id, "mensaje con boton", buttonMaker(message,
+		{text: "⬅️ Back", callback_data: idGenerator(message.chat.id)},
+		{text: "Next ➡️", callback_data: idGenerator(message.chat.id)}
+		));
+});
 
 
 // -- Second-order Commands -- Events//

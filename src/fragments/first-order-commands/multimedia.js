@@ -1,5 +1,6 @@
 import responses from './responses.js';
 import dotenv from 'dotenv';
+import axios from 'axios';
 
 dotenv.config();
 
@@ -8,25 +9,11 @@ const rapidapiTOKEN = process.env.remote_rapidapi_TOKEN || process.env.local_rap
 
 const { options } = responses;
 
-/* // Image searcher
-bot.onText(/\/img (.+)/, (message, value) => {
-	let decorator = {
-		parse_mode : "Markdown",
-		reply_to_message : message.message_id,
-		reply_markup : {
-			inline_keyboard : [
-					[
-						{text : "⬅️ Back", callback_data : 'back'},
-						{text : "Next ➡️", callback_data : 'next'},
-					]
-			]
-		}
-	};
-	
-	let index = 0,
-		messageID = message.message_id + 1,
-		chatID = message.chat.id,
-	payload = {
+
+// Image searcher
+async function imgSearcher(bot, message, value, buttons){
+	let counter = 0;
+	const payload = {
 		method : 'GET',
 		url : 'https://bing-image-search1.p.rapidapi.com/images/search',
 		params : {q : value[1], count : '100'},
@@ -34,29 +21,13 @@ bot.onText(/\/img (.+)/, (message, value) => {
 			'x-rapidapi-key': 'e486b8885bmshff68b752d62f77fp181960jsnc4e96d1307ea',
     'x-rapidapi-host': 'bing-image-search1.p.rapidapi.com'
 		}
-	}
-	const getImg = async payload => {
+	};
 		let info = await axios.request(payload),
-			image = `[🔭](${info.data.value[index].contentUrl}) He encontrado esta imagen:\n`;
+			image = `[🔭](${info.data.value[0].contentUrl}) He encontrado esta imagen:\n`;
 
+		bot.sendMessage(message.chat.id, image, buttons);
 
-		let replyDecorator = {
-		chat_id : chatID,
-		message_id : messageID,
-		parse_mode : "Markdown",
-		reply_markup : {
-			inline_keyboard : [
-					[
-						{text : "⬅️ Back", callback_data : 'back'},
-						{text : "Next ➡️", callback_data : 'next'},
-					]
-			]
-		}
-	}
-
-		bot.sendMessage(message.chat.id, image, decorator);
-
-		bot.on('callback_query', function onCallbackQuery(button){
+		/* bot.on('callback_query', function onCallbackQuery(button){
 			if(button.data == 'next'){
 				index++;
 				bot.editMessageText(`[🔭](${info.data.value[index].contentUrl}) He encontrado esta imagen:\n`, replyDecorator);
@@ -69,12 +40,10 @@ bot.onText(/\/img (.+)/, (message, value) => {
 				bot.editMessageText(`[🔭](${info.data.value[index].contentUrl}) He encontrado esta imagen:\n`, replyDecorator);
 				}
 			}
-		});	
-	};
-	getImg(payload);
-});
+		});	 */
+};
 
-
+/*
 
 // youtube searcher command
 bot.onText(/\/yt (.+)/, (message, value) => {
@@ -183,4 +152,4 @@ async function logro(bot, message, value){
 	await bot.sendMessage(message.chat.id, `[🏆](${url})`,options(message));
 }
 
-export { snap, fullSnap, logro }
+export { imgSearcher, snap, fullSnap, logro }

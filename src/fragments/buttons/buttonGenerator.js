@@ -1,15 +1,18 @@
-function buttonGenerator(controls){
+function idGenerator(userID){
+    return userID + Math.random().toString(16).slice(2)
+};
 
-    const button = {
-    parse_mode : "Markdown",
-        reply_markup : {
-            inline_keyboard : [
-                    controls
-            ]
-        }
-    };
-
-    return button;
+function buttonMaker(message, ...controls){
+    return {
+		chat_id : message.chat.id,
+		parse_mode : "Markdown",
+		message_id : message.message_id+1,
+        reply_markup: {
+			inline_keyboard: [
+				controls
+			]
+		}
+	}
 }
 
-export default buttonGenerator;
+export { idGenerator, buttonMaker };
