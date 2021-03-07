@@ -11,8 +11,7 @@ const { options } = responses;
 
 
 // Image searcher
-async function imgSearcher(bot, message, value, buttons){
-	let counter = 0;
+async function imgSearcher(value, index){
 	const payload = {
 		method : 'GET',
 		url : 'https://bing-image-search1.p.rapidapi.com/images/search',
@@ -22,65 +21,38 @@ async function imgSearcher(bot, message, value, buttons){
     'x-rapidapi-host': 'bing-image-search1.p.rapidapi.com'
 		}
 	};
-		let info = await axios.request(payload),
-			image = `[🔭](${info.data.value[0].contentUrl}) He encontrado esta imagen:\n`;
+		const info = await axios.request(payload);
+		
+		return `[🔭](${info.data.value[index].contentUrl}) He encontrado esta imagen:\n`;
 
-		bot.sendMessage(message.chat.id, image, buttons);
-
-		/* bot.on('callback_query', function onCallbackQuery(button){
-			if(button.data == 'next'){
-				index++;
-				bot.editMessageText(`[🔭](${info.data.value[index].contentUrl}) He encontrado esta imagen:\n`, replyDecorator);
-			}
-			if(button.data == 'back'){
-				index--;
-				if(index < 0){
-					bot.editMessageText("No puedo ir mas atras, intenta ir a la siguiente.", replyDecorator);
-				}else{
-				bot.editMessageText(`[🔭](${info.data.value[index].contentUrl}) He encontrado esta imagen:\n`, replyDecorator);
-				}
-			}
-		});	 */
 };
 
-/*
+async function img(bot, message, value, buttons) {
+	let index = 0;
+	const image = await imgSearcher(value, index);
+	bot.sendMessage(message.chat.id, image, options(message));
+	/* bot.on('callback_query', function onCallbackQuery(button){
+		if(button.data == 'next'){
+			index++;
+			bot.editMessageText(index, buttons);
+		}
+		if(button.data == 'back'){
+			index--;
+			if(index < 0){
+				bot.editMessageText("No puedo ir mas atras, intenta ir a la siguiente.", replyDecorator);
+			}else{
+				bot.editMessageText(index, buttons);
+			}
+		}
+	});	  */
+}
+
+
 
 // youtube searcher command
-bot.onText(/\/yt (.+)/, (message, value) => {
-	let decorator = {
-		parse_mode : "Markdown",
-		reply_to_message : message.message_id,
-		reply_markup : {
-			inline_keyboard : [
-				[
-					{text : "⬅️ Back", callback_data : 'back'},
-					{text : "Next ➡️", callback_data : 'next'},
-				]
-			]
-		}
-	};
-	let index = 0,
-		messageID = message.message_id + 1,
-		chatID = message.chat.id;
-
-	let replyDecorator = {
-		chat_id : chatID,
-		message_id : messageID,
-		parse_mode : "Markdown",
-		reply_markup : {
-			inline_keyboard : [
-				[
-					{text : "⬅️ Back", callback_data : 'back'},
-					{text : "Next ➡️", callback_data : 'next'},
-				]
-			]
-		}
-	};
-
-
+async function ytSearcher(){
 	const apikey = youtubeTOKEN;
 	let url = decodeURI(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=100&q=${value[1]}&type=video&key=${apikey}`);
-		const getVideo = async ()  => {
 			try{
 			const res = await axios.request(url);
 
@@ -100,7 +72,7 @@ bot.onText(/\/yt (.+)/, (message, value) => {
 
 			bot.sendMessage(message.chat.id, videoCard, decorator);	
 
-				bot.on('callback_query', function onCallbackQuery(button){
+				/* bot.on('callback_query', function onCallbackQuery(button){
 					if(button.data == 'next'){
 						index++;
 
@@ -108,28 +80,18 @@ bot.onText(/\/yt (.+)/, (message, value) => {
 					}
 					if(button.data == 'back'){
 						index--;
-
-
 						if(index < 0){
 							bot.editMessageText("No puedo ir mas atras, intenta ir a la siguiente.", replyDecorator);
 						}else{
 							bot.editMessageText(`Video solicitado: [▶️](https://www.youtube.com/watch?v=${res.data.items[index].id.videoId})`, replyDecorator);
 						}
 					}
-				});	
-
-
+				});	 */
 		}catch{
 		bot.sendMessage(message.chat.id,"No he encontrado el video solicitado");
-		}
-	};
-	getVideo();
-});
- */
-
-
-
-
+	}
+};
+ 
 
 // Webshot command
 async function snap(bot, message,value) {
@@ -142,7 +104,6 @@ async function snap(bot, message,value) {
 async function fullSnap(bot, message, value) {
 	const url = `https://webshot.deam.io/${value[1]}`
 	await bot.sendMessage(message.chat.id, `[👁‍🗨](${url})Mis ojos han llegado a este lugar.`,options(message));
-
 }
 		
 // Archivement command
@@ -152,4 +113,4 @@ async function logro(bot, message, value){
 	await bot.sendMessage(message.chat.id, `[🏆](${url})`,options(message));
 }
 
-export { imgSearcher, snap, fullSnap, logro }
+export { imgSearcher, img, snap, fullSnap, logro }

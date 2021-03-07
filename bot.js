@@ -14,7 +14,7 @@ import { idGenerator, buttonMaker } from './src/fragments/buttons/buttonGenerato
 import { whoami, whois } from './src/fragments/first-order-commands/userRecognition.js';
 import { dice, dart, jackpot } from './src/fragments/first-order-commands/randomGames.js';
 import { weather, GitHub, wiki, dictionary, ip } from './src/fragments/first-order-commands/assistance.js';
-import { imgSearcher, snap, fullSnap, logro } from './src/fragments/first-order-commands/multimedia.js';
+import { img, snap, fullSnap, logro } from './src/fragments/first-order-commands/multimedia.js';
 import { ban, unban, pin, unpin, chtitle, chdescription, invite } from './src/fragments/first-order-commands/administration.js';
 import report from './src/fragments/first-order-commands/support.js';
 import welcomeAndFarewells from './src/fragments/second-order-commands/welcome-farewells.js';
@@ -153,7 +153,7 @@ bot.onText(/^\/jackpot/, (message) => {
 	//Img
 bot.onText(/^\/img (.+)/, (message,value) => {
 	(async() => {
-		await imgSearcher(bot, message, value, buttonMaker(message, 
+		await img(bot, message, value, buttonMaker(message, 
 			{text: "⬅️ Back", callback_data: idGenerator(message.chat.id)},
 			{text: "Next ➡️", callback_data: idGenerator(message.chat.id)}
 			));
