@@ -184,6 +184,7 @@ $ heroku logs --tail
 2011-03-10T10:22:34-08:00 heroku[web.1]: State changed from starting to up
 ```
 
+###### [Click here to see a examplebot with better construction](https://github.com/wilmerterrero/charles-bot) thanks to [Wilmer Terrero](https://github.com/wilmerterrero) for the contrib, visit his account and give him love. <3
 ---
 ### Development / Support
 
@@ -206,18 +207,4 @@ MIT © 2021 Rainiery Valerio
 **Welcome to the divine comedy** ~
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
-
-
-
-# Here rest the heart of the 7th.
-
-if you want run your own bot with this bot-code, you need to:
-
-- Clone this repository with >> git clone https://github.com/SoftDevsCommunity/XhibalbaBot
-- Install everything executing >> npm install (run this one inside the repository path)
-- Create a .env file and write inside >> localToken='Token-obtained-from-the-botfather'
-- Run your bot with node bot.js
-
----
-Note: if you want to contribute to the project, fork the repository and pull a request with the new function or the added detail.
 

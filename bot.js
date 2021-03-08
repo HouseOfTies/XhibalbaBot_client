@@ -95,6 +95,7 @@ bot.onText(/^\/gh (.+)/, (message,value) => {
 	(async() => {
 		await GitHub(bot, message, value);
 	})();
+
 });
 
 	//WikiPedia
@@ -159,6 +160,7 @@ bot.onText(/^\/img (.+)/, (message,value) => {
 			));
 	})();
 });
+
 	//YoutTube
 	bot.onText(/^\/yt (.+)/, (message,value) => {
 		(async() => {
@@ -166,7 +168,6 @@ bot.onText(/^\/img (.+)/, (message,value) => {
 		})();
 	});
 		
-
 	//Snap
 bot.onText(/^\/snap (.+)/, (message,value) => {
 	(async() => {
@@ -249,8 +250,6 @@ bot.onText(/^\/report (.+)/, (message,value) => {
 	})();
 });
 
-
-
 // -- Second-order Commands -- Events//
 	// Welcome and farewells
 
@@ -258,8 +257,10 @@ bot.on('message', message => {
 	welcomeAndFarewells(bot, message);
 });
 
-bot.on('message',function(message){
-    console.log(`\nUser: ${message.from.username} ${message.from.first_name} | ${message.from.id}\nChat: ${message.chat.title} | ${message.chat.username} | ${message.chat.type}\nMessage: ${message.message_id} | ${message.text}\n`);
+bot.on('message', function (message) {
+  console.log(
+    `\nUser: ${message.from.username} ${message.from.first_name} | ${message.from.id}\nChat: ${message.chat.title} | ${message.chat.username} | ${message.chat.type}\nMessage: ${message.message_id} | ${message.text}\n`
+  );
 });
 
 // -- Bot's end -- //
