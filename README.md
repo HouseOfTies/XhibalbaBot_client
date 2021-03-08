@@ -56,7 +56,7 @@ I must to be a group administrator 👑 for the following commands.
 | Invite | Your own chat invitation? Got u, take a ticket | /invite
 
 
-# Not now commands at the moment
+# We have not new commands at the momment
 
 ![newFeatures](https://i.imgur.com/4Bt1oxS.png)
 
