@@ -14,7 +14,7 @@ import { idGenerator, buttonMaker } from './src/fragments/buttons/buttonGenerato
 import { whoami, whois } from './src/fragments/first-order-commands/userRecognition.js';
 import { dice, dart, jackpot } from './src/fragments/first-order-commands/randomGames.js';
 import { weather, GitHub, wiki, dictionary, ip } from './src/fragments/first-order-commands/assistance.js';
-import { img, snap, fullSnap, logro } from './src/fragments/first-order-commands/multimedia.js';
+import { ytSearcher, img, snap, fullSnap, logro } from './src/fragments/first-order-commands/multimedia.js';
 import { ban, unban, pin, unpin, chtitle, chdescription, invite } from './src/fragments/first-order-commands/administration.js';
 import report from './src/fragments/first-order-commands/support.js';
 import welcomeAndFarewells from './src/fragments/second-order-commands/welcome-farewells.js';
@@ -160,6 +160,12 @@ bot.onText(/^\/img (.+)/, (message,value) => {
 	})();
 });
 	//YoutTube
+	bot.onText(/^\/yt (.+)/, (message,value) => {
+		(async() => {
+			await ytSearcher(bot, message, value);
+		})();
+	});
+		
 
 	//Snap
 bot.onText(/^\/snap (.+)/, (message,value) => {
@@ -243,13 +249,6 @@ bot.onText(/^\/report (.+)/, (message,value) => {
 	})();
 });
 
-
-bot.onText(/^\/test/, message => {
-	bot.sendMessage(message.chat.id, "mensaje con boton", buttonMaker(message,
-		{text: "⬅️ Back", callback_data: idGenerator(message.chat.id)},
-		{text: "Next ➡️", callback_data: idGenerator(message.chat.id)}
-		));
-});
 
 
 // -- Second-order Commands -- Events//
