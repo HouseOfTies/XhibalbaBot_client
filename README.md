@@ -33,15 +33,6 @@ Example: /dado 1 or /clima Santo Domingo
 | Img | Let's look for images together, just tell me what you want us to see | /img apples
 | IP | Now I am a special agent in IP addresses, lets look for the information that is behind that secret IP. Write an IP (public) to search  | /ip 109.252.66.82 |
 
-
-# New commands arrive to 7th!
-
-![newFeatures](https://i.imgur.com/4Bt1oxS.png)
-
-> Administrative commands arrive at the caretaker of the soul and chats, commands such as: Ban, Unban and Whois require you to be on top of the user to perform what said command does.
-#
-#
-
   | Command | Description | Example |
 | ------ | ------ | ------ |
 | Whoami | If you want to see your user information, type this one | /whoami
@@ -64,9 +55,11 @@ I must to be a group administrator 👑 for the following commands.
 | ChatDescription | Let me change the description of your group for you, just tell me what you want | /chdescription the new description
 | Invite | Your own chat invitation? Got u, take a ticket | /invite
 
-### Snap
-![whois](https://imgur.com/q0V30Zl.png)<br>
-whois demostration.
+
+# We have not new commands at the momment
+
+![newFeatures](https://i.imgur.com/4Bt1oxS.png)
+
 
 ---
 ### Installation / Usage / Requirements

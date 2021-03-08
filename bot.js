@@ -2,831 +2,259 @@
 Welcome to the 7th.
 */
 
-// Import zone //
+// Import & unpacking zone //
 import TelegramBot from 'node-telegram-bot-api';
+
 import dotenv from 'dotenv';
-import axios from 'axios';
-import ms from 'ms';
+
+import responses from './src/fragments/first-order-commands/responses.js';
+
+import { idGenerator, buttonMaker } from './src/fragments/buttons/buttonGenerator.js';
+
+import { whoami, whois } from './src/fragments/first-order-commands/userRecognition.js';
+import { dice, dart, jackpot } from './src/fragments/first-order-commands/randomGames.js';
+import { weather, GitHub, wiki, dictionary, ip } from './src/fragments/first-order-commands/assistance.js';
+import { ytSearcher, img, snap, fullSnap, logro } from './src/fragments/first-order-commands/multimedia.js';
+import { ban, unban, pin, unpin, chtitle, chdescription, invite } from './src/fragments/first-order-commands/administration.js';
+import report from './src/fragments/first-order-commands/support.js';
+import welcomeAndFarewells from './src/fragments/second-order-commands/welcome-farewells.js';
+
+const { start, heya, help, say, options } = responses;
 
 // --- Key Chain --- //
 dotenv.config();
-const botEngineTOKEN =
-  process.env.remote_bot_TOKEN || process.env.local_bot_TOKEN;
-const openweatherTOKEN =
-  process.env.remote_openweather_TOKEN || process.env.local_openweather_TOKEN;
-const youtubeTOKEN =
-  process.env.remote_youtube_TOKEN || process.env.local_youtube_TOKEN;
-const rapidapiTOKEN =
-  process.env.remote_rapidapi_TOKEN || process.env.local_rapidapi_TOKEN;
+const botEngineTOKEN = process.env.remote_bot_TOKEN || process.env.local_bot_TOKEN;
 
 // --  Bot engine / instance -- //
-const bot = new TelegramBot(botEngineTOKEN, { polling: true }); //It will take heroku TOKEN or localToken
-console.log('\nRunning bot...');
+const bot = new TelegramBot(botEngineTOKEN, {polling: true}); //It will take heroku TOKEN or localToken
+console.log("\nRunning bot...");
 
 // Errors detector //
 bot.on('polling_error', error => {
-  console.log(error);
+	console.log(error);
 });
 
-// -- First-order Commands -- //
+
+// -- First-order Commands -- // 
+	// - Responses - //
 // Start
 bot.onText(/^\/start/, message => {
-  bot.sendMessage(
-    message.chat.id,
-    'Empieza usando uno de mis comandos, la manera correcta de escribirlos es con /comando [argumento]\nEjemplo: /clima santo domingo'
-  );
+	(async () => {
+		await bot.sendMessage(message.chat.id, start, options(message));
+	})();
 });
 
 // Greetings
 bot.onText(/^\/heya/, message => {
-  bot.sendMessage(
-    message.chat.id,
-    'Pendiente a todas las ordenes & lista para recibir un comando'
-  );
+	(async () => {
+		await bot.sendMessage(message.chat.id, heya, options(message));
+	})();
 });
 
 // Repeat everything you type
 bot.onText(/\/say (.+)/, (message, value) => {
-  bot.sendMessage(message.chat.id, `${value[1]}`, {
-    parse_mode: 'Markdown',
-    reply_to_message_id: message.message_id,
-  });
+	(async () => {
+		await bot.sendMessage(message.chat.id, say(value), options(message));
+	})();
 });
 
-// Whoami command
-bot.onText(/\/whoami/, message => {
-  const getPhoto = async () => {
-    try {
-      const [photo, userStats] = await Promise.all([
-        // documentacion: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
-        bot.getUserProfilePhotos(message.from.id, {
-          limit: 1,
-        }),
-        bot.getChatMember(message.chat.id, message.from.id),
-      ]);
-
-      const userCard = `⚜️ *Perfil usuario* ⚜️\n\n*Usuario:* ${userStats.user.username}\n*First name:* ${userStats.user.first_name}\n*Last name:* ${userStats.user.last_name}\n*Language:* ${userStats.user.language_code}\n*Status:* ${userStats.status}`;
-
-      try {
-        bot.sendPhoto(message.chat.id, photo.photos[0][0].file_id, {
-          caption: userCard,
-          parse_mode: 'Markdown',
-        });
-      } catch (e) {
-        bot.sendMessage(message.chat.id, userCard, { parse_mode: 'Markdown' });
-      }
-    } catch (e) {}
-  };
-  getPhoto();
+// Help message
+bot.onText(/^\/help/, message => {
+	(async () => {
+		await bot.sendMessage(message.chat.id, help, options(message));
+	})();
 });
 
-// Whois the user command
-bot.onText(/\/whois/, message => {
-  const getPhoto = async () => {
-    try {
-      const [photo, userStats] = await Promise.all([
-        bot.getUserProfilePhotos(message.reply_to_message.from.id, {
-          limit: 1,
-        }),
-        bot.getChatMember(message.chat.id, message.reply_to_message.from.id),
-      ]);
+// - UserRecognition - //
 
-      const userCard = `⚜️ *Perfil usuario* ⚜️\n\n*User Id:* ${message.reply_to_message.from.id}\n*Usuario:* ${userStats.user.username}\n*First name:* ${userStats.user.first_name}\n*Last name:* ${userStats.user.last_name}\n*Language:* ${userStats.user.language_code}\n*Status:* ${userStats.status}`;
-
-      try {
-        bot.sendPhoto(message.chat.id, photo.photos[0][0].file_id, {
-          caption: userCard,
-          parse_mode: 'Markdown',
-        });
-      } catch (e) {
-        bot.sendMessage(message.chat.id, userCard, { parse_mode: 'Markdown' });
-      }
-    } catch (e) {
-      //console.log(e);
-    }
-  };
-  getPhoto();
+	//Whoami
+bot.onText(/^\/whoami/, message => {
+	(async() => {
+		await whoami(bot,message);
+	})();
 });
 
-// - Entertainment - //
-
-// Dice game
-bot.onText(/^\/dado (.+)/, (message, value) => {
-  if (!isNaN(value[1]) && value[1] < 7 && value[1] > 0) {
-    bot.sendMessage(
-      message.chat.id,
-      `Elegiste: *${value[1]}* ¿Cual será el resultado?`,
-      { parse_mode: 'Markdown', reply_to_message: message.message_id }
-    );
-    bot.sendDice(message.chat.id).then(info => {
-      setTimeout(() => {
-        let res =
-          info.dice.value == value[1]
-            ? bot.sendMessage(
-                message.chat.id,
-                `Oe oeee, le atinaste. 🥳 🎉🎊`,
-                { reply_to_message_id: message.message_id }
-              )
-            : bot.sendMessage(
-                message.chat.id,
-                `No le atinaste, deberías intentarlo otra vez.`,
-                { reply_to_message_id: message.message_id }
-              );
-      }, 5000);
-    });
-  } else {
-    bot.sendMessage(message.chat.id, 'Introduce un numero del 1-6', {
-      reply_to_message: message.message_id,
-    });
-  }
+	//Whois
+bot.onText(/^\/whois/, message => {
+	(async() => {
+		await whois(bot,message);
+	})();
 });
 
-// Weather command
-bot.onText(/\/clima (.+)/, (message, value) => {
-  const payload = {
-    token: `appid=${openweatherTOKEN}`,
-    unit: 'units=metric',
-    lang: 'lang=es',
-  };
-  let url = `http://api.openweathermap.org/data/2.5/weather?q=${value[1]}&${payload.unit}&${payload.token}&${payload.lang}`;
-  const getWeather = async url => {
-    try {
-      const res = await axios.get(decodeURI(url));
-      bot.sendMessage(
-        message.chat.id,
-        ` ${res.data.name}, ${res.data.sys.country}\n
-*Temperatura:* ${res.data.main.temp}
-*Temperatura a sentir:* ${res.data.main.feels_like}
-*Temperatura maxima:* ${res.data.main.temp_max}
-*Temperatura minima:* ${res.data.main.temp_min}
-*Humedad: * ${res.data.main.humidity}%
-*Descripcion* ${res.data.weather[0].description}
-					`,
-        { parse_mode: 'Markdown' }
-      );
-    } catch (err) {
-      bot.sendMessage(
-        message.chat.id,
-        `Introduce una ciudad correcta, eje: Buenos Aires`
-      );
-    }
-  };
-  getWeather(url);
+// - Assistance - //
+
+	//Weather
+bot.onText(/^\/weather (.+)/, (message,value) => {
+	(async() => {
+		await weather(bot, message, value);
+	})();
 });
 
-// GitHub accounts searcher
-bot.onText(/^\/gh (.+)/, (message, value) => {
-  let url = `https://api.github.com/users/${value[1]}`;
-  const getInfo = async url => {
-    try {
-      const info = await axios.get(url);
-      bot.sendMessage(
-        message.chat.id,
-        `_GitHub Profile_ 😺\n
-*Name:* ${info.data.name}
+	//GitHub
+bot.onText(/^\/gh (.+)/, (message,value) => {
+	(async() => {
+		await GitHub(bot, message, value);
+	})();
 
------- Primary info
-*User:* ${info.data.login}
-*User ID:* ${info.data.node_id}
-*Pic:* ${info.data.avatar_url}.jpg
-*Type:* ${info.data.type}
-*Url:* ${info.data.html_url}
-*Bio:* ${info.data.bio}
-*Public repos:* ${info.data.public_repos}
-
------- Secondary info
-*Followers:* ${info.data.followers}
-*Following:* ${info.data.following}
-*location:* ${info.data.location}
-*company:* ${info.data.company}
-
------- Others
-*Created at:* ${info.data.created_at}
-*Last update:* ${info.data.updated_at}
-			`,
-        { parse_mode: 'Markdown' }
-      );
-    } catch (err) {
-      bot.sendMessage(
-        message.chat.id,
-        'No se ha podido encontrar la cuenta solicitada.'
-      );
-    }
-  };
-  getInfo(url);
 });
 
-// Wikipedia searcher
-bot.onText(/\/wiki (.+)/, (message, value) => {
-  let url = encodeURI(
-      `https://es.wikipedia.org/api/rest_v1/page/summary/${value[1]}`
-    ),
-    extract;
-  const getWikiInfo = async url => {
-    try {
-      const info = await axios.get(url);
-      extract = info.data.extract;
-      bot.sendMessage(
-        message.chat.id,
-        `🔍 Resultado de busqueda:\n\n${extract}`,
-        { reply_to_message_id: message.message_id }
-      );
-    } catch (e) {
-      bot.sendMessage(
-        message.chat.id,
-        'No he podido encontrar lo que buscabas.\nIntenta escribir correctamente tu busqueda.',
-        { reply_to_message_id: message.message_id }
-      );
-    }
-  };
-  getWikiInfo(url);
+	//WikiPedia
+bot.onText(/^\/wiki (.+)/, (message,value) => {
+	(async() => {
+		await wiki(bot, message, value);
+	})();
 });
 
-// Ip searcher
-bot.onText(/\/ip (.+)/, (message, value) => {
-  var payload = {
-    method: 'GET',
-    url: `https://ip-geo-location.p.rapidapi.com/ip/${value[1]}`,
-    params: { format: 'json', language: 'es' },
-    headers: {
-      'x-rapidapi-key': rapidapiTOKEN,
-      'x-rapidapi-host': 'ip-geo-location.p.rapidapi.com',
-    },
-  };
-  const getIpInfo = async payload => {
-    try {
-      let info = await axios.request(payload);
-      bot.sendMessage(
-        message.chat.id,
-        `
-🕵🏻‍♀️ He encontrado algo.\n
------- Info ------
---- Area ---
-*Codigo*: ${info.data.area.code}
-*Geonombre id*: ${info.data.area.geonameid}
-*Nombre*: ${info.data.area.name}
+	//Ip-searcher
+bot.onText(/^\/ip (.+)/, (message,value) => {
+	(async() => {
+		await ip(bot, message, value);
+	})();
+});
 
---- ASN ---
-*Numero*: ${info.data.asn.number}
-*Organizacion*: ${info.data.asn.organisation}
+	//Dictionary
+bot.onText(/^\/dic (.+)/, (message,value) => {
+	(async() => {
+		await dictionary(bot, message, value);
+	})();
+});
 
---- Region --
-*Latitud/Longitud*: ${info.data.location.latitude} / ${info.data.location.longitude}
-*Ciudad*: ${info.data.city.name}
-*Poblacion*: ${info.data.city.population}
-*Capital*: ${info.data.country.capital}
-*Codigo telefonico* ${info.data.country.phone_code}
-*Moneda*: ${info.data.currency.code} | ${info.data.currency.name}
-*Contienente*: ${info.data.continent.name}
+// - Random Games - //
 
---- Seguridad ---
-*Es crawler*: ${info.data.security.is_crawler}
-*Es proxy*: ${info.data.security.is_proxy}
-*Es thread*:${info.data.security.is_thread}
-*Es tor*: ${info.data.security.is_tor}
+	// Dice Game
+bot.onText(/^\/dice (.+)/, (message,value) => {
+	(async() => {
+		await dice(bot, message, value);
+	})();
+});
+	
+	//Dart game
+bot.onText(/^\/dart/, (message) => {
+	(async() => {
+		await dart(bot, message);
+	})();
+});
 
---- Tipo ---
-${info.data.type}
-				`,
-        { parse_mode: 'Markdown', reply_to_message_id: message.message_id }
-      );
-    } catch (e) {
-      bot.sendMessage(
-        message.chat.id,
-        'No he encontrado la direccion ip solicitada'
-      );
-    }
-  };
-  getIpInfo(payload);
+	//Bowling game
+bot.onText(/^\/bowling/, (message) => {
+	(async() => {
+		await bowling(bot, message);
+	})();
+});
+
+	//Jackpot game
+bot.onText(/^\/jackpot/, (message) => {
+	(async() => {
+		await jackpot(bot, message);
+	})();
 });
 
 // - Multimedia commands - //
 
-// Image searcher
-bot.onText(/\/img (.+)/, (message, value) => {
-  let decorator = {
-    parse_mode: 'Markdown',
-    reply_to_message: message.message_id,
-    reply_markup: {
-      inline_keyboard: [
-        [
-          { text: '⬅️ Back', callback_data: 'back' },
-          { text: 'Next ➡️', callback_data: 'next' },
-        ],
-      ],
-    },
-  };
-
-  let index = 0,
-    messageID = message.message_id + 1,
-    chatID = message.chat.id,
-    payload = {
-      method: 'GET',
-      url: 'https://bing-image-search1.p.rapidapi.com/images/search',
-      params: { q: value[1], count: '100' },
-      headers: {
-        'x-rapidapi-key': 'e486b8885bmshff68b752d62f77fp181960jsnc4e96d1307ea',
-        'x-rapidapi-host': 'bing-image-search1.p.rapidapi.com',
-      },
-    };
-  const getImg = async payload => {
-    let info = await axios.request(payload),
-      image = `[🔭](${info.data.value[index].contentUrl}) He encontrado esta imagen:\n`;
-
-    let replyDecorator = {
-      chat_id: chatID,
-      message_id: messageID,
-      parse_mode: 'Markdown',
-      reply_markup: {
-        inline_keyboard: [
-          [
-            { text: '⬅️ Back', callback_data: 'back' },
-            { text: 'Next ➡️', callback_data: 'next' },
-          ],
-        ],
-      },
-    };
-
-    bot.sendMessage(message.chat.id, image, decorator);
-
-    bot.on('callback_query', function onCallbackQuery(button) {
-      if (button.data == 'next') {
-        index++;
-        bot.editMessageText(
-          `[🔭](${info.data.value[index].contentUrl}) He encontrado esta imagen:\n`,
-          replyDecorator
-        );
-      }
-      if (button.data == 'back') {
-        index--;
-        if (index < 0) {
-          bot.editMessageText(
-            'No puedo ir mas atras, intenta ir a la siguiente.',
-            replyDecorator
-          );
-        } else {
-          bot.editMessageText(
-            `[🔭](${info.data.value[index].contentUrl}) He encontrado esta imagen:\n`,
-            replyDecorator
-          );
-        }
-      }
-    });
-  };
-  getImg(payload);
+	//Img
+bot.onText(/^\/img (.+)/, (message,value) => {
+	(async() => {
+		await img(bot, message, value, buttonMaker(message, 
+			{text: "⬅️ Back", callback_data: idGenerator(message.chat.id)},
+			{text: "Next ➡️", callback_data: idGenerator(message.chat.id)}
+			));
+	})();
 });
 
-// youtube searcher command
-bot.onText(/\/yt (.+)/, (message, value) => {
-  let decorator = {
-    parse_mode: 'Markdown',
-    reply_to_message: message.message_id,
-    reply_markup: {
-      inline_keyboard: [
-        [
-          { text: '⬅️ Back', callback_data: 'back' },
-          { text: 'Next ➡️', callback_data: 'next' },
-        ],
-      ],
-    },
-  };
-  let index = 0,
-    messageID = message.message_id + 1,
-    chatID = message.chat.id;
-
-  let replyDecorator = {
-    chat_id: chatID,
-    message_id: messageID,
-    parse_mode: 'Markdown',
-    reply_markup: {
-      inline_keyboard: [
-        [
-          { text: '⬅️ Back', callback_data: 'back' },
-          { text: 'Next ➡️', callback_data: 'next' },
-        ],
-      ],
-    },
-  };
-
-  const apikey = youtubeTOKEN;
-  let url = decodeURI(
-    `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=100&q=${value[1]}&type=video&key=${apikey}`
-  );
-  const getVideo = async () => {
-    try {
-      const res = await axios.request(url);
-
-      // Video snippet
-      let video = `https://www.youtube.com/watch?v=${res.data.items[index].id.videoId}`,
-        title = res.data.items[index].snippet.title;
-
-      // Video Stadistics
-      let stadistics = `https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${res.data.items[index].id.videoId}&key=${apikey}`;
-      const statisticRes = await axios.request(stadistics);
-      let viewCount = statisticRes.data.items[index].statistics.viewCount
-          .toString()
-          .replace(/\B(?=(\d{3})+(?!\d))/g, ','),
-        likeCount = statisticRes.data.items[index].statistics.likeCount
-          .toString()
-          .replace(/\B(?=(\d{3})+(?!\d))/g, ','),
-        dislikeCount = statisticRes.data.items[index].statistics.dislikeCount
-          .toString()
-          .replace(/\B(?=(\d{3})+(?!\d))/g, ','),
-        commentCount = statisticRes.data.items[index].statistics.commentCount
-          .toString()
-          .replace(/\B(?=(\d{3})+(?!\d))/g, ','),
-        videoCard = `Video solicitado: [▶️](${video})\n\n*${title}*\n\n👁 ${viewCount}\n\n  👍🏼${likeCount}  👎🏼${dislikeCount}\n\n💬 ${commentCount}`;
-
-      bot.sendMessage(message.chat.id, videoCard, decorator);
-
-      bot.on('callback_query', function onCallbackQuery(button) {
-        if (button.data == 'next') {
-          index++;
-
-          bot.editMessageText(
-            `Video solicitado: [▶️](https://www.youtube.com/watch?v=${res.data.items[index].id.videoId})`,
-            replyDecorator
-          );
-        }
-        if (button.data == 'back') {
-          index--;
-
-          if (index < 0) {
-            bot.editMessageText(
-              'No puedo ir mas atras, intenta ir a la siguiente.',
-              replyDecorator
-            );
-          } else {
-            bot.editMessageText(
-              `Video solicitado: [▶️](https://www.youtube.com/watch?v=${res.data.items[index].id.videoId})`,
-              replyDecorator
-            );
-          }
-        }
-      });
-    } catch {
-      bot.sendMessage(message.chat.id, 'No he encontrado el video solicitado');
-    }
-  };
-  getVideo();
+	//YoutTube
+	bot.onText(/^\/yt (.+)/, (message,value) => {
+		(async() => {
+			await ytSearcher(bot, message, value);
+		})();
+	});
+		
+	//Snap
+bot.onText(/^\/snap (.+)/, (message,value) => {
+	(async() => {
+		await snap(bot, message, value);
+	})();
 });
 
-//Urban dictionary command
-bot.onText(/\/dic (.+)/, (message, value) => {
-  const payload = {
-    method: 'GET',
-    url: 'https://mashape-community-urban-dictionary.p.rapidapi.com/define',
-    params: { term: value[1] },
-    headers: {
-      'x-rapidapi-key': rapidapiTOKEN,
-      'x-rapidapi-host': 'mashape-community-urban-dictionary.p.rapidapi.com',
-    },
-  };
-  const getInfo = async () => {
-    try {
-      const dicReq = await axios.request(payload),
-        word = dicReq.data.list[0].word,
-        definition = dicReq.data.list[0].definition,
-        example = dicReq.data.list[0].example,
-        dictionaryCard = `📖 He encontrado en el diccionario:\n\n*Word:* ${word}\n*Definition:* ${definition}\n*Example:* ${example}`;
-      bot.sendMessage(message.chat.id, dictionaryCard, {
-        reply_to_message: message.message_id,
-        parse_mode: 'Markdown',
-      });
-    } catch {
-      bot.sendMessage(
-        message.chat.id,
-        'No he encontrado la palabra solicitada'
-      );
-    }
-  };
-  getInfo();
+	//FullSnap
+bot.onText(/^\/fullsnap (.+)/, (message,value) => {
+	(async() => {
+		await fullSnap(bot, message, value);
+	})();
 });
 
-// Archivement command
-bot.onText(/\/logro (.+)/, (message, value) => {
-  let randomNumber = Math.floor(Math.random() * 39 + 1);
-  (async () => {
-    let url = await decodeURI(
-      `https://minecraftskinstealer.com/achievement/${randomNumber}/Logro desbloqueado/${value[1]}`
-    );
-    bot.sendMessage(message.chat.id, `[🏆](${url})`, {
-      reply_to_message_id: message.message_id,
-      parse_mode: 'Markdown',
-    });
-  })();
+	//Logro
+bot.onText(/^\/logro (.+)/, (message,value) => {
+	(async() => {
+		await logro(bot, message, value);
+	})();
 });
 
-// Full webshot command
-bot.onText(/\/fullsnap (.+)/, (message, value) => {
-  (async () => {
-    const url = await `https://webshot.deam.io/${value[1]}`;
-    bot.sendMessage(
-      message.chat.id,
-      `[👁‍🗨](${url})Mis ojos han llegado a este lugar.`,
-      { parse_mode: 'Markdown' }
-    );
-  })();
-});
-
-// Webshot command
-bot.onText(/\/snap (.+)/, (message, value) => {
-  (async () => {
-    const url = await `https://webshot.deam.io/${value[1]}?height=1000&width=1000`;
-    bot.sendMessage(
-      message.chat.id,
-      `[👁‍🗨](${url})Mis ojos han llegado a este lugar.`,
-      { parse_mode: 'Markdown' }
-    );
-  })();
-});
 
 // -- Adm commands -- //
 
-// Ban user command
-bot.onText(/\/ban (.+)/, (message, value) => {
-  if (message.reply_to_message == undefined) {
-    return;
-  }
-  const getUser = async () => {
-    const user = await bot.getChatMember(message.chat.id, message.from.id);
-    if (user.status == 'creator' || user.status == 'administrator') {
-      try {
-        bot.kickChatMember(message.chat.id, message.reply_to_message.from.id, {
-          until_date: Math.round((Date.now() + ms(value[1] + ' days')) / 1000),
-        });
-        bot.deleteMessage(message.chat.id, message.message_id);
-        bot.sendMessage(
-          message.chat.id,
-          `El usuario ${
-            message.reply_to_message.from.username === undefined
-              ? message.reply_to_message.from.first_name
-              : '@' + message.reply_to_message.from.username
-          } ha sido baneado durante: *${value[1]} dias.*`,
-          { parse_mode: 'Markdown' }
-        );
-      } catch {
-        bot.sendMessage(message.chat.id, `No he podido banear al usuario.`);
-      }
-    } else {
-      bot.sendMessage(message.chat.id, 'No eres administrador.');
-    }
-  };
-  getUser();
+	//Ban
+bot.onText(/^\/ban/, (message,value) => {
+	(async() => {
+		await ban(bot, message, value);
+	})();
 });
 
-// Unban user command
-bot.onText(/\/unban (.+)/, (message, value) => {
-  if (message.reply_to_message == undefined) {
-    return;
-  }
-  const getUser = async () => {
-    const user = await bot.getChatMember(message.chat.id, message.from.id);
-    if (user.status == 'creator' || user.status == 'administrator') {
-      try {
-        bot.unbanChatMember(message.chat.id, message.reply_to_message.from.id);
-        bot.deleteMessage(message.chat.id, message.message_id);
-        bot.sendMessage(
-          message.chat.id,
-          `El usuario ${message.reply_to_message.username} ha sido desbaneado. `
-        );
-      } catch {
-        bot.sendMessage(message.chat.id, `No he podido desbanear al usuario.`);
-      }
-    } else {
-      bot.sendMessage(message.chat.id, 'No eres administrador.');
-    }
-  };
-  getUser();
+	//UnBan
+bot.onText(/^\/unban/, message => {
+	(async() => {
+		await unban(bot, message);
+	})();
 });
 
-// Pin command
-bot.onText(/\/pin (.+)/, message => {
-  (async () => {
-    let botInfo = await bot.getMe(),
-      botStats = await bot.getChatMember(message.chat.id, botInfo.id),
-      userStats = await bot.getChatMember(message.chat.id, message.from.id);
-    if (
-      botStats.status != 'administrator' ||
-      botStats.can_pin_messages == false
-    ) {
-      bot.sendMessage(
-        message.chat.id,
-        'No tengo permisos para pinear mensajes. (esto se debe a que no soy administradora { o no tengo permisos para anclar mensajes })'
-      );
-    } else {
-      bot.pinChatMessage(message.chat.id, message.message_id);
-      bot.sendMessage(
-        message.chat.id,
-        `Anclado 📌\nPin ID: ${message.message_id}`
-      );
-    }
-  })();
+	//Pin
+bot.onText(/^\/pin (.+)/, message => {
+	(async() => {
+		await pin(bot, message);
+	})();
 });
 
-// Unpin command
-bot.onText(/\/unpin (.+)/, (message, value) => {
-  const unpinMessage = async () => {
-    try {
-      let botInfo = await bot.getMe(),
-        botStats = await bot.getChatMember(message.chat.id, botInfo.id),
-        userStats = await bot.getChatMember(message.chat.id, message.from.id);
-      if (
-        botStats.status != 'administrator' ||
-        userStats.status == 'member' ||
-        botStats.can_pin_messages == false
-      ) {
-        bot.sendMessage(
-          message.chat.id,
-          'No tengo permisos para despinear mensajes. (esto se debe a que no soy administradora {o no tengo permisos para desanclar mensajes} o no eres un administrador del grupo.)'
-        );
-      } else {
-        bot.unpinChatMessage(message.chat.id, {
-          message_id: parseInt(value[1]),
-        });
-        bot.sendMessage(message.chat.id, `Se ha desanclado el mensaje.`, {
-          reply_to_message_id: message.message_id,
-        });
-      }
-    } catch {
-      bot.sendMessage(message.chat.id, 'No he encontrado el pin a remover.');
-    }
-  };
-  unpinMessage();
+	//UnPin
+bot.onText(/^\/unpin (.+)/, (message,value) => {
+	(async() => {
+		await unpin(bot, message, value);
+	})();
 });
 
-// Change title of group command
-bot.onText(/\/chtitle (.+)/, (message, value) => {
-  (async () => {
-    let botInfo = await bot.getMe(),
-      botStats = await bot.getChatMember(message.chat.id, botInfo.id),
-      userStats = await bot.getChatMember(message.chat.id, message.from.id);
-    if (
-      botStats.status != 'administrator' ||
-      userStats.status == 'member' ||
-      botStats.can_change_info == false
-    ) {
-      bot.sendMessage(
-        message.chat.id,
-        'No tengo permisos. (esto se debe a que no soy administradora {o no tengo permisos para anclar mensajes} o no eres administrador del grupo.)'
-      );
-    } else {
-      bot.setChatTitle(message.chat.id, value[1]);
-      bot.sendMessage(
-        message.chat.id,
-        'He cambiado el titulo de este espacio.'
-      );
-    }
-  })();
+	//ChangeTitle
+bot.onText(/^\/chtitle (.+)/, (message,value) => {
+	(async() => {
+		await chtitle(bot, message, value);
+	})();
 });
 
-// Change descripcion command
-bot.onText(/\/chdescription (.+)/, (message, value) => {
-  (async () => {
-    let botInfo = await bot.getMe(),
-      botStats = await bot.getChatMember(message.chat.id, botInfo.id),
-      userStats = await bot.getChatMember(message.chat.id, message.from.id);
-    if (
-      botStats.status != 'administrator' ||
-      userStats.status == 'member' ||
-      botStats.can_change_info == false
-    ) {
-      bot.sendMessage(
-        message.chat.id,
-        'No tengo permisos. (esto se debe a que no soy soy administradora o no tengo permisos de cambiar descripcion) O no eres administrador'
-      );
-    } else {
-      bot.setChatDescription(message.chat.id, value[1]);
-      bot.sendMessage(
-        message.chat.id,
-        'He cambiado la descripcion de este espacio.'
-      );
-    }
-  })();
+	//ChangeDescription
+bot.onText(/^\/chdescription (.+)/, (message,value) => {
+	(async() => {
+		await chdescription(bot, message, value);
+	})();
 });
 
-// Generate invitation link
-bot.onText(/\/invite/, message => {
-  (async () => {
-    let botInfo = await bot.getMe(),
-      botStats = await bot.getChatMember(message.chat.id, botInfo.id);
-    if (
-      botStats.status != 'administrator' ||
-      botStats.can_invite_users == false
-    ) {
-      bot.sendMessage(
-        message.chat.id,
-        'No tengo permisos. (esto se debe a que no soy administradora o no tengo permisos de invitar)'
-      );
-    } else {
-      bot.exportChatInviteLink(message.chat.id);
-      let chatInfo = await bot.getChat(message.chat.id);
-      bot.sendMessage(
-        message.chat.id,
-        `Aqui tienes un ticket de entrada [🎟](${chatInfo.invite_link})`,
-        { parse_mode: 'Markdown' }
-      );
-    }
-  })();
+	//GenerateInvitation
+bot.onText(/^\/invite/, message => {
+	(async() => {
+		await invite(bot, message);
+	})();
 });
 
-//Support commands
-// Help message
-bot.onText(/^\/help/, message => {
-  bot.sendMessage(
-    message.chat.id,
-    `Saludos, viajero. Soy *Xhibalba*, poseedora de las ruinas del inframundo. Por lo que veo, no sabes bien como funcionan estas cosas asi que dejame explicarte brevemente.\nPresiona el caracter / para acceder a mi menu de comandos.\nMuchos de mis comandos para poder ser ejecutados requieren de un argumento [arg] el cual puede ser numerico o de letras segun el comando que ejecutes, *ejemplo:*\n/clima santiago o /dado 2\n\nSi necesitas ayuda o has encontrado algun bug 🐞o usuario que manche mi pureza, puedes escribirle a mi creador [ZeroSeven](https://t.me/ZeroSeventty) Haciendo click sobre su nombre.\n\nComo tambien puedes mandar un reporte al buzon haciendo uso del comando /report tu reporte.`,
-    { reply_to_message_id: message.message_id, parse_mode: 'Markdown' }
-  );
-});
+// - Support commands - //
 
-// Report command
-bot.onText(/\/report (.+)/, (message, value) => {
-  if (message.chat.type == 'private') {
-    bot.sendMessage(
-      message.chat.id,
-      'He enviado tu reporte al buzón de reportes'
-    );
-    bot.sendMessage(
-      '-1001268556874',
-      `--- New report ---\n\nUser id: ${message.from.id}\nIs bot?: ${message.from.is_bot}\nFirst name: ${message.from.first_name}\nLast name: ${message.from.last_name}\nUsername: ${message.from.username}\nLanguage code: ${message.from.language_code}\n\nMessage: ${value[1]}`
-    );
-  } else {
-    bot.sendMessage(
-      message.from.id,
-      'Solo puedes realizar reportes desde aqui.'
-    );
-  }
-});
-
-// Info about the bot
-bot.onText(/^\/info/, message => {
-  let title = process.title,
-    version = process.versions.node,
-    modules = process.versions.modules,
-    openssl = process.versions.openssl,
-    platform = process.platform,
-    pid = process.pid,
-    ppid = process.ppid;
-  bot.sendMessage(
-    message.chat.id,
-    `🔰System info🔰\n\nRunning in: ${title} 🍃\nVersion: ${version}\nModules: ${modules}\nOpenSSL ${openssl}\nLiving in: ${platform}\nPID: ${pid} READY to kill\nPPID: ${ppid}\nBot version: 0.0.1 s.e.e.d 🌱`
-  );
+	//Report
+bot.onText(/^\/report (.+)/, (message,value) => {
+	(async() => {
+		await report(bot, message, value);
+	})();
 });
 
 // -- Second-order Commands -- Events//
-// Welcomes and farewells
+	// Welcome and farewells
+
 bot.on('message', message => {
-  try {
-    (async () => {
-      let botInfo = await bot.getMe(),
-        botStats = await bot.getChatMember(message.chat.id, botInfo.id),
-        chatInfo = await bot.getChat(message.chat.id);
-      if (
-        botStats.status == 'administrator' &&
-        message.new_chat_members != undefined
-      ) {
-        bot.sendMessage(
-          message.chat.id,
-          `Bienvenido a *${message.chat.title}*, usuario *${
-            message.new_chat_member.username === undefined
-              ? message.new_chat_member.first_name
-              : '@' + message.new_chat_member.username
-          }* soy quien resguarda este lugar. Recuerda siempre mantenerte al margen con las reglas.`,
-          { parse_mode: 'Markdown' }
-        );
-      } else if (
-        botStats.status == 'member' &&
-        message.new_chat_member != undefined
-      ) {
-        bot.sendMessage(
-          message.chat.id,
-          `Bienvenido a *${message.chat.title}*, usuario *${
-            message.new_chat_member.username === undefined
-              ? message.new_chat_member.first_name
-              : '@' + message.new_chat_member.username
-          }* esperemos que tu estadia sea fructifera.`,
-          { parse_mode: 'Markdown' }
-        );
-      } else if (message.left_chat_member != undefined) {
-        bot.sendMessage(
-          message.chat.id,
-          `Un alma perteneciente al vacio siempre termina regresando a el, *${
-            message.left_chat_member.username === undefined
-              ? message.left_chat_member.first_name
-              : '@' + message.left_chat_member.username
-          }* regresa pronto.`,
-          { parse_mode: 'Markdown' }
-        );
-      }
-    })();
-  } catch (error) {
-    bot.sendMessage(
-      message.chat.id,
-      'Ha ocurrido un error al recibir o despedir.'
-    );
-    console.log(error);
-  }
+	welcomeAndFarewells(bot, message);
 });
 
 bot.on('message', function (message) {
@@ -834,4 +262,5 @@ bot.on('message', function (message) {
     `\nUser: ${message.from.username} ${message.from.first_name} | ${message.from.id}\nChat: ${message.chat.title} | ${message.chat.username} | ${message.chat.type}\nMessage: ${message.message_id} | ${message.text}\n`
   );
 });
+
 // -- Bot's end -- //
