@@ -26,8 +26,8 @@ Example: /dado 1 or /clima Santo Domingo
 | Heya | The bot will greet you back if you write that to her | /heya |
 | Help | Bot's manual | /help |
 | Say | Type something and the bot will repeat it | /say something |
-| Dado | Throw a dice using numbers between 1 or 6 | /dado 6
-| Clima | Want to see how is the weather in any place? | /clima Santiago |
+| Dice | Throw a dice using numbers between 1 or 6 | /dice 6
+| Weather | Want to see how is the weather in any place? | /weather Santiago |
 | GH | Find the profiles of your programmer friends on github | /gh seventty
 | Wiki | Look up anything on wikipedia, the universal encyclopedia of the universe | /wiki bot
 | Img | Let's look for images together, just tell me what you want us to see | /img apples
