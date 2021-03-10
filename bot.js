@@ -21,6 +21,7 @@ import welcomeAndFarewells from './src/fragments/second-order-commands/welcome-f
 
 const { start, heya, help, say, options } = responses;
 
+
 // --- Key Chain --- //
 dotenv.config();
 const botEngineTOKEN = process.env.remote_bot_TOKEN || process.env.local_bot_TOKEN;
@@ -132,13 +133,6 @@ bot.onText(/^\/dice (.+)/, (message,value) => {
 bot.onText(/^\/dart/, (message) => {
 	(async() => {
 		await dart(bot, message);
-	})();
-});
-
-	//Bowling game
-bot.onText(/^\/bowling/, (message) => {
-	(async() => {
-		await bowling(bot, message);
 	})();
 });
 
