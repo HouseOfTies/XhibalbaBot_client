@@ -295,7 +295,7 @@ bot.on('message', function (message) {
 });
 
 setInterval(() => {
-	bot.sendMessage(-1001355690950, `Tip: ${tips.recomendations[Object.keys(tips.recomendations)[Math.floor(Math.random()*Object.keys(tips.recomendations).length)]]}`);
+	bot.sendMessage(-1001355690950, `•┈┈┈•┈┈┈•┈┈┈｡˚⋆｡˚\nTip: *${tips.recomendations[Object.keys(tips.recomendations)[Math.floor(Math.random()*Object.keys(tips.recomendations).length)]]}* #CodeYourHealth\n•┈┈┈•┈┈┈•┈┈┈｡˚⋆｡˚`, {parse_mode: "Markdown"});
 }, 1000 * (3600* 4));
 
 setInterval(() => {
