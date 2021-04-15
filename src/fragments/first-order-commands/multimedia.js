@@ -112,4 +112,10 @@ async function logro(bot, message, value){
 	await bot.sendMessage(message.chat.id, `[🏆](${url})`,options(message));
 }
 
+/* async function quote(){
+	let url = "";
+	const req = await axios.request(url);
+	console.log(req);
+} */
+
 export { ytSearcher, img, snap, fullSnap, logro }

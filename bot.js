@@ -3,6 +3,11 @@ Welcome to the 7th.
 */
 
 // Import & unpacking zone //
+
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const tips = require('./recomendations.json');
+
 import TelegramBot from 'node-telegram-bot-api';
 
 import dotenv from 'dotenv';
@@ -135,13 +140,6 @@ bot.onText(/^\/dart/, (message) => {
 	})();
 });
 
-	//Bowling game
-bot.onText(/^\/bowling/, (message) => {
-	(async() => {
-		await bowling(bot, message);
-	})();
-});
-
 	//Jackpot game
 bot.onText(/^\/jackpot/, (message) => {
 	(async() => {
@@ -250,6 +248,39 @@ bot.onText(/^\/report (.+)/, (message,value) => {
 	})();
 });
 
+
+https://favqs.com/api/qotd
+
+/*
+bot.onText(/^\/test/, message => {
+	bot.sendMessage(message.chat.id, "Look the keyboard",{
+		reply_to_message_id: message.message_id,
+		reply_markup: JSON.stringify({
+			keyboard: [
+				[
+				{
+					text: '⚔️ Fight ⚔️'
+				},
+				{
+					text: '🎒 Bag'
+				},
+				
+				{
+					text: '🏃🏻‍♀️ Escape'
+				}
+			]
+			],
+			resize_keyboard: false,
+			selective: true,
+		})
+	});
+});
+
+*/
+
+
+
+
 // -- Second-order Commands -- Events//
 	// Welcome and farewells
 
@@ -262,5 +293,15 @@ bot.on('message', function (message) {
     `\nUser: ${message.from.username} ${message.from.first_name} | ${message.from.id}\nChat: ${message.chat.title} | ${message.chat.username} | ${message.chat.type}\nMessage: ${message.message_id} | ${message.text}\n`
   );
 });
+
+setInterval(() => {
+	bot.sendMessage(-1001355690950, `Tip: ${tips.recomendations[Object.keys(tips.recomendations)[Math.floor(Math.random()*Object.keys(tips.recomendations).length)]]}`);
+}, 1000 * (3600* 4));
+
+setInterval(() => {
+	bot.sendMessage(-1001355690950, `¿Te gustan los recursos y ofertas de trabajo que se envían por acá de manera recurrente?, Sabemos que sí. ¿También te gusta la manera en que arreglamos código juntos? Porque a nosotros nos encanta. Comparte para que seamos la inteligencia compartida que supere las inteligencias artificiales. ฅ^•ﻌ•^ฅ ♡
+
+	Enlace: t.me/SoftDevs`);
+}, 1000 * (3600 * 12));
 
 // -- Bot's end -- //
