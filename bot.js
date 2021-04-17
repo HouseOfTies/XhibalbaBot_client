@@ -25,12 +25,8 @@ import { ban, unban, pin, unpin, chtitle, chdescription, invite } from './src/fr
 import report from './src/fragments/first-order-commands/support.js';
 import welcomeAndFarewells from './src/fragments/second-order-commands/welcome-farewells.js';
 
-import i18n from 'i18n';
-i18n.configure({
-    locales:['en','es'],
-	  defaultLocale: 'es',
-    register: global
-});
+import translate from 'translate-api'
+
 
 const { start, heya, help, say, options } = responses;
 
@@ -303,7 +299,7 @@ bot.on('message', function (message) {
   );
 });
 
-setInterval(() => {
+/* setInterval(() => {
 	bot.sendMessage(-1001425549016, `Tip:\n•┈┈┈•┈┈┈•┈┈┈｡˚⋆｡˚\n*${tips.recomendations[Object.keys(tips.recomendations)[Math.floor(Math.random()*Object.keys(tips.recomendations).length)]]}* #CodeYourHealth\n•┈┈┈•┈┈┈•┈┈┈｡˚⋆｡˚`, {parse_mode: "Markdown"});
 }, 1000 * (3600 * 4));
 
@@ -313,12 +309,17 @@ setInterval(() => {
 
 	Enlace: t.me/SoftDevs*`, {parse_mode : "Markdown"});
 }, 1000 * (3600 * 11));
-
+*/
 let quote = null;
 setInterval(() => {
-	quote = quotes[Object.keys(quotes)[Math.floor(Math.random()*Object.keys(quotes).length)]];
-	bot.sendMessage(-1001425549016, `Quote: “*${quote.text}*” - ${quote.author}`, {parse_mode: "Markdown"});
-}, 1000 * (3600 * 3));
+	const translation = async() => {
+	 quote = quotes[Object.keys(quotes)[Math.floor(Math.random()*Object.keys(quotes).length)]];
+	// bot.sendMessage(-1001425549016, `Quote: “*${quote.text}*” - ${quote.author}`, {parse_mode: "Markdown"});
+		const translation = await translate.getText(quote.text, {to: 'es'});
+		console.log(translation);
+	};
+	translation();
+}, 1000); 
 
 // -- Bot's end -- //
 
