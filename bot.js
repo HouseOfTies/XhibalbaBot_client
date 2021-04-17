@@ -6,7 +6,8 @@ Welcome to the 7th.
 
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const tips = require('./recomendations.json');
+const tips = require('./public/announcement/recomendations.json'),
+	quotes = require('./public/quotes/quotes.json');
 
 import TelegramBot from 'node-telegram-bot-api';
 
@@ -23,6 +24,13 @@ import { ytSearcher, img, snap, fullSnap, logro } from './src/fragments/first-or
 import { ban, unban, pin, unpin, chtitle, chdescription, invite } from './src/fragments/first-order-commands/administration.js';
 import report from './src/fragments/first-order-commands/support.js';
 import welcomeAndFarewells from './src/fragments/second-order-commands/welcome-farewells.js';
+
+import i18n from 'i18n';
+i18n.configure({
+    locales:['en','es'],
+	  defaultLocale: 'es',
+    register: global
+});
 
 const { start, heya, help, say, options } = responses;
 
@@ -232,6 +240,7 @@ bot.onText(/^\/chdescription (.+)/, (message,value) => {
 	})();
 });
 
+
 	//GenerateInvitation
 bot.onText(/^\/invite/, message => {
 	(async() => {
@@ -295,13 +304,23 @@ bot.on('message', function (message) {
 });
 
 setInterval(() => {
-	bot.sendMessage(-1001355690950, `•┈┈┈•┈┈┈•┈┈┈｡˚⋆｡˚\nTip: *${tips.recomendations[Object.keys(tips.recomendations)[Math.floor(Math.random()*Object.keys(tips.recomendations).length)]]}* #CodeYourHealth\n•┈┈┈•┈┈┈•┈┈┈｡˚⋆｡˚`, {parse_mode: "Markdown"});
-}, 1000 * (3600* 4));
+	bot.sendMessage(-1001425549016, `Tip:\n•┈┈┈•┈┈┈•┈┈┈｡˚⋆｡˚\n*${tips.recomendations[Object.keys(tips.recomendations)[Math.floor(Math.random()*Object.keys(tips.recomendations).length)]]}* #CodeYourHealth\n•┈┈┈•┈┈┈•┈┈┈｡˚⋆｡˚`, {parse_mode: "Markdown"});
+}, 1000 * (3600 * 4));
+
 
 setInterval(() => {
-	bot.sendMessage(-1001355690950, `¿Te gustan los recursos y ofertas de trabajo que se envían por acá de manera recurrente?, Sabemos que sí. ¿También te gusta la manera en que arreglamos código juntos? Porque a nosotros nos encanta. Comparte para que seamos la inteligencia compartida que supere las inteligencias artificiales. ฅ^•ﻌ•^ฅ ♡
+	bot.sendMessage(-1001425549016, `*¿Te gustan los recursos y ofertas de trabajo que se envían por acá de manera recurrente?, Sabemos que sí. ¿También te gusta la manera en que arreglamos código juntos? Porque a nosotros nos encanta. Comparte para que seamos la inteligencia compartida que supere las inteligencias artificiales. ฅ^•ﻌ•^ฅ ♡
 
-	Enlace: t.me/SoftDevs`);
-}, 1000 * (3600 * 12));
+	Enlace: t.me/SoftDevs*`, {parse_mode : "Markdown"});
+}, 1000 * (3600 * 11));
+
+let quote = null;
+setInterval(() => {
+	quote = quotes[Object.keys(quotes)[Math.floor(Math.random()*Object.keys(quotes).length)]];
+	bot.sendMessage(-1001425549016, `Quote: “*${quote.text}*” - ${quote.author}`, {parse_mode: "Markdown"});
+}, 1000 * (3600 * 3));
 
 // -- Bot's end -- //
+
+//SoftDevs chat id -1001355690950
+// 1000 * (3600 * 12) Seconds per hour per count of hours.
