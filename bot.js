@@ -25,8 +25,6 @@ import { ban, unban, pin, unpin, chtitle, chdescription, invite } from './src/fr
 import report from './src/fragments/first-order-commands/support.js';
 import welcomeAndFarewells from './src/fragments/second-order-commands/welcome-farewells.js';
 
-import translate from 'translate-api'
-
 
 const { start, heya, help, say, options } = responses;
 
@@ -299,29 +297,23 @@ bot.on('message', function (message) {
   );
 });
 
-/* setInterval(() => {
-	bot.sendMessage(-1001425549016, `Tip:\n•┈┈┈•┈┈┈•┈┈┈｡˚⋆｡˚\n*${tips.recomendations[Object.keys(tips.recomendations)[Math.floor(Math.random()*Object.keys(tips.recomendations).length)]]}* #CodeYourHealth\n•┈┈┈•┈┈┈•┈┈┈｡˚⋆｡˚`, {parse_mode: "Markdown"});
+setInterval(() => {
+	bot.sendMessage(-1001355690950, `Tip:\n•┈┈┈•┈┈┈•┈┈┈｡˚⋆｡˚\n*${tips.recomendations[Object.keys(tips.recomendations)[Math.floor(Math.random()*Object.keys(tips.recomendations).length)]]}* #CodeYourHealth\n•┈┈┈•┈┈┈•┈┈┈｡˚⋆｡˚`, {parse_mode: "Markdown"});
 }, 1000 * (3600 * 4));
 
 
 setInterval(() => {
-	bot.sendMessage(-1001425549016, `*¿Te gustan los recursos y ofertas de trabajo que se envían por acá de manera recurrente?, Sabemos que sí. ¿También te gusta la manera en que arreglamos código juntos? Porque a nosotros nos encanta. Comparte para que seamos la inteligencia compartida que supere las inteligencias artificiales. ฅ^•ﻌ•^ฅ ♡
+	bot.sendMessage(-1001355690950, `*¿Te gustan los recursos y ofertas de trabajo que se envían por acá de manera recurrente?, Sabemos que sí. ¿También te gusta la manera en que arreglamos código juntos? Porque a nosotros nos encanta. Comparte para que seamos la inteligencia compartida que supere las inteligencias artificiales. ฅ^•ﻌ•^ฅ ♡
 
 	Enlace: t.me/SoftDevs*`, {parse_mode : "Markdown"});
 }, 1000 * (3600 * 11));
-*/
+
 let quote = null;
 setInterval(() => {
-	const translation = async() => {
 	 quote = quotes[Object.keys(quotes)[Math.floor(Math.random()*Object.keys(quotes).length)]];
-	// bot.sendMessage(-1001425549016, `Quote: “*${quote.text}*” - ${quote.author}`, {parse_mode: "Markdown"});
-		const translation = await translate.getText(quote.text, {to: 'es'});
-		console.log(translation);
-	};
-	translation();
-}, 1000); 
+	bot.sendMessage(-1001355690950, `“*${quote.text}*” - ${quote.author}`, {parse_mode: "Markdown"});
+}, 1000 * (3600 * 3)); 
 
+// 1000 * (3600 * 12) Seconds per hour per count of hours.
 // -- Bot's end -- //
 
-//SoftDevs chat id -1001355690950
-// 1000 * (3600 * 12) Seconds per hour per count of hours.
