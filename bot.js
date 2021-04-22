@@ -299,20 +299,20 @@ bot.on('message', function (message) {
 
 setInterval(() => {
 	bot.sendMessage(-1001355690950, `Tip:\n•┈┈┈•┈┈┈•┈┈┈｡˚⋆｡˚\n*${tips.recomendations[Object.keys(tips.recomendations)[Math.floor(Math.random()*Object.keys(tips.recomendations).length)]]}* #CodeYourHealth\n•┈┈┈•┈┈┈•┈┈┈｡˚⋆｡˚`, {parse_mode: "Markdown"});
-}, 1000 * (3600 * 4));
+}, 1000 * (3600 * 9));
 
 
 setInterval(() => {
 	bot.sendMessage(-1001355690950, `*¿Te gustan los recursos y ofertas de trabajo que se envían por acá de manera recurrente?, Sabemos que sí. ¿También te gusta la manera en que arreglamos código juntos? Porque a nosotros nos encanta. Comparte para que seamos la inteligencia compartida que supere las inteligencias artificiales. ฅ^•ﻌ•^ฅ ♡
 
 	Enlace: t.me/SoftDevs*`, {parse_mode : "Markdown"});
-}, 1000 * (3600 * 11));
+}, 1000 * (3600 * 13));
 
 let quote = null;
 setInterval(() => {
 	 quote = quotes[Object.keys(quotes)[Math.floor(Math.random()*Object.keys(quotes).length)]];
 	bot.sendMessage(-1001355690950, `“*${quote.text}*” - ${quote.author}`, {parse_mode: "Markdown"});
-}, 1000 * (3600 * 3)); 
+}, 1000 * (3600 * 6)); 
 
 // 1000 * (3600 * 12) Seconds per hour per count of hours.
 // -- Bot's end -- //
