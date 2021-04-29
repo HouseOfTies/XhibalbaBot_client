@@ -1,3 +1,4 @@
+import axios from 'axios';
 import responses from './responses.js';
 const { options } = responses;
 
@@ -106,7 +107,37 @@ async function jackpot(bot, message) {
 // 43 = full lemon
 // 64 = full 777
 
-
 // New random games here bellow
 
-export { dice, dart, jackpot };
+async function pokemon(bot, message){
+	try {
+		const messageId = message.message_id+1;
+	const pokemonId = Math.floor(Math.random() * 898 + 1),
+	url = `https://pokeapi.co/api/v2/pokemon/${pokemonId}/`,
+	pokemonData = await axios.get(url);
+	let pokemonImage = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonId}.png`
+	
+	bot.sendMessage(message.chat.id, `Adivina el nombre del [Pokémon](${pokemonImage}) tienes 30 segundos.`, options(message));
+	
+	let timer = null;
+	const timeOut = () => {
+		timer = setTimeout(() => {
+			bot.editMessageText(`Se termino el tiempo. ⌛ el Pokémon era ${pokemonData.data.name}.`,{chat_id: message.chat.id, message_id: messageId});
+		}, 30000);
+	}
+	timeOut();
+	
+	bot.on('message', message => {
+		if(message.text.localeCompare(pokemonData.data.name, undefined, { sensitivity: 'base' }) == 0){
+			bot.editMessageText(`Adivinaste ${message.from.first_name} 🎉 `,{chat_id: message.chat.id, message_id: messageId});
+			clearTimeout(timer);
+		};
+	});
+	} catch (e) {
+		console.log(e);
+	}
+	
+	//bot.deleteMessage(message.chat.id, message.message_id+1);
+}
+
+export { dice, dart, jackpot, pokemon };

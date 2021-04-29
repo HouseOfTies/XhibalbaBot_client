@@ -18,7 +18,7 @@ import responses from './src/fragments/first-order-commands/responses.js';
 import { idGenerator, buttonMaker } from './src/fragments/buttons/buttonGenerator.js';
 
 import { whoami, whois } from './src/fragments/first-order-commands/userRecognition.js';
-import { dice, dart, jackpot } from './src/fragments/first-order-commands/randomGames.js';
+import { dice, dart, jackpot, pokemon } from './src/fragments/first-order-commands/randomGames.js';
 import { weather, GitHub, wiki, dictionary, ip } from './src/fragments/first-order-commands/assistance.js';
 import { ytSearcher, img, snap, fullSnap, logro } from './src/fragments/first-order-commands/multimedia.js';
 import { ban, unban, pin, unpin, chtitle, chdescription, invite } from './src/fragments/first-order-commands/administration.js';
@@ -149,6 +149,12 @@ bot.onText(/^\/jackpot/, (message) => {
 	})();
 });
 
+bot.onText(/^\/pkg/, (message) => {
+	(async() => {
+		await pokemon(bot, message);
+	})();
+});
+
 // - Multimedia commands - //
 
 	//Img
@@ -252,7 +258,6 @@ bot.onText(/^\/report (.+)/, (message,value) => {
 });
 
 
-https://favqs.com/api/qotd
 
 /*
 bot.onText(/^\/test/, message => {
