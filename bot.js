@@ -300,6 +300,20 @@ bot.on('message', function (message) {
   console.log(
     `\nUser: ${message.from.username} ${message.from.first_name} | ${message.from.id}\nChat: ${message.chat.title} | ${message.chat.username} | ${message.chat.type}\nMessage: ${message.message_id} | ${message.text}\n`
   );
+  switch (message.text.toLowerCase()) {
+	  	case "hehe boe":
+			  bot.sendVoice(message.chat.id, './public/sounds/hehe-boe.mp3');
+			break;
+		case "lets go":
+			bot.sendVoice(message.chat.id, './public/sounds/letsgo.mp3');
+		  	break;
+		case "yamete kudasai":
+			bot.sendVoice(message.chat.id, './public/sounds/yamete-kudasai.mp3');
+		  	break;
+  
+	  default:
+		break;
+  }
 });
 
 setInterval(() => {

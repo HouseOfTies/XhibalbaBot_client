@@ -136,7 +136,6 @@ async function pokemon(bot, message){
 	} catch (e) {
 		console.log(e);
 	}
-	
 	//bot.deleteMessage(message.chat.id, message.message_id+1);
 }
 
