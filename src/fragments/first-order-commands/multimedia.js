@@ -118,4 +118,35 @@ async function logro(bot, message, value){
 	console.log(req);
 } */
 
-export { ytSearcher, img, snap, fullSnap, logro }
+function sounds(bot, message){
+	switch (message.text.toLowerCase()) {
+		case "hehe boe":
+			bot.sendVoice(message.chat.id, './public/sounds/hehe-boe.mp3');
+			break;
+	  	case "lets go":
+		  	bot.sendVoice(message.chat.id, './public/sounds/letsgo.mp3');
+			break;
+	 	case "yamete kudasai":
+		  	bot.sendVoice(message.chat.id, './public/sounds/yamete-kudasai.mp3');
+			break;
+		case "🌚":
+			bot.sendVoice(message.chat.id, './public/sounds/love-moment.mp3');
+			break;
+		case "wow":
+		 	bot.sendVoice(message.chat.id, './public/sounds/wow.mp3');
+			break;
+		case "no god":
+		 	bot.sendVoice(message.chat.id, './public/sounds/no-god.mp3');
+			break;
+		case "ohh":
+		 	bot.sendVoice(message.chat.id, './public/sounds/ohh.mp3');
+			break;
+		case "wtf":
+		 	bot.sendVoice(message.chat.id, './public/sounds/wtf.mp3');
+			break;
+	default:
+	  break;
+	}
+}
+
+export { ytSearcher, img, snap, fullSnap, logro, sounds }

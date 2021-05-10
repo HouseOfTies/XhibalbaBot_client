@@ -20,7 +20,7 @@ import { idGenerator, buttonMaker } from './src/fragments/buttons/buttonGenerato
 import { whoami, whois } from './src/fragments/first-order-commands/userRecognition.js';
 import { dice, dart, jackpot, pokemon } from './src/fragments/first-order-commands/randomGames.js';
 import { weather, GitHub, wiki, dictionary, ip } from './src/fragments/first-order-commands/assistance.js';
-import { ytSearcher, img, snap, fullSnap, logro } from './src/fragments/first-order-commands/multimedia.js';
+import { ytSearcher, img, snap, fullSnap, logro, sounds } from './src/fragments/first-order-commands/multimedia.js';
 import { ban, unban, pin, unpin, chtitle, chdescription, invite } from './src/fragments/first-order-commands/administration.js';
 import report from './src/fragments/first-order-commands/support.js';
 import welcomeAndFarewells from './src/fragments/second-order-commands/welcome-farewells.js';
@@ -300,20 +300,7 @@ bot.on('message', function (message) {
   console.log(
     `\nUser: ${message.from.username} ${message.from.first_name} | ${message.from.id}\nChat: ${message.chat.title} | ${message.chat.username} | ${message.chat.type}\nMessage: ${message.message_id} | ${message.text}\n`
   );
-  switch (message.text.toLowerCase()) {
-	  	case "hehe boe":
-			  bot.sendVoice(message.chat.id, './public/sounds/hehe-boe.mp3');
-			break;
-		case "lets go":
-			bot.sendVoice(message.chat.id, './public/sounds/letsgo.mp3');
-		  	break;
-		case "yamete kudasai":
-			bot.sendVoice(message.chat.id, './public/sounds/yamete-kudasai.mp3');
-		  	break;
-  
-	  default:
-		break;
-  }
+  sounds(bot, message);
 });
 
 setInterval(() => {
