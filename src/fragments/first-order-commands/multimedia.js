@@ -1,6 +1,7 @@
 import responses from './responses.js';
 import dotenv from 'dotenv';
 import axios from 'axios';
+import request from 'request';
 
 dotenv.config();
 
@@ -119,33 +120,20 @@ async function logro(bot, message, value){
 } */
 
 function sounds(bot, message){
-	switch (message.text.toLowerCase()) {
-		case "hehe boe":
-			bot.sendVoice(message.chat.id, './public/sounds/hehe-boe.mp3');
-			break;
-	  	case "lets go":
-		  	bot.sendVoice(message.chat.id, './public/sounds/letsgo.mp3');
-			break;
-	 	case "yamete kudasai":
-		  	bot.sendVoice(message.chat.id, './public/sounds/yamete-kudasai.mp3');
-			break;
-		case "🌚":
-			bot.sendVoice(message.chat.id, './public/sounds/love-moment.mp3');
-			break;
-		case "wow":
-		 	bot.sendVoice(message.chat.id, './public/sounds/wow.mp3');
-			break;
-		case "no god":
-		 	bot.sendVoice(message.chat.id, './public/sounds/no-god.mp3');
-			break;
-		case "ohh":
-		 	bot.sendVoice(message.chat.id, './public/sounds/ohh.mp3');
-			break;
-		case "wtf":
-		 	bot.sendVoice(message.chat.id, './public/sounds/wtf.mp3');
-			break;
-	default:
-	  break;
+	const sounds = {
+		omg: "https://ia601401.us.archive.org/4/items/funny-sounds/cardi%20b%20omg%20what%20is%20that.mp3",
+		"hehe boe": "https://archive.org/download/funny-sounds/hehe-boe.mp3",
+		"lets go": "https://archive.org/download/funny-sounds/letsgo.mp3",
+		"yamete kudasai": "https://archive.org/download/funny-sounds/yamete-kudasai.mp3",
+		"🌚": "https://archive.org/download/funny-sounds/love-moment.mp3",
+		wow: "https://archive.org/download/funny-sounds/wow.mp3",
+		no: "https://archive.org/download/funny-sounds/no-god.mp3",
+		wtf: "https://archive.org/download/funny-sounds/wtf.mp3",
+	};
+	try {
+		if(sounds[message.text.toLowerCase()]) bot.sendVoice(message.chat.id, request(sounds[message.text.toLowerCase()]));
+	} catch (error) {
+		return
 	}
 }
 
