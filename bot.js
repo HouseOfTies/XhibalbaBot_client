@@ -286,9 +286,6 @@ bot.onText(/^\/test/, message => {
 
 */
 
-
-
-
 // -- Second-order Commands -- Events//
 	// Welcome and farewells
 
