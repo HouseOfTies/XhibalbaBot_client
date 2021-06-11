@@ -21,14 +21,4 @@ bot.on('polling_error', error => {
 
 console.log("\nWelcome to the 7th, bot running.\n");
 
-/* const commandList = {
-	start: "/start",
-	commands: "/commands",
 
-} */
-
-/* getCommands = () => {
-  console.log(await bot.getMyCommands());
-}
-
-getCommands(); */
