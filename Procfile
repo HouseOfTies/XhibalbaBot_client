@@ -1,1 +1,1 @@
-bot: node bot.js
+bot: npm run bot
