@@ -5,7 +5,7 @@
   "main": "bot.js",
   "scripts": {
     "bot": "cd app/model && node bot.js",
-    "dev-bot": "cd app/model && nodemon bot.js"
+    "bot-test": "cd app/model && nodemon bot.js"
   },
   "repository": {
     "type": "git",
@@ -27,7 +27,7 @@
     "axios": ">=0.21.1",
     "body-parser": "^1.15.0",
     "dotenv": "^4.0.0",
-    "express": "^4.13.4",
+    "express": "^4.17.1",
     "i18n": "^0.13.2",
     "livereload": "^0.9.1",
     "ms": "^2.1.3",

@@ -15,7 +15,7 @@ const bot = new TelegramBot(TelegramBotToken, {polling: true}); //It will take h
 // - Errors detector - //
 bot.on('polling_error', error => {
 	const date = new Date();
-	fs.appendFileSync('../../tmp/log.txt', `Error detected\n\ndate: ${date}\n${error}`);
+	fs.writeFileSync('../../tmp/log.txt', `Error detected\n\ndate: ${date}\n${error}`);
 	console.log(error);
 });
 
