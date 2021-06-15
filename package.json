@@ -1,7 +1,7 @@
 {
   "name": "xhibalba",
   "version": "0.4.0",
-  "description": "Official SD OSS telegram bot.",
+  "description": "Official SD telegram bot.",
   "main": "bot.js",
   "scripts": {
     "bot": "cd app/model && node bot.js",
@@ -9,16 +9,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Seventty/Xhibalba.git"
+    "url": "git+https://github.com/Seventty/XhibalbaBot.git"
   },
   "type": "module",
   "keywords": [],
   "author": "Seventty",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Seventty/Xhibalba/issues"
+    "url": "https://github.com/Seventty/XhibalbaBot/issues"
   },
-  "homepage": "https://github.com/Seventty/Xhibalba#readme",
+  "homepage": "https://github.com/Seventty/XhibalbaBot#readme",
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
     "nodemon": "^2.0.7"
