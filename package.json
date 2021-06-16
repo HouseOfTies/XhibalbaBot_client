@@ -4,8 +4,8 @@
   "description": "Official SD telegram bot.",
   "main": "bot.js",
   "scripts": {
-    "bot": "cd app/model && node bot.js",
-    "bot-test": "cd app/model && nodemon bot.js"
+    "run": "cd app/model && node bot.js",
+    "persistant": "cd app/model && nodemon bot.js"
   },
   "repository": {
     "type": "git",
