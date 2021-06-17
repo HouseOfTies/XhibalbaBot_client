@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import fs from 'fs';
 import express from 'express';
 import { DBhelper } from '../helpers/DBhelper.js';
+import { botMessagesHelper } from '../helpers/botMessagesHelper.js';
 
 // --- Key Chain --- //
 dotenv.config({ path: '../../.env'});
@@ -32,38 +33,6 @@ app.listen(PORT, HOST);
 console.log(`\nBot running on http://${HOST}:${PORT}`, '\nWelcome to the 7th, bot running.\n');
 
 
-/* bot.onText(/\?info/, (message) => {
-	const { chat: { id }, from } = message;
-
-	const userTemplate = {
-		id: "",
-		username: "",
-		first_name: "",
-		last_name: "",
-		language_code: "",
-		is_bot: "",
-	};
-	
-	const user = {};
-
-	for (let i in userTemplate) {
-		from[i] === undefined ? user[i] = "Nothing" : user[i] = from[i];
-	};
-
-	const { username, first_name, last_name, language_code, is_bot } = user;
-  
-	if(!is_bot) bot.sendMessage(id, 
-			`
-			User info:
-			|*ID*: ${user.id}
-			|*Username*: ${username}
-			|*First Name*: ${first_name}
-			|*Last Name*: ${last_name}
-			|*Language*: ${language_code}
-			`, {reply_to_message_id: id, parse_mode: "Markdown"}
-		);
-}); */
-
-bot.onText(/^\!join/, async (message) => {
-  	DBhelper(bot, message).insertUser();
+bot.on('message', (message) => {
+  	botMessagesHelper(bot, message).messageLog();
 });

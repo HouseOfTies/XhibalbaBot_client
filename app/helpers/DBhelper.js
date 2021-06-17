@@ -14,7 +14,9 @@ export const DBhelper = (bot, message) => {
     };
     const pool = new Pool(defaultConfig);
   
-    if(!username) return bot.sendMessage(chatId, "Necesitas de un username (nombre de usuario) para poder registrarte. Ve a configuración > ajustes > editar perfil y registra un nombre de perfil.");
+    const userChecker = () => {
+      
+    }
 
     const selectUser = async () => {
         
