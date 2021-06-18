@@ -33,6 +33,20 @@ app.listen(PORT, HOST);
 console.log(`\nBot running on http://${HOST}:${PORT}`, '\nWelcome to the 7th, bot running.\n');
 
 
+bot.onText(/^\!join/, (message) => {
+	DBhelper(bot,message).insertUser();
+});
+
+bot.onText(/^\!disconnect/, (message) => {
+	DBhelper(bot,message).deleteUser();
+});
+
+
+bot.onText(/^\?who/, (message) => {
+	botMessagesHelper(bot, message).whoResponse();
+})
+
 bot.on('message', (message) => {
   	botMessagesHelper(bot, message).messageLog();
+	DBhelper(bot,message).userChecker();
 });

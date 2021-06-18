@@ -26,6 +26,7 @@
   "dependencies": {
     "axios": ">=0.21.1",
     "body-parser": "^1.15.0",
+    "dayjs": "^1.10.5",
     "dotenv": "^4.0.0",
     "express": "^4.17.1",
     "i18n": "^0.13.2",
