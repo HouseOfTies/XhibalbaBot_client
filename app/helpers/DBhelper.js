@@ -9,7 +9,7 @@ const defaultConfig = {
 };
 
 export const DBhelper = (bot, message) => {
-    const userId = message.from.id || (message.reply_to_message ? message.reply_to_message : message.from.id);
+    const userId = (message.reply_to_message ? message.reply_to_message.from.id : message.from.id);
     const chatId = message.chat.id;
     const { username } = message.from;
 
@@ -25,12 +25,15 @@ export const DBhelper = (bot, message) => {
         return userExist;
         }
 
-    const selectUser = async () => {
-        
+    const selectNick = async () => {
+        const query = `SELECT nickname FROM users WHERE userid = ${userId}`;
+        const res = await pool.query(query);
+        const nickname = res.rows[0].nickname;
+        return nickname;
     };
 
     const insertUser = async () => {
-        const query = `insert into users(userID) values(${userId});`
+        const query = `INSERT INTO users(userID) values(${userId});`
         const userCheck = await userChecker(userId);
 
         if(userCheck){
@@ -41,8 +44,17 @@ export const DBhelper = (bot, message) => {
         }
     };
 
-    const updateUser = async () => {
-        
+    const updateNick = async (value) => {
+        const query = `UPDATE users SET nickname = '${value[1]}' WHERE userId = ${userId}`;
+        console.log(query);
+        const userCheck = await userChecker(userId);
+
+        if(userCheck){
+            pool.query(query);
+            bot.sendMessage(chatId, `He cambiado tu apodo a: ${value[1]}`);
+        }else{
+            bot.sendMessage(chatId, "Tienes que estar registrado para poder portar un apodo.");
+        }
     };
 
     const deleteUser = async () => {
@@ -60,10 +72,10 @@ export const DBhelper = (bot, message) => {
   
     return {
         userChecker,
-        selectUser,
         insertUser,
-        updateUser,
+        updateNick,
         deleteUser,
+        selectNick,
     };
   };
 

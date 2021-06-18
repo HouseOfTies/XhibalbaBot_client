@@ -24,13 +24,15 @@ bot.on('polling_error', error => {
 	console.log(error);
 });
 
-const app = express();
+/* const app = express();
 app.get('/', (req, res) => {
   res.send('Welcome to 7th inside system, this message is to show the bot is running already.');
 });
 
 app.listen(PORT, HOST);
 console.log(`\nBot running on http://${HOST}:${PORT}`, '\nWelcome to the 7th, bot running.\n');
+ */
+
 
 
 bot.onText(/^\!join/, (message) => {
@@ -44,7 +46,13 @@ bot.onText(/^\!disconnect/, (message) => {
 
 bot.onText(/^\?who/, (message) => {
 	botMessagesHelper(bot, message).whoResponse();
-})
+});
+
+
+bot.onText(/^\/nick (.+)/, (message, value) => {
+	DBhelper(bot,message).updateNick(value);
+});
+
 
 bot.on('message', (message) => {
   	botMessagesHelper(bot, message).messageLog();
