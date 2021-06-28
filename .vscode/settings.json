@@ -1,0 +1,8 @@
+{
+    "filewatcher.commands": [{
+      "match": "\\.ts*",
+      "isAsync": true,
+      "cmd": "cd '${workspaceRoot}' && yarn gts fix '${file}'",
+      "event": "onFileChange"
+    }]
+  }
