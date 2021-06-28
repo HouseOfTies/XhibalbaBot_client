@@ -6,6 +6,7 @@
   "scripts": {
     "bot": "cd app/model && node bot.js",
     "persistant": "cd app/model && nodemon bot.js"
+
   },
   "repository": {
     "type": "git",
@@ -21,7 +22,12 @@
   "homepage": "https://github.com/Seventty/XhibalbaBot#readme",
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
-    "nodemon": "^2.0.7"
+    "@types/node": "^14.11.2",
+    "@types/node-telegram-bot-api": "^0.51.1",
+    "gts": "^3.1.0",
+    "nodemon": "^2.0.7",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.0.3"
   },
   "dependencies": {
     "axios": ">=0.21.1",
@@ -29,6 +35,7 @@
     "dayjs": "^1.10.5",
     "dotenv": "^4.0.0",
     "express": "^4.17.1",
+    "gts": "^3.1.0",
     "i18n": "^0.13.2",
     "livereload": "^0.9.1",
     "ms": "^2.1.3",
