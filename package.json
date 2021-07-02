@@ -1,46 +1,41 @@
 {
-  "name": "xhibalba",
-  "version": "0.4.0",
-  "description": "Official SD telegram bot.",
-  "main": "bot.js",
+  "name": "xhibalbabot",
+  "version": "5.0.0",
+  "description": "Just a telegram bot",
+  "main": "bot.ts",
   "scripts": {
-    "bot": "cd app/model && node bot.js",
-    "persistant": "cd app/model && nodemon bot.js"
-
+    "build": "tsc",
+    "persistant": "nodemon app/controller/bot.ts",
+    "bot": "ts-node app/controller/bot.ts"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Seventty/XhibalbaBot.git"
+    "url": "git+https://github.com/Softdevscommunity/XhibalbaBot.git"
   },
-  "type": "module",
-  "keywords": [],
+  "keywords": [
+    "TelegarmBot",
+    "Bot",
+    "MultimediaBot"
+  ],
   "author": "Seventty",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Seventty/XhibalbaBot/issues"
+    "url": "https://github.com/Softdevscommunity/XhibalbaBot/issues"
   },
-  "homepage": "https://github.com/Seventty/XhibalbaBot#readme",
-  "devDependencies": {
-    "@types/dotenv": "^8.2.0",
-    "@types/node": "^14.11.2",
-    "@types/node-telegram-bot-api": "^0.51.1",
-    "gts": "^3.1.0",
-    "nodemon": "^2.0.7",
-    "ts-node": "^10.0.0",
-    "typescript": "^4.0.3"
-  },
+  "homepage": "https://github.com/Softdevscommunity/XhibalbaBot#readme",
   "dependencies": {
-    "axios": ">=0.21.1",
-    "body-parser": "^1.15.0",
-    "dayjs": "^1.10.5",
-    "dotenv": "^4.0.0",
+    "axios": "^0.21.1",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "gts": "^3.1.0",
-    "i18n": "^0.13.2",
-    "livereload": "^0.9.1",
-    "ms": "^2.1.3",
-    "node-telegram-bot-api": "0.50.0",
+    "ms": "^2.0.0",
+    "node-telegram-bot-api": "^0.53.0",
     "package.json": "^2.0.1",
-    "pg": "^8.5.1"
+    "pg": "^8.6.0",
+    "ts-dedent": "^2.1.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.12",
+    "@types/ms": "^0.7.31",
+    "@types/node-telegram-bot-api": "^0.51.1"
   }
 }
