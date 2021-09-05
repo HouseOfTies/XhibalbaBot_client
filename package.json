@@ -4,14 +4,14 @@
   "description": "Just a telegram bot",
   "main": "bot.ts",
   "scripts": {
-    "build": "tsc",
-    "persistant": "nodemon app/controller/bot.ts",
-    "bot": "ts-node app/controller/bot.ts"
+    "bot": "node bot.js",
+    "persistant": "nodemon bot.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Softdevscommunity/XhibalbaBot.git"
   },
+  
   "keywords": [
     "TelegarmBot",
     "Bot",
