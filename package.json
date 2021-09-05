@@ -4,14 +4,13 @@
   "description": "Just a telegram bot",
   "main": "bot.ts",
   "scripts": {
-    "bot": "node bot.js",
-    "persistant": "nodemon bot.js"
+    "bot": "tsc --project ./ && node build/bot.js",
+    "persistant": "nodemon ./src/bot.ts"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Softdevscommunity/XhibalbaBot.git"
   },
-  
   "keywords": [
     "TelegarmBot",
     "Bot",
@@ -36,6 +35,10 @@
   "devDependencies": {
     "@types/express": "^4.17.12",
     "@types/ms": "^0.7.31",
-    "@types/node-telegram-bot-api": "^0.51.1"
+    "@types/node": "^16.7.10",
+    "@types/node-telegram-bot-api": "^0.51.1",
+    "nodemon": "^2.0.12",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.2"
   }
 }
