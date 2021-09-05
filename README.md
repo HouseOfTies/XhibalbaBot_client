@@ -1,5 +1,5 @@
 
-![Xhiba](https://papers.co/wallpaper/papers.co-au99-ilya-kuvshinov-girl-cute-pink-illustration-art-36-3840x2400-4k-wallpaper.jpg)
+![Xhiba](https://i.imgur.com/jxUUHIl.png)
 # The heart of the 7th
 #### XhibalbaBot
 ###
