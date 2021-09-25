@@ -1,8 +1,9 @@
 import TelegramBot from 'node-telegram-bot-api';
 import config from './config';
 
-
 console.log(config);
+
+
 //const bot: TelegramBot = new TelegramBot(token, {polling: true});
 
 /* bot.on('polling_error', error => {

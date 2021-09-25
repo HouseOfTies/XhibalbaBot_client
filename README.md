@@ -1,26 +1,29 @@
 
-![Xhiba](https://papers.co/wallpaper/papers.co-au99-ilya-kuvshinov-girl-cute-pink-illustration-art-36-3840x2400-4k-wallpaper.jpg)
+![Xhiba](https://i.imgur.com/jxUUHIl.png)
 # The heart of the 7th
 #### XhibalbaBot
 ###
 [![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)](https://forthebadge.com)
-![nodejsbadge](https://img.shields.io/badge/Runing%20in%20node.js%20-%2343853D.svg?&style=for-the-badge&logo=node.js&logoColor=white")
+![nodejsbadge](https://img.shields.io/badge/Runing%20in%20node.js%20-%2343853D.svg?&style=for-the-badge&logo=node.js&logoColor=white)
 
-[![https://telegram.me/ZeroSeventty](https://img.shields.io/badge/💬%20Telegram-Zero%20Seventty-e6005c.svg?style=flat-square)](https://telegram.me/ZeroSeventty)
-[![https://t.me/Inferno7th](https://img.shields.io/badge/💬%20Telegram-Group-e6005c.svg?style=flat-square)](https://t.me/Inferno7th)
-[![https://t.me/inferno1st](https://img.shields.io/badge/💬%20Telegram-Channel-e6005c.svg?style=flat-square)](https://t.me/inferno1st)
+[![https://telegram.me/ZeroSeventty](https://img.shields.io/badge/💬%20Bot%20owner-Seventty-e6005c.svg?style=flat-square)](https://telegram.me/ZeroSeventty)
+[![https://t.me/Inferno7th](https://img.shields.io/badge/💬%20Telegram-Official%20Group-e6005c.svg?style=flat-square)](https://t.me/Inferno7th)
 
 !["Heroku"](https://img.shields.io/badge/Living%20In%20heroku%20-%23430098.svg?&style=for-the-badge&logo=heroku&logoColor=white/>)
 
-XhibalbaBot is a telegram bot with which you can do many interesting things using its multiple commands; having both administrative commands and multimedia commands. Try it!
+XhibalbaBot is not just a telegram bot, SHE's and SHE'll be your favorite telegram bot, just try, you'll fall in love, I swear. ❤️
 
-#### How to run a command?
 ---
-You have to write the command using the / symbol
-Some commands require an argument [arg] to work.
-Example: /dado 1 or /clima Santo Domingo 
+# Commands
+###### How to run a command?
 
+You have to write the command using the */* symbol
+Some commands require arguments [arg] to work.
+>Example: /heya or /weather Santo Domingo 
 
+### Command List:
+##### Commands in quarentine, back soon 🔬
+<!-- 
   | Command | Description | Example |
 | ------ | ------ | ------ |
 | Heya | The bot will greet you back if you write that to her | /heya |
@@ -53,50 +56,40 @@ I must to be a group administrator 👑 for the following commands.
 | UnPin| The pin's command makes me return a pin ID, with that pin you can unpin the pin | /unpin pinID
 | ChatTitle | Let me change the name of your group for you, just tell me what you want | /chtitle the new title
 | ChatDescription | Let me change the description of your group for you, just tell me what you want | /chdescription the new description
-| Invite | Your own chat invitation? Got u, take a ticket | /invite
-
-
-# We have not new commands at the momment
-
-![newFeatures](https://i.imgur.com/4Bt1oxS.png)
-
+| Invite | Your own chat invitation? Got u, take a ticket | /invite -->
 
 ---
-### Installation / Usage / Requirements
+# What is new in the Garden? ⛩️
+![newFeatures](https://i.imgur.com/4Bt1oxS.png)
+### No new features for now! be patient
+
+---
+### Installation / Requirements / usage
 
 - [Node.js](https://nodejs.org/) v10+ to run (running in v15.4.0)
+- NPM version v6+ (7.21.0 being used in this proyect)
 - Your own bot token, example: [bot123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11](#) from [BotFather](https://t.me/botfather)
-- create a .env file
 
 Install the dependencies and devDependencies and start the server.
 
 ```sh
-$ git clone https://github.com/SoftDevsCommunity/XhibalbaBot
-$ cd XhibalbaBot
-$ npm install
-$ node bot.js
+git clone https://github.com/SoftDevsCommunity/XhibalbaBot
+cd XhibalbaBot
+npm install
+npm run start
 ```
 
-Open the file .env and set the enviromental variables with your tokens
-
-```sh
-local_bot_TOKEN='YOUR-BOT-TOKEN-FROM-BOTFATHER'
-local_openweather_TOKEN='YOUR-TOKEN-FROM-OPENWEATHER'
-local_youtube_TOKEN='YOUR-YOUTUBE-TOKEN-FROM-GOOGLE-DEVELOPER-CONSOLE'
-local_rapidapi_TOKEN='YOUR-API-FROM-RAPIDAPI'
-```
 ---
 ### Giving a house to your bot in !["Heroku"](https://img.shields.io/badge/heroku%20-%23430098.svg?&style=for-the-badge&logo=heroku&logoColor=white/>)
 
 >You have to be registered in heroku or have an account before starting with the following commands.
 
-Remember: You just need to type the lines with $ behind.
 
 ###### After installing heroku CLI you have to type the following commands
-#
+> Remember: You just need to type the lines with $ behind.
 - Step: 1
 ```sh
-$heroku login
+$ heroku login
 
 heroku: Press any key to open up the browser to login or q to exit
  ›   Warning: If browser does not open, visit
@@ -108,17 +101,17 @@ Logged in as me@example.com
 - Step: 2
 ```sh
 $ cd XhibalbaBot
-$heroku create yourbotename
+$ heroku create yourbotename
 
 Creating app... done, ⬢  yourbotename
 Creating sharp-rain-871... done, stack is heroku-18
 http://sharp-rain-871.herokuapp.com/ | https://git.heroku.com/sharp-rain-871.git
 Git remote heroku added
 ```
-- Setp 3:
+- Step 3:
 
 ```sh
-$git push heroku main
+$ git push heroku main
 
 Counting objects: 488, done.
 Delta compression using up to 8 threads.
@@ -169,11 +162,11 @@ To https://git.heroku.com/nameless-savannah-4829.git
 - Step: 4
 
 ```sh
-$ heroku ps:scale web=1
+$ heroku ps:scale bot=1
 ```
 
 #### The bot isn't running?
-##### You can see the log of the bot in heroku doing:
+##### You can see the log of the bot in heroku running:
 
 ```sh
 $ heroku logs --tail
@@ -188,9 +181,9 @@ $ heroku logs --tail
 ---
 ### Development / Support
 
-Want to contribute? That's great!
+Do you want to contribute? Awesome
 
-If you have knowledge of javascript you can start directly by forking this repository and after the changes, request a pull request. 
+If you have knowledge of **JavaScript** or **TypeScript** you can start directly by forking this repository and after the changes, request a pull request into experimental branch.
 
 You haven't any knowledge in programming? dont' worry, you can support me inviting me a Koffee.
 
