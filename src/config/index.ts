@@ -15,5 +15,8 @@ export default {
     youtube: null,
     openWeather: null,
     rapidapi: null,
+  },
+  logs: {
+    level: process.env.LOG_LEVEL || 'silly'
   }
 };

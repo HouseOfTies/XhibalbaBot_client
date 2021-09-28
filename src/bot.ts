@@ -1,10 +1,8 @@
 import 'reflect-metadata'; // We need this in order to use @Decorators
-
 import config from './config';
-
 import express from 'express';
-
 import TelegramBot from 'node-telegram-bot-api';
+import Logger from './loaders/logger';
 
 async function startBot(){
   const bot: TelegramBot = new TelegramBot(config.bot, {polling: true});
@@ -18,22 +16,16 @@ async function startBot(){
     console.log(message);
   });
 
-  console.log(`
-      ###############################################
-          🔰  Xhiba listening on port: ${config.port} 🔰
-      ###############################################
+  app.listen(config.port, () => { 
+    Logger.info(`
+    -----------------------------------------------
+          🔰 Xhiba listening on port: ${config.port} 🔰
+    -----------------------------------------------
   `);
+  }).on('error', err => {
+    Logger.error(err);
+    process.exit(1);
+  });
 }
 
 startBot();
-/* 
-
-console.log("\nConnected with the darkness of 7th\n");
-
-bot.onText(/^\/heya/, function(message){
-  bot.sendMessage(message.chat.id, `Greetings 👋🏻`);
-});
-
-bot.on('message', function (message) {
-    console.log(message);
-}); */
