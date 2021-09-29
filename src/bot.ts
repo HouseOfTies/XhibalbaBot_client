@@ -8,20 +8,20 @@ async function startBot(){
   const bot: TelegramBot = new TelegramBot(config.bot, {polling: true});
   const app = express();
 
-  bot.on('polling_error', error => {
-  console.log(error);
-  });
-
-  bot.on('message', message => {
-    console.log(message);
-  });
-
   app.listen(config.port, () => { 
     Logger.info(`
     -----------------------------------------------
           🔰 Xhiba listening on port: ${config.port} 🔰
     -----------------------------------------------
   `);
+    bot.on('polling_error', error => {
+      Logger.error(error);
+    });
+  
+    bot.on('message', message => {
+      console.log(message);
+    });
+    // bot.sendMessage(-1001416985766, "Una vaca crakera, lmao.");
   }).on('error', err => {
     Logger.error(err);
     process.exit(1);

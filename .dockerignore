@@ -1,2 +1,21 @@
+# Node modules
 node_modules
 npm-debug.log
+
+.env
+
+# Production
+/build
+
+# misc
+.DS_Store
+.env
+.env.development.local
+.env.test.local
+env.production.local
+package-lock.json
+logs
+
+# Git/Github
+.git
+.github

@@ -1,5 +1,6 @@
 import winston from 'winston';
 import config from '@/config';
+import { format } from 'path';
 
 const transports = [];
 if(process.env.NODE_ENV !== 'development') {
@@ -12,6 +13,15 @@ if(process.env.NODE_ENV !== 'development') {
       format: winston.format.combine(
         winston.format.cli(),
         winston.format.splat(),
+      )
+    }),
+    new winston.transports.File({
+      level: 'error',
+      filename: 'logs/server.log',
+      format: winston.format.combine(
+          winston.format.timestamp({format: 'MMM-DD-YYYY HH:mm:ss'}),
+          winston.format.align(),
+          winston.format.printf(error => `${error.level}: ${[error.timestamp]}: ${error.mesage}`),
       )
     })
   )

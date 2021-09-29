@@ -1,13 +1,12 @@
-FROM node:16-alpine3.11
-
+FROM node:14.18.0-alpine3.14 as base
 WORKDIR /
-
 COPY package*.json ./
-
-RUN npm install
-
+RUN npm i
 COPY . .
+EXPOSE 3000
 
-EXPOSE 8080
-
-CMD [ "node", "app/model/bot.js" ]
+# Production job
+FROM base as production
+ENV NODE_PATH = ./build
+RUN npm run build
+CMD ["npm", "run", "start"]
