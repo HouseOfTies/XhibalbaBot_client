@@ -1,0 +1,16 @@
+version: "3.7"
+
+services:
+  bot:
+    image: seventty/xhibalbabot:5.0.1
+    restart: always
+    expose: 
+      - 3000
+    ports: 
+      - 3000:3000
+    environment:
+      #BOT_TOKEN: 123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11
+      NODE_ENV: production
+      PORT: 3000
+      LOG_LEVEL: debug
+      
