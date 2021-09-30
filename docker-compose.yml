@@ -22,6 +22,6 @@ services:
     expose: 
       - 27017
     volumes:
-      - mongodb:/data/db
+      - /mongodb:/data/db
 volumes:
   mongodb:
