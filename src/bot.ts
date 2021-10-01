@@ -7,11 +7,12 @@ import Logger from './loaders/logger';
 async function startBot(){
   const bot: TelegramBot = new TelegramBot(config.bot, {polling: true});
   const app = express();
-
   /**
    * TODO: Require del loader por default que apunte a expressApp
    * ? More loaders? I think so
   */
+
+  
 
   app.listen(config.port, () => { 
     Logger.info(`
