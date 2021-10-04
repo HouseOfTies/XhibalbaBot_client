@@ -31,12 +31,10 @@ async function startBot(){
       console.log(message);
     });
     
-    bot.onText(/^\/toktok (.+)/, async (message, value) => {
-      const url = `https://isitup.org/${value[1]}`;
-      const response = await axios.get(url);
-      const $ = await cheerio.load(response.data);
-      const title = $('title').html();
-      bot.sendMessage(message.chat.id, `🚪Toktok: ${title}`, {reply_to_message_id: message.message_id});
+    // Example command flag
+    bot.onText(/^\/heya (.+)/, async (message, value) => {
+      // Whole programming logic within this section
+	bot.sendMessage(message.chat.id, `Hi @${message.from.username}`, {reply_to_message_id: message.message_id});
     });
 
   }).on('error', err => {
