@@ -4,6 +4,9 @@ import express from 'express';
 import TelegramBot from 'node-telegram-bot-api';
 import Logger from './loaders/logger';
 
+import cheerio from 'cheerio';
+import axios from 'axios';
+
 async function startBot(){
   const bot: TelegramBot = new TelegramBot(config.bot, {polling: true});
   const app = express();
@@ -27,7 +30,15 @@ async function startBot(){
     bot.on('message', message => {
       console.log(message);
     });
-    // bot.sendMessage(-1001416985766, "Una vaca crakera, lmao.");
+    
+    bot.onText(/^\/toktok (.+)/, async (message, value) => {
+      const url = `https://isitup.org/${value[1]}`;
+      const response = await axios.get(url);
+      const $ = await cheerio.load(response.data);
+      const title = $('title').html();
+      bot.sendMessage(message.chat.id, `🚪Toktok: ${title}`, {reply_to_message_id: message.message_id});
+    });
+
   }).on('error', err => {
     Logger.error(err);
     process.exit(1);
