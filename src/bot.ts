@@ -4,18 +4,11 @@ import express from 'express';
 import TelegramBot from 'node-telegram-bot-api';
 import Logger from './loaders/logger';
 
-import cheerio from 'cheerio';
-import axios from 'axios';
-
 async function startBot(){
   const bot: TelegramBot = new TelegramBot(config.bot, {polling: true});
   const app = express();
-  /**
-   * TODO: Require del loader por default que apunte a expressApp
-   * ? More loaders? I think so
-  */
-
   
+  await require('./loaders').default({ expressApp: app });
 
   app.listen(config.port, () => { 
     Logger.info(`
