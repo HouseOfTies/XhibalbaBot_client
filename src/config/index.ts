@@ -15,6 +15,10 @@ export default {
     openWeather: null,
     rapidapi: null,
   },
+  ownerShip: {
+    owner: process.env.OWNERID,
+    home: process.env.HOMEID,
+  },
   logs: {
     level: process.env.LOG_LEVEL || 'silly'
   },

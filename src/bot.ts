@@ -19,15 +19,20 @@ async function startBot(){
     bot.on('polling_error', error => {
       Logger.error(error);
     });
-  
+
     bot.on('message', message => {
       console.log(message);
     });
-    
-    // Example command flag
-    bot.onText(/^\/heya (.+)/, async (message, value) => {
-      // Whole programming logic within this section
-	bot.sendMessage(message.chat.id, `Hi @${message.from.username}`, {reply_to_message_id: message.message_id});
+
+    bot.onText(/^\🗝/, async (message) => {
+      const {owner, home} = config.ownerShip;
+      if(owner === `${message.from.id}` && home === `${message.chat.id}`){
+        bot.sendMessage(message.chat.id, "Commands loaded in all chat groups and private ✅\nRun any command 👾");
+        Logger.info("Commands loaded ✅");
+        await require('./loaders/commands').default({ bot: bot });
+      }else{
+        bot.sendMessage(message.chat.id, "Start only in main owner group and my owner/creator");
+      }
     });
 
   }).on('error', err => {
