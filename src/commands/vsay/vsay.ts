@@ -8,8 +8,8 @@ export default function vsay(bot:any, message: any, value: string) {
 
     const text = new gtts(value[1], 'es');
 
-    text.save('vsay.mp3', function (err, result) {
+    text.save('./src/commands/vsay/vsay.ogg', function (err, result) {
         if(err) { Logger.error(err) }
-        bot.sendAudio(chatId, './vsay.mp3', {title: "Your message 🎶", reply_to_message_id: messageId});
+        bot.sendVoice(chatId, './src/commands/vsay/vsay.ogg', {title: "Your message 🎶", reply_to_message_id: messageId});
     });
 }

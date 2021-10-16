@@ -9,6 +9,7 @@ async function startBot(){
   const app = express();
   
   await require('./loaders').default({ expressApp: app });
+  if(process.env.NODE_ENV !== "production") await require('./loaders/commands').default({bot: bot});
 
   app.listen(config.port, () => { 
     Logger.info(`
@@ -28,14 +29,16 @@ async function startBot(){
 
     bot.onText(/^\🗝/, async (message) => {
       const {owner, home} = config.ownerShip;
-      if(owner === `${message.from.id}` && home === `${message.chat.id}`){
-        await require('./loaders/commands').default({
-           bot: bot,
-           message: message,
-          });
-        bot.sendMessage(message.chat.id, "Commands loaded in all chat groups and private ✅\nYou can run any command now 👾");
-      }else{
-        bot.sendMessage(message.chat.id, "Start only in main owner group and my owner/creator");
+      if(process.env.NODE_ENV == "production"){
+        if(owner === `${message.from.id}` && home === `${message.chat.id}`){
+          await require('./loaders/commands').default({
+             bot: bot,
+             message: message,
+            });
+          bot.sendMessage(message.chat.id, "Commands loaded in all chat groups and private ✅\nYou can run any command now 👾");
+        }else{
+          bot.sendMessage(message.chat.id, "Start only in main owner group and my owner/creator");
+        }
       }
     });
 
