@@ -15,6 +15,8 @@ async function startBot(){
     -----------------------------------------------
           🔰 Xhiba listening on port: ${config.port} 🔰
     -----------------------------------------------
+    To start commands, send the emoji 🗝
+    in your home chat.
   `);
     bot.on('polling_error', error => {
       Logger.error(error);
@@ -27,9 +29,11 @@ async function startBot(){
     bot.onText(/^\🗝/, async (message) => {
       const {owner, home} = config.ownerShip;
       if(owner === `${message.from.id}` && home === `${message.chat.id}`){
-        bot.sendMessage(message.chat.id, "Commands loaded in all chat groups and private ✅\nRun any command 👾");
-        Logger.info("Commands loaded ✅");
-        await require('./loaders/commands').default({ bot: bot });
+        await require('./loaders/commands').default({
+           bot: bot,
+           message: message,
+          });
+        bot.sendMessage(message.chat.id, "Commands loaded in all chat groups and private ✅\nYou can run any command now 👾");
       }else{
         bot.sendMessage(message.chat.id, "Start only in main owner group and my owner/creator");
       }
