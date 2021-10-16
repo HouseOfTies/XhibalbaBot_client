@@ -1,11 +1,20 @@
 import Logger from './logger';
+import { heya, say, vsay } from '@/commands';
 
-export default async ({ bot, message }) => {
+export default async ({ bot }) => {
     Logger.info("Commands loaded ✅");
     
     // Example command
     bot.onText(/^\/heya/, async (message) => {
     // Whole programming logic within this section
-    bot.sendMessage(message.chat.id, `Hi @${message.from.username}`, {reply_to_message_id: message.message_id});
+        heya(bot, message);
+    });
+
+    bot.onText(/^\/say (.+)/, async (message, value) => {
+        say(bot, message, value);
+    });
+
+    bot.onText(/^\/vsay (.+)/, async (message, value) => {
+        vsay(bot, message, value);
     });
 };
