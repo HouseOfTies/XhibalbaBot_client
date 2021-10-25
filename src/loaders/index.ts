@@ -13,7 +13,6 @@ export default async ({ expressApp }) => {
 
     const userModel = {
         name: "userModel",
-        
+        //model: require('../models/userModel').default()
     }
-    
 };

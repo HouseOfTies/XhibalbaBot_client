@@ -1,5 +1,5 @@
 import Logger from './logger';
-import { heya, say, vsay } from '@/commands';
+import { heya, say, vsay, join } from '@/commands';
 
 export default async ({ bot }) => {
     Logger.info("Commands loaded ✅");
@@ -16,5 +16,9 @@ export default async ({ bot }) => {
 
     bot.onText(/^\/vsay (.+)/, async (message, value) => {
         vsay(bot, message, value);
+    });
+
+    bot.onText(/^\!join/, async (message) => {
+        join(bot, message);
     });
 };
