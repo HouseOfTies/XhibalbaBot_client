@@ -1,10 +1,10 @@
-import { IUser } from '@/interfaces/IUser';
-import mongoose from 'mongoose';
+//import { IUser } from '@/interfaces/IUser';
+import {Schema, model} from 'mongoose';
 
-const User = new mongoose.Schema(
+const userSchema = new Schema(
   {
     userId: {
-      type: String,
+      type: Number,
       required: [true, "User Id is required"],
       unique: true,
       index: true,
@@ -30,4 +30,4 @@ const User = new mongoose.Schema(
   },
 );
 
-export default mongoose.model<IUser & mongoose.Document>('User', User);
+module.exports = model('User', userSchema);
