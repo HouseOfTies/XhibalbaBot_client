@@ -7,10 +7,7 @@ import Logger from "./loaders/logger";
 async function startBot() {
   const bot: TelegramBot = new TelegramBot(config.bot, { polling: true });
   const app = express();
-
-  await require("./loaders").default({ expressApp: app });
-  if (process.env.NODE_ENV !== "production")
-    await require("./loaders/commands").default({ bot: bot });
+  let started = false;
 
   app
     .listen(config.port, () => {
@@ -18,20 +15,37 @@ async function startBot() {
     -----------------------------------------------
           🔰 Xhiba listening on port: ${config.port} 🔰
     -----------------------------------------------
-    To start commands, send the emoji 🗝
+    To start commands, send the emoji 🗝 (old_key)
     in your home chat.
   `);
+
       bot.on("polling_error", (error) => {
         Logger.error(error);
       });
 
-      bot.on("message", (message) => {
-        console.log(message);
-      });
-
-      bot.onText(/^\🗝/, async (message) => {
+      bot.on("message", async (message) => {
+        const chatId = message.chat.id;
         const { owner, home } = config.ownerShip;
-        if (process.env.NODE_ENV == "production") {
+
+        console.log(message);
+
+        if (!started) {
+
+          if(message.text == "🗝️"){
+            bot.sendMessage(chatId, "Acabo de despertar");
+          }
+
+          started = true;
+
+        } else {
+          bot.sendMessage(chatId, "Estoy despierta, estoy despierta.", {reply_to_message_id : message.message_id });
+        }
+      });
+      
+      /* if (process.env.NODE_ENV !== "production") {
+        bot.onText(/^\🗝/, async (message) => {
+          const { owner, home } = config.ownerShip;
+
           if (owner === `${message.from.id}` && home === `${message.chat.id}`) {
             await require("./loaders/commands").default({
               bot: bot,
@@ -39,16 +53,19 @@ async function startBot() {
             });
             bot.sendMessage(
               message.chat.id,
-              "Commands loaded in all chat groups and private ✅\nYou can run any command now 👾"
+              "Commands loaded in all chat groups and private ✅\nYou can run any command now 👾 \n`⚜️ ALREADY RUNNING ⚜️`",
+              {parse_mode : "MarkdownV2"}
             );
           } else {
             bot.sendMessage(
               message.chat.id,
-              "Start only in main owner group and my owner/creator"
+              "I'm sleeping, I'll start only with the voice of my creator in my home. 💤💤💤"
             );
           }
-        }
-      });
+        });
+      } */
+      
+
     })
     .on("error", (err) => {
       Logger.error(err);
