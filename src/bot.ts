@@ -36,7 +36,7 @@ async function startBot() {
       bot.on("message", async (message) => {
         const chatId = message.chat.id;
         //const commands = await bot.getMyCommands();
-        // console.log(message);
+        console.log(message);
 
         if (!authorized) {
           if (message.text == "🗝" || message.text == "🔑") {
@@ -62,32 +62,6 @@ async function startBot() {
           }
         }
       });
-
-      
-      
-      /* if (process.env.NODE_ENV !== "production") {
-        bot.onText(/^\🗝/, async (message) => {
-          const { owner, home } = config.ownerShip;
-
-          if (owner === `${message.from.id}` && home === `${message.chat.id}`) {
-            await require("./loaders/commands").default({
-              bot: bot,
-              message: message,
-            });
-            bot.sendMessage(
-              message.chat.id,
-              "Commands loaded in all chat groups and private ✅\nYou can run any command now 👾 \n`⚜️ ALREADY RUNNING ⚜️`",
-              {parse_mode : "MarkdownV2"}
-            );
-          } else {
-            bot.sendMessage(
-              message.chat.id,
-              "I'm sleeping, I'll start only with the voice of my creator in my home. 💤💤💤"
-            );
-          }
-        });
-      } */
-      
 
     })
     .on("error", (err) => {
