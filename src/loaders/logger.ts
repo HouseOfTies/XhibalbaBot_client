@@ -1,9 +1,9 @@
 import winston from 'winston';
 import config from '@/config';
-import { format } from 'path';
+//import { format } from 'path';
 
 const transports = [];
-if(process.env.NODE_ENV !== 'development') {
+if(process.env.NODE_ENV !== 'production') {
   transports.push(
     new winston.transports.Console()
   )
@@ -24,7 +24,7 @@ if(process.env.NODE_ENV !== 'development') {
           winston.format.printf(error => `${error.level}: ${[error.timestamp]}: ${error.mesage}`),
       )
     })
-  )
+  );
 }
 
 const LoggerInstance = winston.createLogger({
