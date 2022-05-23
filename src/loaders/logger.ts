@@ -3,7 +3,7 @@ import config from '@/config';
 //import { format } from 'path';
 
 const transports = [];
-if(process.env.NODE_ENV !== 'production') {
+if(process.env.NODE_ENV !== 'development') {
   transports.push(
     new winston.transports.Console()
   )

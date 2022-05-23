@@ -6,7 +6,7 @@ import Logger from "./loaders/logger";
 
 async function startBot() {
   const bot: TelegramBot = new TelegramBot(config.bot, { polling: true });
-  const { owner, home } = config.ownerShip;
+  const { owner } = config.ownerShip;
   const app = express();
   const motd = `-----------------------------------------------
                 🔰 Xhiba listening on port: ${config.port} 🔰
@@ -20,10 +20,11 @@ async function startBot() {
         To charge commands, send the emoji 🗝 (old_key emoji)
         With the owner account
     
-        (remember set the owner userId and home chatId as well as .env.example file is).
+        (remember set the owner userId as well as .env.example file is).
       `);
       }else{
         //If bot is in development environment will start automatically
+        Logger.info("development environment detected, automatically command load triggered for more confort. <3")
           await require("./loaders/commands").default({
           bot: bot,
         });
