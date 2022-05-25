@@ -6,18 +6,29 @@ import Logger from "./loaders/logger";
 
 async function startBot() {
   const bot: TelegramBot = new TelegramBot(config.bot, { polling: true });
+  const { owner } = config.ownerShip;
   const app = express();
-  let started = false;
+  const motd = `-----------------------------------------------
+                🔰 Xhiba listening on port: ${config.port} 🔰
+        -----------------------------------------------`;
+  let authorized = false; // Initial state without authorized initialization
 
   app
-    .listen(config.port, () => {
-      Logger.info(`
-    -----------------------------------------------
-          🔰 Xhiba listening on port: ${config.port} 🔰
-    -----------------------------------------------
-    To start commands, send the emoji 🗝 (old_key)
-    in your home chat.
-  `);
+    .listen(config.port, async() => {
+      if(process.env.NODE_ENV == "production"){
+        Logger.info(`${motd}
+        To charge commands, send the emoji 🗝 (old_key emoji)
+        With the owner account
+    
+        (remember set the owner userId as well as .env.example file is).
+      `);
+      }else{
+        //If bot is in development environment will start automatically
+        Logger.info("development environment detected, automatically command load triggered for more confort. <3")
+          await require("./loaders/commands").default({
+          bot: bot,
+        });
+      }
 
       bot.on("polling_error", (error) => {
         Logger.error(error);
@@ -25,46 +36,33 @@ async function startBot() {
 
       bot.on("message", async (message) => {
         const chatId = message.chat.id;
-        const { owner, home } = config.ownerShip;
-
+        //const commands = await bot.getMyCommands();
         console.log(message);
 
-        if (!started) {
-
-          if(message.text == "🗝️"){
-            bot.sendMessage(chatId, "Acabo de despertar");
+        if (!authorized) {
+          if (message.text == "🗝" || message.text == "🔑") {
+            if (parseInt(owner) === message.from.id) {
+              //Loading the commands here
+              await require("./loaders/commands").default({
+                bot: bot,
+                message: message,
+              }); 
+              bot.sendMessage(
+                chatId,
+                "Comandos desbloqueados para el privado y para todos los chats grupales ✅\nPuedes intentar lanzar un comando 👾 \n`⚜️ XHIBA ENGINE RUNNING ⚜️`",
+                { parse_mode: "MarkdownV2" }
+              );
+              authorized = true;
+              
+            } else {
+              bot.sendMessage(
+                chatId,
+                "No eres mi Owner 👑 o apostol ✝️ para despertarme, mejor no molestes. 💤💤💤"
+              );
+            }
           }
-
-          started = true;
-
-        } else {
-          bot.sendMessage(chatId, "Estoy despierta, estoy despierta.", {reply_to_message_id : message.message_id });
         }
       });
-      
-      /* if (process.env.NODE_ENV !== "production") {
-        bot.onText(/^\🗝/, async (message) => {
-          const { owner, home } = config.ownerShip;
-
-          if (owner === `${message.from.id}` && home === `${message.chat.id}`) {
-            await require("./loaders/commands").default({
-              bot: bot,
-              message: message,
-            });
-            bot.sendMessage(
-              message.chat.id,
-              "Commands loaded in all chat groups and private ✅\nYou can run any command now 👾 \n`⚜️ ALREADY RUNNING ⚜️`",
-              {parse_mode : "MarkdownV2"}
-            );
-          } else {
-            bot.sendMessage(
-              message.chat.id,
-              "I'm sleeping, I'll start only with the voice of my creator in my home. 💤💤💤"
-            );
-          }
-        });
-      } */
-      
 
     })
     .on("error", (err) => {
