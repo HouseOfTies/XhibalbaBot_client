@@ -1,5 +1,3 @@
-const styles = require("./styles.json");
-
 export default function applyCharStyle(style, text) {
   let out = "";
   let _iteratorNormalCompletion2 = true;

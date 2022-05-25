@@ -18,7 +18,7 @@ export default async ({ bot }) => {
         rsay(bot, message, value);
     });
 
-    bot.onText(/^\/fsay\s+(?<style>.+?)\s(?:(?<text>.+))/, async (message, value) => {
+    bot.onText(/^\/fsay (.+)/, async (message, value) => {
         fsay(bot, message, value);
     });
 };
