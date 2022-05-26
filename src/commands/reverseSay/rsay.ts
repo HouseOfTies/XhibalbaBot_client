@@ -6,6 +6,6 @@ export default function rsay(bot: any, message: any, value: string) {
 
   bot.sendMessage(chatId, reversedText, {
     reply_to_message_id: messageId,
-    parse_mode: "MarkdownV2",
+    parse_mode: "Markdown",
   });
 }
