@@ -7,7 +7,7 @@ export default function fsay(bot: any, message: any, value: string) {
     messageId = message.message_id;
   const text = value[1];
   const option: string = text.split(" ")[0];
-  const styleList = Object.keys(styles).join(", ").toString(); //all styles
+  const styleList = Object.keys(styles).sort().join(", ").toString(); //all styles
 
   if (text === "help") {
     bot.sendMessage(
