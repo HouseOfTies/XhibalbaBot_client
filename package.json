@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "heroku-postbuild": "npm run build",
-    "start": "nodemon",
+    "start": "node build/bot.js",
     "inspect": "nodemon --inspect src/bot.ts",
     "test": "jest",
     "lint": "npm run lint:js ",
@@ -59,7 +59,6 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "jest": "^27.3.0",
-    "nodemon": "^2.0.4",
     "prettier": "^2.1.2",
     "ts-jest": "^27.0.7",
     "ts-node": "^9.0.0",
