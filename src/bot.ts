@@ -11,7 +11,7 @@ async function startBot() {
   const motd: string = `-----------------------------------------------
                 🔰 Xhiba listening on port: ${config.port} 🔰
         -----------------------------------------------`;
-  let authorized: boolean = true; // Initial state without authorized initialization
+  let authorized: boolean = false; // Initial state without authorized initialization
 
   app
     .listen(config.port, async() => {
