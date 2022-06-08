@@ -8,10 +8,10 @@ async function startBot() {
   const bot: TelegramBot = new TelegramBot(config.bot, { polling: true });
   const { owner } = config.ownerShip;
   const app = express();
-  const motd = `-----------------------------------------------
+  const motd: string = `-----------------------------------------------
                 🔰 Xhiba listening on port: ${config.port} 🔰
         -----------------------------------------------`;
-  let authorized = false; // Initial state without authorized initialization
+  let authorized: boolean = false; // Initial state without authorized initialization
 
   app
     .listen(config.port, async() => {
