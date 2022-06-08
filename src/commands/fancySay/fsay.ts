@@ -2,47 +2,55 @@ import applyCharStyle from "./charStyleMapper";
 
 const styles = require("./styles.json");
 
-export default function fsay(bot: any, message: any, value: string) {
+export default function fsay(bot: any, message: any) {
   const chatId = message.chat.id,
     messageId = message.message_id;
-  const text = value[1];
+  const indexOfSpace: string = message.text.indexOf(" ");
+  const text: string = message.text.substring(indexOfSpace + 1);
+  let styleList = "";
   const option: string = text.split(" ")[0];
-  const styleList = Object.keys(styles).sort().join(", ").toString(); //all styles
+  const stylesArr = Object.keys(styles).sort();
+  const verificator: number = message.text.split(" ").length;
 
-  if (text === "help") {
+  for (let index = 0; index < stylesArr.length; index++) {
+    styleList += `${index}: ${stylesArr[index]}\n`;
+  }
+
+  if (verificator == 1) {
     bot.sendMessage(
       chatId,
-      `Escribe /fsay *<estilo> <texto>* para escribir una cadena de texto estilizado.\n\nEstilos disponibles:\n*${styleList}*`,
+      "Este comando require de un (estilo) y un (texto) para funcionar, prueba escribiendo: `/fsay medieval hola mundo`.\nTambien puedes ver la lista de estilos escribiendo `/fsay help`",
       {
-        reply_to_message: messageId,
+        reply_to_message_id: messageId,
         parse_mode: "Markdown",
       }
     );
   } else {
-    if (Object.keys(styles).includes(option)) {
+    if (text === "help") {
       bot.sendMessage(
         chatId,
-        applyCharStyle(styles[option], text.substring(text.indexOf(" ") + 1)),
-        { reply_to_message: messageId, parse_mode: "Markdown" }
+        `Escribe /fsay *<estilo> <texto>* para escribir una cadena de texto estilizado.\n\n*Estilos disponibles:* ${stylesArr.length}\n\n*Hoja de estilos 📖:\n ${styleList}...*`,
+        {
+          reply_to_message: messageId,
+          parse_mode: "Markdown",
+        }
       );
     } else {
-      bot.sendMessage(chatId, text, {
-        reply_to_message: messageId,
-        parse_mode: "Markdown",
-      });
+      try {
+        bot.sendMessage(
+          chatId,
+          applyCharStyle(
+            styles[stylesArr[option]],
+            text.substring(text.indexOf(" ") + 1)
+          ),
+          { reply_to_message: messageId, parse_mode: "Markdown" }
+        );
+      } catch (e) {
+        bot.sendMessage(chatId, "Elige un estilo comprendido en la lista de estilos, puedes escribir `/fsay help` para ver los estilos disponibles.", {
+          reply_to_message: messageId,
+          parse_mode: "Markdown",
+        });
+      }
     }
   }
-
-  /* if (Object.keys(styles).includes(option)) {
-    bot.sendMessage(
-      chatId,
-      applyCharStyle(styles[option], text.substring(text.indexOf(" ") + 1)),
-      { reply_to_message: messageId, parse_mode: "Markdown" }
-    );
-  }else{
-    bot.sendMessage(chatId, text, {
-      reply_to_message: messageId,
-      parse_mode: "Markdown",
-    });
-  } */
 }
