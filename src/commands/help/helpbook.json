@@ -1,0 +1,23 @@
+{
+  "icon": "📖",
+  "totalIndexes": 3,
+  "category": {
+    "text": {
+      "index": 1,
+      "icon": "📕🖋",
+      "commands": {
+        "heya": "Digamos que es un saludo propio para probar que la bot te esta escuchando, saluda sin miedo.",
+        "say": "Permite repetir cualquier cosa que le adjutes al comando /say.",
+        "rsay": "Escribe comandos invertidos 360º.",
+        "fsay": "Usa diferentes estilos para escribir tus textos estilizados."
+      }
+    },
+    "multimedia": {
+      "index": 2,
+      "icon": "▶️",
+      "commands": {
+        "coming": "soon..."
+      }
+    }
+  }
+}
