@@ -1,0 +1,45 @@
+{
+  "name": "HelpBook",
+  "icon": "📖",
+  "totalIndexes": 5,
+  "indexes": {
+    "1": {
+      "name": "Comandos de texto",
+      "icon": "📕🖋",
+      "commands": {
+        "heya": "Digamos que es un saludo propio para probar que la bot te esta escuchando, saluda sin miedo. Ej: /heya",
+        "say": "Permite repetir cualquier cosa que le adjutes al comando /say. Ej: /say Hello World",
+        "rsay": "Escribe comandos invertidos 360º. /rsay Hello World",
+        "fsay": "Usa diferentes estilos para escribir tus textos estilizados. Ej: /fsay 20 Hello World"
+      }
+    },
+    "2": {
+      "name": "Comandos Multimedia",
+      "icon": "▶️",
+      "commands": {
+        "coming": "soon..."
+      }
+    },
+    "3": {
+      "name": "PlayRoom",
+      "icon": "🎮🎲",
+      "commands": {
+        "comming": "soon..."
+      }
+    },
+    "4": {
+      "name": "Navegar en la red",
+      "icon": "📱🌎",
+      "commands": {
+        "comming": "soon..."
+      }
+    },
+    "5": {
+      "name": "Comandos administrativos",
+      "icon": "🔰",
+      "commands": {
+        "comming": "soon..."
+      }
+    }
+  }
+}

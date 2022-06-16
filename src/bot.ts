@@ -15,7 +15,7 @@ async function startBot() {
 
   app
     .listen(config.port, async() => {
-      if(process.env.NODE_ENV !== "production"){
+      if(process.env.NODE_ENV == "production"){
         Logger.info(`${motd}
         To charge commands, send the emoji 🗝 (old_key emoji)
         With the owner account
