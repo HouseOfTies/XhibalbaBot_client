@@ -1,4 +1,4 @@
-import weatherWorker from "@/jobs"
+import weatherWorker from "@/jobs/openWeatherWorker"
 
 export default async function weather(bot: any, message: any) {
   const chatId = message.chat.id,
