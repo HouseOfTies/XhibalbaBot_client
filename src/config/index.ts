@@ -11,8 +11,8 @@ export default {
   port: parseInt(process.env.PORT, 10),
   bot: process.env.BOT_TOKEN,
   multimedia: {
+    openWeather: process.env.OPENWEATHER,
     youtube: null,
-    openWeather: null,
     rapidapi: null,
   },
   ownerShip: {

@@ -38,7 +38,7 @@ export default async ({ bot }) => {
         snapshot(bot, message);
     });
 
-    bot.onText(/(?:^\/weather|clima)/, async message => {
+    bot.onText(/(?:^\/weather|^\/clima)/, async message => {
         weather(bot, message);
     });
 
