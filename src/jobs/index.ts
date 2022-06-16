@@ -47,7 +47,6 @@ export default async function weatherWorker(requestCountry: string) {
 
     return response;
   } catch (workerError) {
-    console.log(workerError)
     return "No he podido encontrar la ciudad especificada, intenta otro nombre o escribirlo correcto.";
   }
 }

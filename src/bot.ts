@@ -14,8 +14,8 @@ async function startBot() {
   let authorized: boolean = false; // Initial state without authorized initialization
 
   app
-    .listen(config.port, async() => {
-      if(process.env.NODE_ENV == "production"){
+    .listen(config.port, async () => {
+      /* if(process.env.NODE_ENV == "production"){
         Logger.info(`${motd}
         To charge commands, send the emoji 🗝 (old_key emoji)
         With the owner account
@@ -28,7 +28,14 @@ async function startBot() {
           await require("./loaders/commands").default({
           bot: bot,
         });
-      }
+      } */
+
+      Logger.info(
+        "development environment detected, automatically command load triggered for more confort. ❤️"
+      );
+      await require("./loaders/commands").default({
+        bot: bot,
+      });
 
       bot.on("polling_error", (error) => {
         Logger.error(error);
@@ -46,14 +53,13 @@ async function startBot() {
               await require("./loaders/commands").default({
                 bot: bot,
                 message: message,
-              }); 
+              });
               bot.sendMessage(
                 chatId,
                 "Comandos desbloqueados para el privado y para todos los chats grupales ✅\nPuedes intentar lanzar un comando 👾 \n`⚜️ XHIBA ENGINE RUNNING ⚜️`",
                 { parse_mode: "MarkdownV2" }
               );
               authorized = true;
-              
             } else {
               bot.sendMessage(
                 chatId,
@@ -63,7 +69,6 @@ async function startBot() {
           }
         }
       });
-
     })
     .on("error", (err) => {
       Logger.error(err);
