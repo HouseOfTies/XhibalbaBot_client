@@ -22,7 +22,7 @@ export default function fsay(bot: any, message: any) {
   if (verificator == 1) {
     bot.sendMessage(
       chatId,
-      "Este comando require de un (numero de estilo) y un (texto) para funcionar, prueba escribiendo: `/fsay medieval hola mundo`.\nTambien puedes ver la lista de estilos escribiendo `/fsay help`",
+      "Este comando require de un (numero de estilo) y un (texto) para funcionar, prueba escribiendo: `/fsay 14 hola mundo`.\nTambien puedes ver la lista de estilos escribiendo `/fsay help`",
       {
         reply_to_message_id: messageId,
         parse_mode: "Markdown",

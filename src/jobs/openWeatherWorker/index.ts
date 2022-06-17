@@ -2,9 +2,9 @@ import weatherService from "@/services/openWeatherService";
 const flags = require("./flags.json");
 const weatherExtra = require("./weatherExtra.json");
 
-export default async function openWeatherWorker(requestCountry: string) {
+export default async function openWeatherWorker(requestCity: string) {
   try {
-    const requestedObject = await weatherService(requestCountry);
+    const requestedObject = await weatherService(requestCity);
     const data = requestedObject.data;
     const {
       main: { temp, feels_like, temp_min, temp_max, humidity },

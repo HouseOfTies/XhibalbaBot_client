@@ -2,14 +2,10 @@ import axios from "axios";
 import config from "@/config";
 
 export default function youtubeService(videoTitle: string) {
-  /* const appid: string = config.multimedia.openWeather;
-  const units: string = "metric"; // This is the unit of the temperature, metric is celcius
-  const lang: string = "es"; //This is the language of the return of the call
-  const url: string = encodeURI(
-    `https://api.openweathermap.org/data/2.5/weather?q=${country}&units=${units}&lang=${lang}&appid=${appid}`
-  );
+  const APIkey: string = config.multimedia.youtube;
+  const part = "snippet";
 
-  const payload = axios.get(url); 
-  return payload;
-  */
+  // const url: string = decodeURI(`https://www.googleapis.com/youtube/v3/search?part=${part}&maxResults=${}`);
+  //https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=100&q=algo&type=video&key=AIzaSyCS-MYAmiUs1JGl4RDJJvBlcgUXib7d0z8
+
 }
