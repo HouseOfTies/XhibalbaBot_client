@@ -1,22 +1,41 @@
 import youtubeService from "@/services/youtubeService";
+import youtubeVideoStatisticService from "@/services/youtubeService/statistics";
+import youtubeCommentsService from "@/services/youtubeService/comments";
+import supercharge from "@supercharge/strings";
 
-export default async function openWeatherWorker(videoTitle: string) {
+export default async function youtubeWorker(query: string) {
   try {
-    const requestedObject = await youtubeService(videoTitle);
+    const requestedObject = await youtubeService(query);
     const data = requestedObject.data;
-    const videoIdRequested = data.items[0].id.videoId;
-    const videoTitleRequested = data.items[0].snippet.title;
-    const videoLink = `https://www.youtube.com/watch?v=${videoIdRequested}`;
+    const {
+      id: { videoId },
+      snippet: { title },
+    } = data.items[0];
 
-    const response = `
-*Video solicitado*:
-${videoTitleRequested}
+    const statisticObject: any = await youtubeVideoStatisticService(videoId);
+    const commentsObject: any = await youtubeCommentsService(videoId);
+    const individualComment = commentsObject.data.items[0].snippet;
 
-[▶️](${videoLink})`;
+    const { viewCount, likeCount, commentCount } =
+      statisticObject.data.items[0].statistics;
 
-    return response;
+    const videoLink = `https://www.youtube.com/watch?v=${videoId}`;
+    let response = `
+*Video solicitado*: [▶️](${videoLink})\n${title}
+
+*Comentarios*:
+`;
+
+    for (let index = 0; index < 3; index++) {
+      const { authorDisplayName, textOriginal } =
+        commentsObject.data.items[index].snippet.topLevelComment.snippet;
+      response += `💬 *${authorDisplayName}*: ${supercharge(textOriginal).limit(100, '...').get()}\n`;
+    }
+
+    console.log(response)
+    return { response, viewCount, likeCount, commentCount };
   } catch (workerError) {
     console.log(workerError);
-    return "No he podido encontrar el video especificado, intenta otro nombre o escribirlo correcto.";
+    return "No he podido encontrar el video especificado, intenta con otro titulo o escribe el nombre correcto.";
   }
 }
