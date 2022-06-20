@@ -11,7 +11,7 @@ export default {
   bot: process.env.BOT_TOKEN,
   multimedia: {
     openWeather: process.env.OPENWEATHER,
-    youtube: null,
+    youtube: process.env.YOUTUBE,
     rapidapi: null,
   },
   ownerShip: {
