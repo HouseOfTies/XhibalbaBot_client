@@ -38,7 +38,7 @@ export default async function youtube(bot: any, message: any) {
   if (verificator == 1) {
     bot.sendMessage(
       chatId,
-      "Adjunta el titulo del video o el nombre del mismo luego de escribir el comando /yt, ejemplo: `/yt how to upload a repository to GitHub`",
+      "Adjunta el titulo del video o el nombre del mismo luego de escribir el comando /yt, ejemplo: `/yt Como subir un repositorio a GitHub`",
       {
         reply_to_message_id: messageId,
         parse_mode: "Markdown",

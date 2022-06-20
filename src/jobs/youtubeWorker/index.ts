@@ -14,7 +14,7 @@ export default async function youtubeWorker(query: string) {
 
     const statisticObject: any = await youtubeVideoStatisticService(videoId);
     const commentsObject: any = await youtubeCommentsService(videoId);
-    const individualComment = commentsObject.data.items[0].snippet;
+    const totalResults = commentsObject.data.pageInfo.totalResults;
 
     const { viewCount, likeCount, commentCount } =
       statisticObject.data.items[0].statistics;
@@ -26,13 +26,18 @@ export default async function youtubeWorker(query: string) {
 *Comentarios*:
 `;
 
-    for (let index = 0; index < 3; index++) {
-      const { authorDisplayName, textOriginal } =
-        commentsObject.data.items[index].snippet.topLevelComment.snippet;
-      response += `💬 *${authorDisplayName}*: ${supercharge(textOriginal).limit(100, '...').get()}\n`;
+    if (totalResults >= 3) {
+      for (let index = 0; index < 3; index++) {
+        const { authorDisplayName, textOriginal } =
+          commentsObject.data.items[index].snippet.topLevelComment.snippet;
+        response += `💬 *${authorDisplayName}*: ${supercharge(textOriginal)
+          .limit(70, "...")
+          .get()}\n`;
+      }
+    }else{
+      response += "Comentarios no disponibles.";
     }
 
-    console.log(response)
     return { response, viewCount, likeCount, commentCount };
   } catch (workerError) {
     console.log(workerError);
