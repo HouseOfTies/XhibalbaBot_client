@@ -31,7 +31,7 @@ export default async function youtubeWorker(query: string) {
         const { authorDisplayName, textOriginal } =
           commentsObject.data.items[index].snippet.topLevelComment.snippet;
         response += `💬 *${authorDisplayName}*: ${supercharge(textOriginal)
-          .limit(70, "...")
+          .limit(75, "...")
           .get()}\n`;
       }
     }else{
