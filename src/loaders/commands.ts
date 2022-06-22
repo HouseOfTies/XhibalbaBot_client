@@ -26,7 +26,7 @@ export default async ({ bot }) => {
         help(bot, message);
     });
 
-    bot.onText(/^\/github/, async message => {
+    bot.onText(/^\/gh/, async message => {
         github(bot, message);
     });
 
