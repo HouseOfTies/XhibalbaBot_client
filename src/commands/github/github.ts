@@ -8,9 +8,6 @@ export default async function github(bot: any, message: any) {
   const verificator: number = message.text.split(" ").length;
   const workerResponse: any = await githubWorker(text);
 
-  console.log(workerResponse);
-
-
   if (verificator == 1) {
     bot.sendMessage(
       chatId,
@@ -21,6 +18,6 @@ export default async function github(bot: any, message: any) {
       }
     );
   } else {
-    //bot.sendMessage(chatId, response);
+    bot.sendMessage(chatId, workerResponse);
   }
 }
