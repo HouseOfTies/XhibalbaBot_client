@@ -12,7 +12,7 @@ export default {
   multimedia: {
     openWeather: process.env.OPENWEATHER,
     youtube: process.env.YOUTUBE,
-    rapidapi: null,
+    rapidapi: process.env.RAPIDAPI,
   },
   ownerShip: {
     owner: process.env.OWNERID,

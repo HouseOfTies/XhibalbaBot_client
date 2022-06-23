@@ -26,7 +26,7 @@ export default async ({ bot }) => {
         help(bot, message);
     });
 
-    bot.onText(/^\/github/, async message => {
+    bot.onText(/^\/gh/, async message => {
         github(bot, message);
     });
 
@@ -34,7 +34,7 @@ export default async ({ bot }) => {
         imageSearcher(bot, message);
     });
 
-    bot.onText(/^\/snap/, async message => {
+    bot.onText(/(?:^\/snap|^\/fullsnap)/, async message => {
         snapshot(bot, message);
     });
 
