@@ -34,7 +34,7 @@ export default async ({ bot }) => {
         imageSearcher(bot, message);
     });
 
-    bot.onText(/^\/snap/, async message => {
+    bot.onText(/(?:^\/snap|^\/fullsnap)/, async message => {
         snapshot(bot, message);
     });
 
