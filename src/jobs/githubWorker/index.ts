@@ -20,7 +20,7 @@ export default async function githubWorker(
         login,
         name,
         avatar_url,
-        url,
+        html_url,
         company,
         blog,
         location,
@@ -35,7 +35,8 @@ export default async function githubWorker(
       } = requestedObject.data;
 
       const response = `
-Perfil de GitHub 😸:
+Perfil de GitHub 😸
+
 *Usuario*: ${login} 
 *Nombre*: ${name} 
 *Foto*: ${avatar_url} 
@@ -49,10 +50,10 @@ Perfil de GitHub 😸:
 *Seguidores*: ${followers} 
 *Siguiendo*: ${following} 
 *Fecha de creacion*: ${new Date(created_at).toLocaleDateString()} 
-*Fecha de actualizacion*: ${new Date(updated_at).toLocaleDateString()} 
-    `.replace(null || "null", "Campo vacio");
+*Ultima actualizacion*: ${new Date(updated_at).toLocaleDateString()} 
+    `.replace(/null/g,"campo vacio");
       (buttonsObjectPath.text = `Visitar la cuenta de ${login}`),
-        (buttonsObjectPath.url = url);
+        (buttonsObjectPath.url = html_url);
       return { response, buttons };
     } else {
       const requestedObject = await githubService(user, repository);
@@ -69,9 +70,12 @@ Perfil de GitHub 😸:
         watchers_count,
         subscribers_count,
         language,
+        created_at,
+        updated_at,
       } = requestedObject.data;
       const response = `
-Repositorio de GitHub 📖: 
+Repositorio de GitHub 📖
+
 *Creador*: ${login}
 *Nombre de repo*: ${name}
 *Nombre completo*: ${full_name}
@@ -83,11 +87,12 @@ Repositorio de GitHub 📖:
 *Cantidad de subscriptores*: ${subscribers_count}
 *Lenguaje*: ${language}
 *Fork*: ${fork ? "es" : "no es"} un repositorio forkeado
+*Fecha de creacion*: ${new Date(created_at).toLocaleDateString()} 
+*Ultima actualizacion*: ${new Date(updated_at).toLocaleDateString()} 
 `;
       (buttonsObjectPath.text = `Ir al repositorio ${name}`),
         (buttonsObjectPath.url = html_url);
 
-      console.log(response);
       return { response, buttons };
     }
   } catch (workerError) {

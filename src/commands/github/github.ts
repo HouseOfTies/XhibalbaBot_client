@@ -20,6 +20,6 @@ export default async function github(bot: any, message: any) {
       }
     );
   } else {
-    bot.sendMessage(chatId, requestObject.response || "No he podido encontrar al usuario especificado, intenta otro nombre o escribirlo correcto.", requestObject.buttons );
+    bot.sendMessage(chatId, requestObject.response || "No he podido encontrar al usuario o repositorio especificado, intenta otro nombre o escribirlo correcto.", requestObject.buttons );
   }
 }
