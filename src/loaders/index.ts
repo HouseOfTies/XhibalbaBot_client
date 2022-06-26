@@ -1,5 +1,5 @@
 import Logger from './logger';
-import mongooseLoader from './mongoose';
+// import mongooseLoader from './mongoose';
 /* 
     TODO: dependencyInjectorLoader
     TODO: mongooseLoader
