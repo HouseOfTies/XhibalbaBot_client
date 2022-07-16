@@ -1,14 +1,19 @@
 {
-  "name": "HelpBook",
-  "icon": "📖",
   "totalIndexes": 5,
   "indexes": {
+    "0": {
+      "name": "Libro de ayuda",
+      "icon": "📋",
+      "commands": {
+        "help": "El HelpBook es el libro de ayuda en el que podras leer una descripcion mas suave sobre los comandos."
+      }
+    },
     "1": {
       "name": "Comandos de texto",
       "icon": "📕🖋",
       "commands": {
-        "heya": "Digamos que es un saludo propio para probar que la bot te esta escuchando, saluda sin miedo. Ej: /heya",
-        "say": "Permite repetir cualquier cosa que le adjutes al comando /say. Ej: /say Hello World",
+        "heya": "Es un saludo propio para probar que la bot te esta escuchando, saluda sin miedo. Ej: /heya",
+        "say": "Permite repetir cualquier cosa que le adjuntes al comando /say. Ej: /say Hello World",
         "rsay": "Escribe comandos invertidos 360º. /rsay Hello World",
         "fsay": "Usa diferentes estilos para escribir tus textos estilizados. Ej: /fsay 20 Hello World"
       }
@@ -17,7 +22,9 @@
       "name": "Comandos Multimedia",
       "icon": "▶️",
       "commands": {
-        "coming": "soon..."
+        "yt": "Usa este comando para buscar a traves de youtube haciendo uso de la api YouTubeV3. Escribe /yt titulo a buscar",
+        "img": "Busca imagenes haciendo uso del comando /img imagen a buscar",
+        "snap": "Adjunta una url luego del comando /snap o /fullsnap para conseguir una captura de una pagina web, Ej: /snap google.com"
       }
     },
     "3": {
@@ -31,7 +38,7 @@
       "name": "Navegar en la red",
       "icon": "📱🌎",
       "commands": {
-        "comming": "soon..."
+        "gh": "Una herramienta indispensable para programadores. Busca usuarios o repositorios escribiendo: /gh usuario o /gh usuario repositorio"
       }
     },
     "5": {
