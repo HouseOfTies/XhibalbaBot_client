@@ -4,7 +4,7 @@ export default function heya(bot: any, message: any) {
 
   bot.sendMessage(
     chatId,
-    `Te saludo con entusiasmo. Pasate por el libro de comandos escribiendo /help`,
+    `Para mi es un placer saludarte con entusiasmo. Pasate por el libro de comandos escribiendo /help para ver mis comandos.`,
     { reply_to_message_id: messageId }
   );
 }
