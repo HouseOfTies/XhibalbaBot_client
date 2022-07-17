@@ -67,7 +67,7 @@ function getPageFromBook(index: number){
   let returnString = `*${name}* ${icon}\n\n`;
 
   for (let property of Object.keys(commands)) {
-    returnString += `- *Comando*: /${property}\n *Descripcion*:${commands[property]}\n\n`;
+    returnString += `- *Comando*: /${property}\n *Descripcion*: ${commands[property]}\n\n`;
   }
 
   return returnString;
