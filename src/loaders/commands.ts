@@ -19,7 +19,7 @@ export default async ({ bot }) => {
 
   // Example command
   bot.onText(/(?:^\/heya|^\/start)/, async (message) => {
-    // Whole programming logic within this section
+    // Whole programming logic within this section 
     heya(bot, message);
   });
 
