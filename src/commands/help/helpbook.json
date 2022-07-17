@@ -12,7 +12,7 @@
       "name": "Comandos de texto",
       "icon": "📕🖋",
       "commands": {
-        "heya": "Es un saludo propio para probar que la bot te esta escuchando, saluda sin miedo. Ej: /heya",
+        "heya": "Es un saludo propio para probar que la bot te esta escuchando, saluda sin miedo.",
         "say": "Permite repetir cualquier cosa que le adjuntes al comando /say. Ej: /say Hello World",
         "rsay": "Escribe comandos invertidos 360º. /rsay Hello World",
         "fsay": "Usa diferentes estilos para escribir tus textos estilizados. Ej: /fsay 20 Hello World"
