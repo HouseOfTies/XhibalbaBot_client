@@ -18,7 +18,7 @@ export default async ({ bot }) => {
   Logger.info("Commands loaded ✅");
 
   // Example command
-  bot.onText(/^\/heya/, async (message) => {
+  bot.onText(/(?:^\/heya|^\/start)/, async (message) => {
     // Whole programming logic within this section
     heya(bot, message);
   });

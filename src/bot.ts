@@ -22,7 +22,6 @@ async function startBot() {
       });
 
       bot.on("message", async (message) => {
-        const chatId = message.chat.id;
         console.log(message);
       });
     })
