@@ -62,8 +62,4 @@ export default async ({ bot }) => {
   bot.onText(/^\/yt/, async (message) => {
     youtube(bot, message);
   });
-
-  /* bot.onText(/^\/load/, async message => {
-        loader(bot, message);
-    }); */
 };
