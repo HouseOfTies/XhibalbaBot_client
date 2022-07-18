@@ -27,7 +27,7 @@ export default async function youtubeWorker(query: string) {
 `;
 
     if (totalResults >= 3) {
-      for (let index = 0; index < 3; index++) {
+      for (let index = 0; index < 2; index++) {
         const { authorDisplayName, textOriginal } =
           commentsObject.data.items[index].snippet.topLevelComment.snippet;
         response += `💬 *${authorDisplayName}*: ${supercharge(textOriginal)
