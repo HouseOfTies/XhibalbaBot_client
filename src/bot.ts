@@ -1,4 +1,4 @@
-/* import "reflect-metadata"; // We need this in order to use @Decorators
+import "reflect-metadata"; // We need this in order to use @Decorators
 import config from "./config";
 import express from "express";
 import TelegramBot from "node-telegram-bot-api";
@@ -45,43 +45,3 @@ async function startBot() {
 }
 
 startBot();
- */
-
-import config from "./config";
-import TelegramBot from "node-telegram-bot-api";
-const TOKEN = config.bot;
-const url = config.url;
-const port = 443;
-
-import express from "express";
-
-// No need to pass any parameters as we will handle the updates with Express
-const bot = new TelegramBot(TOKEN);
-
-// This informs the Telegram servers of the new webhook.
-bot.setWebHook(`${url}/${TOKEN}`);
-
-const app = express();
-
-// parse the updates to JSON
-app.use(express.json());
-
-app.get(`/`, (req, res) => {
-  res.send("Powered by express");
-});
-
-// We are receiving updates at the route below!
-app.post(`/${TOKEN}`, (req, res) => {
-  bot.processUpdate(req.body);
-  res.sendStatus(200);
-});
-
-// Start Express Server
-app.listen(port, () => {
-  console.log(`Express server is listening on ${port}`);
-});
-
-// Just to ping!
-bot.on('message', msg => {
-  console.log(msg);
-});
