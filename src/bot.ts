@@ -5,9 +5,12 @@ import TelegramBot from "node-telegram-bot-api";
 import Logger from "./loaders/logger";
 
 async function startBot() {
-  const bot: TelegramBot = new TelegramBot(config.bot, { polling: true });
+  const bot: TelegramBot = new TelegramBot(config.bot, {
+    polling: process.env.NODE_ENV === "production" ? false : true,
+  });
+  bot.setWebHook(`${config.url}/bot${config.bot}`);
   const app = express();
-  const motd: string = `-----------------------------------------------
+  const motd = `-----------------------------------------------
                 🔰 Xhiba listening on port: ${config.port} 🔰
         -----------------------------------------------`;
   app
@@ -16,6 +19,18 @@ async function startBot() {
       await require("./loaders/commands").default({
         bot: bot,
       });
+
+      app.get(`/`, (req, res) => {
+        res.send("XhibalbaBot actually running");
+      });
+
+      if (process.env.NODE_ENV === "production") {
+        app.post(`/${config.bot}`, (req, res) => {
+          bot.processUpdate(req.body);
+          res.sendStatus(200);
+          console.log(req);
+        });
+      }
 
       bot.on("polling_error", (error) => {
         Logger.error(error);
