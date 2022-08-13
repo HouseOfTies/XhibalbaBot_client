@@ -6,18 +6,16 @@ import Logger from "./loaders/logger";
 
 async function startBot() {
   const bot: TelegramBot = new TelegramBot(config.bot, {
-    polling: process.env.NODE_ENV === "production" ? false : true,
+    polling: process.env.NODE_ENV === "production" ? true : false,
   });
-  
+  bot.setWebHook(`${config.url}/bot${config.bot}`);
   const app = express();
   const motd = `-----------------------------------------------
                 🔰 Xhiba listening on port: ${config.port} 🔰
-                Running with: ${process.env.NODE_ENV === "production" ? "Webhook" : "Bot Polling"}
         -----------------------------------------------`;
   app
     .listen(config.port, async () => {
       console.log(motd);
-      bot.setWebHook(`${config.url}/bot${config.bot}`);
       await require("./loaders/commands").default({
         bot: bot,
       });
@@ -29,7 +27,7 @@ async function startBot() {
       app.post(`/${config.bot}`, (req, res) => {
         bot.processUpdate(req.body);
         res.sendStatus(200);
-        console.log("From webhook");
+        console.log(req);
       });
 
       bot.on("polling_error", (error) => {
@@ -50,18 +48,18 @@ startBot();
  */
 
 import config from "./config";
-const TOKEN = process.env.TELEGRAM_TOKEN || '998778278:AAEYTCar7G2hGUYAS04Viz402MbysR0Y-oc';
+import TelegramBot from "node-telegram-bot-api";
+const TOKEN = config.bot;
 const url = 'https://xhibalbabot-production.up.railway.app';
 const port = 443;
 
-const TelegramBot = require('node-telegram-bot-api');
-const express = require('express');
+import express from "express";
 
 // No need to pass any parameters as we will handle the updates with Express
 const bot = new TelegramBot(TOKEN);
 
 // This informs the Telegram servers of the new webhook.
-bot.setWebHook(`${url}/bot${TOKEN}`);
+bot.setWebHook(`${url}/${TOKEN}`);
 
 const app = express();
 
@@ -69,14 +67,13 @@ const app = express();
 app.use(express.json());
 
 app.get(`/`, (req, res) => {
-  res.send("Hello world");
+  res.send("Powered by express");
 });
 
 // We are receiving updates at the route below!
 app.post(`/${TOKEN}`, (req, res) => {
   bot.processUpdate(req.body);
   res.sendStatus(200);
-  console.log(req)
 });
 
 // Start Express Server
@@ -86,5 +83,5 @@ app.listen(port, () => {
 
 // Just to ping!
 bot.on('message', msg => {
-  bot.sendMessage(msg.chat.id, 'I am alive!');
+  console.log(msg);
 });
