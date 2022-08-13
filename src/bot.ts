@@ -75,7 +75,6 @@ app.get(`/`, (req, res) => {
 app.post(`/${TOKEN}`, (req, res) => {
   bot.processUpdate(req.body);
   res.sendStatus(200);
-  console.log(req)
 });
 
 // Start Express Server
