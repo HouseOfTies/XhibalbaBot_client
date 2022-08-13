@@ -7,7 +7,7 @@ if(process.env.NODE_ENV !== "production"){
 }
 
 export default {
-  port: parseInt(process.env.PORT, 10),
+  port: process.env.PORT,
   bot: process.env.BOT_TOKEN,
   url: process.env.URL,
   multimedia: {
