@@ -51,7 +51,7 @@ startBot();
 
 import config from "./config";
 const TOKEN = process.env.TELEGRAM_TOKEN || '998778278:AAEYTCar7G2hGUYAS04Viz402MbysR0Y-oc';
-const url = config.url;
+const url = 'https://xhibalbabot-production.up.railway.app';
 const port = 443;
 
 const TelegramBot = require('node-telegram-bot-api');
