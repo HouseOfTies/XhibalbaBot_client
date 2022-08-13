@@ -9,6 +9,7 @@ if(process.env.NODE_ENV !== "production"){
 export default {
   port: parseInt(process.env.PORT, 10),
   bot: process.env.BOT_TOKEN,
+  url: process.env.URL,
   multimedia: {
     openWeather: process.env.OPENWEATHER,
     youtube: process.env.YOUTUBE,
