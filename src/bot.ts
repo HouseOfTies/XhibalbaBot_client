@@ -47,10 +47,11 @@ async function startBot() {
 startBot();
  */
 
+import config from "./config";
 import TelegramBot from "node-telegram-bot-api";
-const TOKEN = '998778278:AAEYTCar7G2hGUYAS04Viz402MbysR0Y-oc';
-const url = 'https://xhibalbabot-production.up.railway.app';
-const port = 443;
+const TOKEN = config.bot;
+const url = config.url;
+const port = config.port;
 
 import express from "express";
 
@@ -66,7 +67,7 @@ const app = express();
 app.use(express.json());
 
 app.get(`/`, (req, res) => {
-  res.send("Hello world");
+  res.send("Powered by express");
 });
 
 // We are receiving updates at the route below!
