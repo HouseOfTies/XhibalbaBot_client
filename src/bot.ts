@@ -14,34 +14,31 @@ async function startBot() {
   const motd = `-----------------------------------------------
                 🔰 Xhiba listening on port: ${config.port} 🔰
         -----------------------------------------------`;
-  app
-    .listen(config.port, async () => {
-      console.log(motd);
-      await require("./loaders/commands").default({
-        bot: bot,
-      });
-    })
-    .on("error", (err) => {
-      Logger.error(err);
-      process.exit(1);
-    });
+        bot.setWebHook(`${config.url}/${config.bot}`);
+        
+        // parse the updates to JSON
+        app.use(express.json());
+        
+        app.get(`/`, (req, res) => {
+          res.send("Powered by express");
+        });
+        
+        // We are receiving updates at the route below!
+        app.post(`/${config.bot}`, (req, res) => {
+          bot.processUpdate(req.body);
+          res.sendStatus(200);
+        });
+        
+        // Start Express Server
+        app.listen(config.port, () => {
+          console.log(`Express server is listening on ${config.port}`);
+        });
+        
+        // Just to ping!
+        bot.on('message', msg => {
+          console.log(msg);
+        });
 
-    app.get(`/`, (req, res) => {
-      res.send("XhibalbaBot actually running");
-    });
-
-    app.post(`/${config.bot}`, (req, res) => {
-      bot.processUpdate(req.body);
-      res.sendStatus(200);
-    });
-
-    bot.on("polling_error", (error) => {
-      Logger.error(error);
-    });
-
-    bot.on("message", async (message) => {
-      console.log(message);
-    });
 }
 /* const bot: TelegramBot = new TelegramBot(config.bot, {
     polling: process.env.NODE_ENV === "production" ? false : true,
