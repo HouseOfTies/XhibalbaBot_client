@@ -24,13 +24,11 @@ async function startBot() {
         res.send("XhibalbaBot actually running");
       });
 
-      if (process.env.NODE_ENV === "production") {
-        app.post(`/${config.bot}`, (req, res) => {
-          bot.processUpdate(req.body);
-          res.sendStatus(200);
-          console.log(req);
-        });
-      }
+      app.post(`/${config.bot}`, (req, res) => {
+        bot.processUpdate(req.body);
+        res.sendStatus(200);
+        console.log(req);
+      });
 
       bot.on("polling_error", (error) => {
         Logger.error(error);
