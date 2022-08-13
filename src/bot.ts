@@ -20,27 +20,27 @@ async function startBot() {
       await require("./loaders/commands").default({
         bot: bot,
       });
-
-      app.get(`/`, (req, res) => {
-        res.send("XhibalbaBot actually running");
-      });
-
-      app.post(`/${config.bot}`, (req, res) => {
-        bot.processUpdate(req.body);
-        res.sendStatus(200);
-      });
-
-      bot.on("polling_error", (error) => {
-        Logger.error(error);
-      });
-
-      bot.on("message", async (message) => {
-        console.log(message);
-      });
     })
     .on("error", (err) => {
       Logger.error(err);
       process.exit(1);
+    });
+
+    app.get(`/`, (req, res) => {
+      res.send("XhibalbaBot actually running");
+    });
+
+    app.post(`/${config.bot}`, (req, res) => {
+      bot.processUpdate(req.body);
+      res.sendStatus(200);
+    });
+
+    bot.on("polling_error", (error) => {
+      Logger.error(error);
+    });
+
+    bot.on("message", async (message) => {
+      console.log(message);
     });
 }
 /* const bot: TelegramBot = new TelegramBot(config.bot, {
