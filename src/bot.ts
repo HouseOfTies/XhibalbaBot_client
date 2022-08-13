@@ -6,7 +6,7 @@ import Logger from "./loaders/logger";
 
 async function startBot() {
   const bot: TelegramBot = new TelegramBot(config.bot, {
-    polling: process.env.NODE_ENV === "production" ? true : false,
+    polling: process.env.NODE_ENV === "production" ? false : true,
   });
   bot.setWebHook(`${config.url}/bot${config.bot}`);
   const app = express();
@@ -50,7 +50,7 @@ startBot();
 import config from "./config";
 import TelegramBot from "node-telegram-bot-api";
 const TOKEN = config.bot;
-const url = 'https://xhibalbabot-production.up.railway.app';
+const url = config.url;
 const port = 443;
 
 import express from "express";
