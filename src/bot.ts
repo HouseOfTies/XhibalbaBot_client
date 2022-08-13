@@ -49,7 +49,7 @@ startBot();
 
 import config from "./config";
 import TelegramBot from "node-telegram-bot-api";
-const TOKEN = "998778278:AAEYTCar7G2hGUYAS04Viz402MbysR0Y-oc";
+const TOKEN = config.bot;
 const url = 'https://xhibalbabot-production.up.railway.app';
 const port = 443;
 
@@ -59,6 +59,7 @@ import express from "express";
 const bot = new TelegramBot(TOKEN);
 
 // This informs the Telegram servers of the new webhook.
+console.log(`${url}/${TOKEN}`);
 bot.setWebHook(`${url}/${TOKEN}`);
 
 const app = express();
@@ -84,5 +85,5 @@ app.listen(port, () => {
 
 // Just to ping!
 bot.on('message', msg => {
-  bot.sendMessage(msg.chat.id, 'I am alive!');
+  console.log(msg);
 });
