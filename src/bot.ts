@@ -8,6 +8,39 @@ async function startBot() {
   const bot: TelegramBot = new TelegramBot(config.bot, {
     polling: process.env.NODE_ENV === "production" ? false : true,
   });
+
+  bot.setWebHook(`${config.url}/${config.bot}`);
+
+const app = express();
+
+// parse the updates to JSON
+app.use(express.json());
+
+app.get(`/`, (req, res) => {
+  res.send("Powered by express");
+});
+
+// We are receiving updates at the route below!
+app.post(`/${config.bot}`, (req, res) => {
+  bot.processUpdate(req.body);
+  res.sendStatus(200);
+});
+
+// Start Express Server
+app.listen(config.port, () => {
+  console.log(`Express server is listening on ${config.port}`);
+});
+
+// Just to ping!
+bot.on('message', msg => {
+  console.log(msg);
+}
+
+)}
+
+  /* const bot: TelegramBot = new TelegramBot(config.bot, {
+    polling: process.env.NODE_ENV === "production" ? false : true,
+  });
   bot.setWebHook(`${config.url}/bot${config.bot}`);
   const app = express();
   const motd = `-----------------------------------------------
@@ -40,8 +73,8 @@ async function startBot() {
     .on("error", (err) => {
       Logger.error(err);
       process.exit(1);
-    });
-}
+    }); */
+
 
 startBot();
 
