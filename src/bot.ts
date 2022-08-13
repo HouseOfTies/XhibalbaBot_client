@@ -9,7 +9,6 @@ async function startBot() {
     polling: process.env.NODE_ENV === "production" ? false : true,
   });
   bot.setWebHook(`${config.url}/bot${config.bot}`);
-  console.log(`${config.url}/bot${config.bot}`);
   const app = express();
   const motd = `-----------------------------------------------
                 🔰 Xhiba listening on port: ${config.port} 🔰
@@ -18,6 +17,7 @@ async function startBot() {
   app
     .listen(config.port, async () => {
       console.log(motd);
+      console.log(`${config.url}/bot${config.bot}`);
       await require("./loaders/commands").default({
         bot: bot,
       });
