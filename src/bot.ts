@@ -6,12 +6,13 @@ import Logger from "./loaders/logger";
 
 async function startBot() {
   const bot: TelegramBot = new TelegramBot(config.bot, {
-    polling: process.env.NODE_ENV === "production" ? true : false,
+    polling: process.env.NODE_ENV === "production" ? false : true,
   });
   bot.setWebHook(`${config.url}/bot${config.bot}`);
   const app = express();
   const motd = `-----------------------------------------------
                 🔰 Xhiba listening on port: ${config.port} 🔰
+                Running with: ${process.env.NODE_ENV === "production" ? "Webhook" : "Bot Polling"}
         -----------------------------------------------`;
   app
     .listen(config.port, async () => {
@@ -27,7 +28,7 @@ async function startBot() {
       app.post(`/${config.bot}`, (req, res) => {
         bot.processUpdate(req.body);
         res.sendStatus(200);
-        console.log(req);
+        console.log("From webhook");
       });
 
       bot.on("polling_error", (error) => {
