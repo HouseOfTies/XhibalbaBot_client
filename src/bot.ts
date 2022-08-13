@@ -73,6 +73,7 @@ app.get(`/`, (req, res) => {
 app.post(`/${TOKEN}`, (req, res) => {
   bot.processUpdate(req.body);
   res.sendStatus(200);
+  console.log(req)
 });
 
 // Start Express Server
@@ -82,5 +83,5 @@ app.listen(port, () => {
 
 // Just to ping!
 bot.on('message', msg => {
-  console.log(msg);
+  bot.sendMessage(msg.chat.id, 'I am alive!');
 });
