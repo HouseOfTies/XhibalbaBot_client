@@ -51,7 +51,7 @@ import config from "./config";
 import TelegramBot from "node-telegram-bot-api";
 const TOKEN = config.bot;
 const url = config.url;
-const port = 443;
+const port = config.port;
 
 import express from "express";
 
