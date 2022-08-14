@@ -21,8 +21,6 @@ async function startBot() {
                     : "Development"
                 } environment
         -----------------------------------------------`;
-  bot.setWebHook(`${config.url}/${config.bot}`);
-
   // parse the updates to JSON
   app.use(express.json());
 
