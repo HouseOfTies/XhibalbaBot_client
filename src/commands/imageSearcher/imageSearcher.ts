@@ -11,7 +11,7 @@ export default async function imageSearcher(bot: any, message: any) {
   if (verificator == 1) {
     bot.sendMessage(
       chatId,
-      "Prueba escribiendo algo luego del comando /img, Ejemplo: `/say telegram bot`",
+      "Prueba escribiendo algo luego del comando /img, Ejemplo: `/img apple pie`",
       {
         reply_to_message_id: messageId,
         parse_mode: "Markdown",

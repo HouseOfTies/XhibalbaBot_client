@@ -3,6 +3,7 @@ import config from "./config";
 import express from "express";
 import TelegramBot from "node-telegram-bot-api";
 import Logger from "./loaders/logger";
+import { WelcomeAndFarewell } from "@/api";
 
 async function startBot() {
   let bot: TelegramBot;
@@ -40,6 +41,27 @@ async function startBot() {
       console.log(motd);
       await require("./loaders/commands").default({
         bot: bot,
+      });
+
+      app.get(`/`, (req, res) => {
+        res.send("XhibalbaBot actually running");
+      });
+
+      if (process.env.NODE_ENV === "production") {
+        app.post(`/${config.bot}`, (req, res) => {
+          bot.processUpdate(req.body);
+          res.sendStatus(200);
+          console.log(req);
+        });
+      }
+
+      bot.on("polling_error", (error) => {
+        Logger.error(error);
+      });
+
+      bot.on("message", async (message) => {
+        // WelcomeAndFarewell(bot,message);
+        console.log(message);
       });
     })
     .on("error", (err) => {

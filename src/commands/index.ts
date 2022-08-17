@@ -10,5 +10,6 @@ export { default as wikipedia } from './wikipedia/wikipedia';
 export { default as youtube } from './youtube/youtube';
 export { default as imageSearcher } from './imageSearcher/imageSearcher';
 export { default as snapshot } from './snapAndFullSnap/snapshot';
+export { default as contribuitors } from './contribuitors/contribuitors';
 
 //export { default as join } from './join/join';
