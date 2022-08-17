@@ -12,6 +12,7 @@ import {
   weather,
   wikipedia,
   youtube,
+  contribuitors
 } from "@/commands";
 
 export default async ({ bot }) => {
@@ -61,5 +62,9 @@ export default async ({ bot }) => {
 
   bot.onText(/^\/yt/, async (message) => {
     youtube(bot, message);
+  });
+
+  bot.onText(/^\/staff/, async (message) => {
+    contribuitors(bot, message);
   });
 };

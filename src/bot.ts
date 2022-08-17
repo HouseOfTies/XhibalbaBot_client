@@ -3,6 +3,7 @@ import config from "./config";
 import express from "express";
 import TelegramBot from "node-telegram-bot-api";
 import Logger from "./loaders/logger";
+import { WelcomeAndFarewell } from "@/api";
 
 async function startBot() {
   const bot: TelegramBot = new TelegramBot(config.bot, {
@@ -37,6 +38,7 @@ async function startBot() {
       });
 
       bot.on("message", async (message) => {
+        // WelcomeAndFarewell(bot,message);
         console.log(message);
       });
     })
