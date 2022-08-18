@@ -31,6 +31,7 @@
   "author": "Seventty",
   "license": "ISC",
   "dependencies": {
+    "@mapbox/node-pre-gyp": "^1.0.9",
     "@supercharge/strings": "^1.28.0",
     "axios": "^0.21.1",
     "body-parser": "^1.19.0",
