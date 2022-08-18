@@ -1,6 +1,9 @@
 {
   "name": "xhibalbabot",
   "version": "5.0.1",
+  "engines" : { 
+    "node" : "16.0.0"
+  },
   "description": "A multipurpose telegram bot",
   "main": "src/bot.ts",
   "scripts": {
@@ -35,7 +38,6 @@
     "@supercharge/strings": "^1.28.0",
     "axios": "^0.21.1",
     "body-parser": "^1.19.0",
-    "canvas": "^2.9.3",
     "cheerio": "^1.0.0-rc.10",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
