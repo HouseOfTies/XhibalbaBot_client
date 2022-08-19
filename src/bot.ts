@@ -10,7 +10,6 @@ async function startBot() {
   if (process.env.NODE_ENV === "production") {
     bot = new TelegramBot(config.bot);
     bot.setWebHook(`${config.url}/${config.bot}`);
-    console.log(`${config.url}/${config.bot}`)
   } else {
     bot = new TelegramBot(config.bot, { polling: true });
   }
