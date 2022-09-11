@@ -60,8 +60,12 @@ async function startBot() {
       });
 
       bot.on("message", async (message) => {
-        // WelcomeAndFarewell(bot,message);
-        console.log(message);
+        if (
+          message.new_chat_members != undefined ||
+          message.left_chat_member != undefined
+        ) {
+          WelcomeAndFarewell(bot, message);
+        }
       });
     })
     .on("error", (err) => {
