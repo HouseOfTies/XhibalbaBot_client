@@ -14,13 +14,12 @@ export class TelegramBot {
   }
 
   bot: Telegraf = new Telegraf(process.env.BOT_TOKEN);
-  botInitializor() {
+  botInitializor(): void {
+    console.log("Bot initialized...");
     this.bot.on(message('text'), (ctx) => {
-      console.log(ctx);
+      console.log(ctx.message);
     });
-
     this.bot.launch();
-
     process.once('SIGINT', () => this.bot.stop('SIGINT'));
     process.once('SIGTERM', () => this.bot.stop('SIGTERM'));
   }
