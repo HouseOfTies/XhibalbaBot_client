@@ -12,12 +12,8 @@ export class TelegramBot {
   public botInitializor(): void {
     console.log("Bot initialized ✅");
     this.botService.loadCommands(this.bot);
-    this.bot.on(message('text'), (ctx) => {
-      console.log(ctx.message);
-    });
-
+    this.botService.messagesInspector(this.bot);
     this.bot.launch();
-
     process.once('SIGINT', () => this.bot.stop('SIGINT'));
     process.once('SIGTERM', () => this.bot.stop('SIGTERM'));
   }
