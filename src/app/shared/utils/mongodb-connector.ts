@@ -1,8 +1,8 @@
-import { ConnectOptions } from "mongoose";
 import { MongoDBClient } from "./mongodb-client";
 import { environment } from "../environment/environment";
 
 export class MongoDBConnector {
+  constructor(){ }
   private options: any = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -10,7 +10,7 @@ export class MongoDBConnector {
 
   private connection = new MongoDBClient(environment.MONGODB_URI, this.options)
 
-  async connectDatabase() {
+  public async connectDatabase() {
     try {
       await this.connection.connect();
       const db = this.connection.getConnection();
