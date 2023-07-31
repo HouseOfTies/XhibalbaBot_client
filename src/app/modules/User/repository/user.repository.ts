@@ -15,8 +15,8 @@ export class UserEntity<T> {
     return this.model.findById(id).exec();
   } */
 
-  async findOne(userId: number): Promise<T | null> {
-    return this.model.findOne({id: userId}).exec();
+  async findOne(id: number): Promise<T | null> {
+    return this.model.findOne({id}).exec();
   }
 
   async findAll(): Promise<T[]> {

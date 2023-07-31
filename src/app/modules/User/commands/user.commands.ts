@@ -1,9 +1,20 @@
 import { IUser } from "@/app/shared/interfaces/IUser";
 import { Telegraf } from "telegraf";
 import { UserEntity } from "../repository/user.repository";
+import { UserRegistratedMiddleware } from "@/app/shared/middlewares/checkUserRegistrated";
 
 export class UserCommands {
-  constructor(private bot: Telegraf, private userRepository: UserEntity<IUser>) {}
+  userRegistratedMiddleware: UserRegistratedMiddleware = new UserRegistratedMiddleware(this.userRepository);
+  constructor(private bot: Telegraf, private userRepository: UserEntity<IUser>) {
+    //this.userRegistratedMiddleware = new UserRegistratedMiddleware(userRepository);
+    //this.bot.use(userRegistratedMiddleware.checkRegistration.bind(userRegistratedMiddleware));
+  }
+
+  sayHi(){
+    this.bot.command('hi', this.userRegistratedMiddleware.checkRegistration.bind(this.userRegistratedMiddleware) , async (ctx) => {
+      ctx.reply("hello world")
+    });
+  }
 
   signIn() {
     this.bot.command('signIn', async (ctx) => {
@@ -15,7 +26,7 @@ export class UserCommands {
         ctx.reply("Error occurred while registering the user.");
         console.error(error);
       }
-    })
+    });
   }
 
   getUser(){
@@ -28,10 +39,11 @@ export class UserCommands {
         ctx.reply("Error occurred while registering the user.");
         console.error(error);
       }
-    })
+    });
   }
 
   registerCommands() {
+    this.sayHi();
     this.signIn();
     this.getUser();
   }
