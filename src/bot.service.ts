@@ -1,9 +1,9 @@
-export class botService {
-  loadCommands(){
-    console.log("Loading Commands...")
-  }
+import { Telegraf } from "telegraf";
+import { Commands } from "./modules/Commands/commands";
 
-  setCommands(){
-    console.log("Settings commands");
+export class BotService {
+  public loadCommands(bot: Telegraf){
+    new Commands().commandsLoader(bot);
+    console.log("Commands Loaded ✅");
   }
 }

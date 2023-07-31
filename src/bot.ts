@@ -1,25 +1,23 @@
 import { Telegraf } from "telegraf";
 import { message } from "telegraf/filters";
 import * as dotenv from "dotenv";
+import { BotService } from "./bot.service";
 dotenv.config();
 
 export class TelegramBot {
-  private static instance: TelegramBot | null = null;
+  constructor(private botService: BotService) { }
 
-  static getInstance(): TelegramBot {
-    if (!TelegramBot.instance) {
-      TelegramBot.instance = new TelegramBot();
-    }
-    return TelegramBot.instance;
-  }
+  private bot: Telegraf = new Telegraf(process.env.BOT_TOKEN);
 
-  bot: Telegraf = new Telegraf(process.env.BOT_TOKEN);
-  botInitializor(): void {
-    console.log("Bot initialized...");
+  public botInitializor(): void {
+    console.log("Bot initialized ✅");
+    this.botService.loadCommands(this.bot);
     this.bot.on(message('text'), (ctx) => {
       console.log(ctx.message);
     });
+
     this.bot.launch();
+
     process.once('SIGINT', () => this.bot.stop('SIGINT'));
     process.once('SIGTERM', () => this.bot.stop('SIGTERM'));
   }

@@ -1,0 +1,20 @@
+{
+  "commands": [
+    {
+      "command": "hi",
+      "description": "This is a greetings command"
+    },
+    {
+      "command": "bye",
+      "description": "This is a goodbye command"
+    },
+    {
+      "command": "ban",
+      "description": "This is a ban command"
+    },
+    {
+      "command": "example",
+      "description": "This is a example command"
+    }
+  ]
+}
