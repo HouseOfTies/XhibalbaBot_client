@@ -23,11 +23,11 @@ export class UserEntity<T> {
     return this.model.find().exec();
   }
 
-  async update(id: string, data: Partial<T>): Promise<T | null> {
-    return this.model.findByIdAndUpdate(id, data, { new: true }).exec();
+  async update(id: number, data: Partial<T>): Promise<T | null> {
+    return this.model.findOneAndUpdate({id}, data, { new: true }).exec();
   }
 
-  async delete(id: string): Promise<T | null> {
-    return this.model.findByIdAndDelete(id).exec();
+  async delete(id: number): Promise<T | null> {
+    return this.model.findOneAndDelete({id}).exec();
   }
 }

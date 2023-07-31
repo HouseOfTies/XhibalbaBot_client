@@ -10,4 +10,5 @@ export interface IUser extends User {
   token?: number;
   createdAt?: Date;
   updatedAt?: Date;
+  deleted?: boolean;
 }
