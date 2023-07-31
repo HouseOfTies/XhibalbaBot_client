@@ -1,13 +1,11 @@
 import { Telegraf } from "telegraf";
-import { message } from "telegraf/filters";
-import * as dotenv from "dotenv";
 import { BotService } from "./bot.service";
-dotenv.config();
+import { environment } from "./shared/environment/environment";
 
 export class TelegramBot {
   constructor(private botService: BotService) { }
 
-  private bot: Telegraf = new Telegraf(process.env.BOT_TOKEN);
+  private bot: Telegraf = new Telegraf(environment.BOT_TOKEN);
 
   public botInitializor(): void {
     console.log("Bot initialized ✅");

@@ -6,8 +6,8 @@
   "scripts": {
     "build": "tsc",
     "heroku-postbuild": "npm run build",
-    "start": "ts-node -r tsconfig-paths/register --transpile-only main.ts",
-    "dev": "nodemon main.ts",
+    "start": "ts-node -r tsconfig-paths/register --transpile-only ./src/main.ts",
+    "dev": "nodemon ./app/main.ts",
     "test": "jest",
     "lint": "npm run lint:js ",
     "lint:eslint": "eslint --ignore-path .gitignore --ext .ts",
@@ -35,6 +35,7 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "fluent-ffmpeg": "^2.1.2",
+    "mongoose": "^7.4.1",
     "ms": "^2.0.0",
     "nodemon": "^2.0.4",
     "package.json": "^2.0.1",
