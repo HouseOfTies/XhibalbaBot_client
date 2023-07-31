@@ -18,7 +18,7 @@ export class UserCommands {
   }
 
   signIn() {
-    this.bot.command('join', this.usernameValidatorMiddleware , async (ctx) => {
+    this.bot.command('join', this.usernameValidatorMiddleware, async (ctx) => {
       const userData: IUser = ctx.message.from;
       try {
         const user = await this.userRepository.create(userData);
@@ -40,7 +40,13 @@ export class UserCommands {
       const userData: IUser = ctx.message.from;
       try {
         const user = await this.userRepository.findOne(userData.id);
-        ctx.reply(`I found this: ${user}`);
+        const formattedMessage = `
+        User Information:
+        Username: @${user.username}
+        Language: ${user.language_code}
+        Koins: ${user.coins} 🪙
+      `.replace(/^\s+/gm, '');
+        ctx.reply(formattedMessage);
       } catch (error) {
         ctx.reply("Error occurred while registering the user.");
         console.error(error);
@@ -54,7 +60,7 @@ export class UserCommands {
       try {
         await this.userRepository.delete(userData.id);
         ctx.reply(`You removed yourself from the database`);
-      } catch(error) {
+      } catch (error) {
         console.log(error);
       }
     });

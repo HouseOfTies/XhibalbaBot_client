@@ -11,4 +11,5 @@ export interface IUser extends User {
   createdAt?: Date;
   updatedAt?: Date;
   deleted?: boolean;
+  coins?: number;
 }

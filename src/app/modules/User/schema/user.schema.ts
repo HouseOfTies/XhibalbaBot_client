@@ -13,7 +13,8 @@ const userSchema = new Schema<IUser>(
     token: { type: Number, required: false, unique: true },
     createdAt: { type: Date, required: true, unique: false, default: Date.now},
     updatedAt: { type: Date, required: true, unique: false, default: Date.now },
-    deleted: { type: Boolean, required: false, unique: false, default: false }
+    deleted: { type: Boolean, required: false, unique: false, default: false },
+    coins: { type: Number, required: true, unique: false, default: 350 },
   },
 );
 

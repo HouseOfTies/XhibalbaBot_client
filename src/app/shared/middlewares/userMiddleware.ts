@@ -6,10 +6,10 @@ export class UserMiddleware {
   constructor(private userRepository: UserEntity<IUser>) { }
 
   public async checkRegisteredUser(ctx: Context, next: () => void) {
-    const userData = ctx.message.from.id;
-    const userDataFromDb = await this.userRepository.findOne(userData);
+    const userId = ctx.message.from.id;
+    const userData = await this.userRepository.findOne(userId);
 
-    if (userDataFromDb) {
+    if (userData) {
       return next();
     } else {
       ctx.reply("You are not registered. Please sign in first.");
