@@ -1,6 +1,6 @@
-import { ICommandList } from "@/shared/interfaces/ICommandList";
+import { ICommandList } from "@/app/shared/interfaces/ICommandList";
 import { Telegraf } from "telegraf";
-import * as CommandList from "@/shared/commandList.json";
+import * as CommandList from "@/app/shared/commandList.json";
 
 export class Administrator {
   commandList: ICommandList[] = CommandList.commands;
