@@ -12,7 +12,7 @@ const userSchema = new Schema<IUser>(
     token: { type: Number, required: false, unique: true },
     createdAt: { type: Date, required: true, unique: false, default: Date.now},
     updatedAt: { type: Date, required: true, unique: false, default: Date.now },
-  }
+  },
 );
 
 export const UserModel = model<IUser>('User', userSchema);

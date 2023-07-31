@@ -11,12 +11,12 @@ export class UserEntity<T> {
     return this.model.create(data);
   }
 
-  async findById(id: string): Promise<T | null> {
+  /* async findById(id: number): Promise<T | null> {
     return this.model.findById(id).exec();
-  }
+  } */
 
-  async findOne(param: Partial<T>): Promise<T | null> {
-    return this.model.findOne().exec();
+  async findOne(userId: number): Promise<T | null> {
+    return this.model.findOne({id: userId}).exec();
   }
 
   async findAll(): Promise<T[]> {
