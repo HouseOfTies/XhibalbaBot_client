@@ -1,5 +1,5 @@
 import { IUser } from "@/app/shared/interfaces/IUser";
-import { Telegraf } from "telegraf";
+import { Markup, Telegraf } from "telegraf";
 import { UserEntity } from "../repository/user.repository";
 import { UserMiddleware } from "@/app/shared/middlewares/userMiddleware";
 
@@ -27,6 +27,7 @@ export class UserCommands {
       } catch (error) {
         if (error.code === 11000) {
           ctx.reply("You are already registered.");
+          console.log(error);
         } else {
           ctx.reply("Error occurred while registering the user.");
           console.error(error);
@@ -36,7 +37,7 @@ export class UserCommands {
   }
 
   getUser() {
-    this.bot.command('info', async (ctx) => {
+    this.bot.command('status', async (ctx) => {
       const userData: IUser = ctx.message.from;
       try {
         const user = await this.userRepository.findOne(userData.id);
@@ -55,16 +56,34 @@ export class UserCommands {
   }
 
   leave() {
-    this.bot.command('leave', this.checkRegisteredUserMiddleware, async (ctx) => {
-      const userData: IUser = ctx.message.from;
+    this.bot.command('leave', this.checkRegisteredUserMiddleware, (ctx) => {
+      const confirmationKeyboard = Markup.inlineKeyboard([
+        Markup.button.callback('Yes, I want delete it', 'confirm'),
+        Markup.button.callback('Cancel', 'cancel')
+      ]);
+
+      ctx.reply('You really want delete yourself from the database?', confirmationKeyboard);
+    });
+
+      this.bot.action('confirm', async (ctx) => {
+      const userData: IUser = ctx.from;
+      const userId = userData.id;
+
       try {
-        await this.userRepository.delete(userData.id);
-        ctx.reply(`You removed yourself from the database`);
+        await this.userRepository.delete(userId);
+        ctx.answerCbQuery('You has been deleted from the database.');
+        await ctx.deleteMessage();
       } catch (error) {
         console.log(error);
       }
     });
+
+    this.bot.action('cancel', (ctx) => {
+      ctx.answerCbQuery('Operation canceled, you still living in my memories.');
+      ctx.deleteMessage();
+    });
   }
+
 
   registerCommands() {
     this.sayHi();

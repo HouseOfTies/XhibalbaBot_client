@@ -9,7 +9,7 @@ export class DiceGame {
 
   coins: any;
 
-  private multiplier: Array<number> = [2, 3, 4];
+  private multiplier: Array<number> = [2, 3, 4, 5];
 
   constructor(private bot: Telegraf, private userRepository: UserEntity<IUser>) { }
 
@@ -47,17 +47,19 @@ export class DiceGame {
         return;
       }
 
-      await ctx.replyWithDice().then(replyCtx => {
+      await ctx.replyWithDice(/* { emoji: "🎰"} */).then(replyCtx => {
+        console.log(replyCtx);
         ctx.reply(`Dice result: ${replyCtx.dice.value}`);
         if (replyCtx.dice.value === diceNumber) {
           const reward = betAmount * randomMultiplier;
           const formattedMessage = `
           Congratulations, you won. 🎉
-
           --- Result --
           Bet amount: ${betAmount} 🪙
           Random Multiplier: X${randomMultiplier}
           Reward: ${reward} 🪙
+          -------------
+          Total Koins: ${this.coins + reward} 💰
           `.replace(/^\s+/gm, '');
           this.userRepository.update(ctx.message.from.id, { coins: this.coins + reward})
           ctx.reply(formattedMessage);
