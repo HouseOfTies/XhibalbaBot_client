@@ -9,6 +9,7 @@ export class TelegramBot {
 
   public botInitializor(): void {
     console.log("Bot initialized ✅");
+    this.bot.use(this.botService.setBotLanguages());
     this.botService.loadCommands(this.bot);
     this.botService.messagesInspector(this.bot);
     this.bot.launch();

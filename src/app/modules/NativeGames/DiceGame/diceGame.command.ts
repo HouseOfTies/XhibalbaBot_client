@@ -1,4 +1,4 @@
-import { UserMiddleware } from "@/app/shared/middlewares/userMiddleware";
+import { UserMiddleware } from "@/app/shared/middlewares/userMiddleware/userMiddleware";
 import { Telegraf } from "telegraf";
 import { UserEntity } from "../../User/repository/user.repository";
 import { IUser } from "@/app/shared/interfaces/IUser";

@@ -1,13 +1,14 @@
 import { IUser } from "@/app/shared/interfaces/IUser";
 import { Markup, Telegraf } from "telegraf";
-import { UserEntity } from "../repository/user.repository";
-import { UserMiddleware } from "@/app/shared/middlewares/userMiddleware";
+import { UserMiddleware } from "@/app/shared/middlewares/userMiddleware/userMiddleware";
+import { HttpClientService } from "@/app/shared/utils/httpClientService";
+import { UserService } from "../user.service";
 
 export class UserCommands {
-  userMiddleware: UserMiddleware = new UserMiddleware(this.userRepository);
+  userMiddleware: UserMiddleware = new UserMiddleware(new HttpClientService);
   checkRegisteredUserMiddleware = this.userMiddleware.checkRegisteredUser.bind(this.userMiddleware)
   usernameValidatorMiddleware = this.userMiddleware.usernameValidator.bind(this.userMiddleware)
-  constructor(private bot: Telegraf, private userRepository: UserEntity<IUser>) {
+  constructor(private bot: Telegraf, private userService: UserService) {
     //this.bot.use(this.userMiddleware.usernameValidator.bind(this.userMiddleware));
   }
 
@@ -17,29 +18,20 @@ export class UserCommands {
     });
   }
 
-  signIn() {
-    this.bot.command('join', this.usernameValidatorMiddleware, async (ctx) => {
+  join() {
+    this.bot.command('join', this.checkRegisteredUserMiddleware, this.usernameValidatorMiddleware, async (ctx) => {
       const userData: IUser = ctx.message.from;
-      try {
-        const user = await this.userRepository.create(userData);
-        ctx.reply(`User @${user.username} registered successfully!`);
-        console.log(userData);
-      } catch (error) {
-        if (error.code === 11000) {
-          ctx.reply("You are already registered.");
-          console.log(error);
-        } else {
-          ctx.reply("Error occurred while registering the user.");
-          console.error(error);
+        /* this.userService.createUser(userData).subscribe(_ => {
+          ctx.reply('You have been registered successfully');
         }
-      }
+      ); */
     });
   }
 
-  getUser() {
-    this.bot.command('status', async (ctx) => {
+  getStatus() {
+    this.bot.command('status', this.checkRegisteredUserMiddleware, async (ctx) => {
       const userData: IUser = ctx.message.from;
-      try {
+      /* try {
         const user = await this.userRepository.findOne(userData.id);
         const formattedMessage = `
         User Information:
@@ -51,11 +43,11 @@ export class UserCommands {
       } catch (error) {
         ctx.reply("Error occurred while registering the user.");
         console.error(error);
-      }
+      } */
     });
   }
 
-  leave() {
+  /* leave() {
     this.bot.command('leave', this.checkRegisteredUserMiddleware, (ctx) => {
       const confirmationKeyboard = Markup.inlineKeyboard([
         Markup.button.callback('Yes, I want delete it', 'confirm'),
@@ -82,13 +74,14 @@ export class UserCommands {
       ctx.answerCbQuery('Operation canceled, you still living in my memories.');
       ctx.deleteMessage();
     });
-  }
+  } */
 
 
   registerCommands() {
     this.sayHi();
-    this.signIn();
-    this.getUser();
-    this.leave();
+    this.join();
+    this.getStatus();
+    //this.getUser();
+    //this.leave();
   }
 }

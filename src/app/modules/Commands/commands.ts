@@ -1,17 +1,16 @@
 import { Telegraf } from "telegraf";
 import { UserCommands } from "../User/commands/user.commands";
 import { Administrator } from "../Administrator/commands/administrator.commands";
-import { UserEntity } from "../User/repository/user.repository";
 import { IUser } from "@/app/shared/interfaces/IUser";
-import { UserModel } from "../User/schema/user.schema";
 import { AdministratorMiddleware } from "@/app/shared/middlewares/administratorMiddleware";
 import { DiceGame } from "../NativeGames/DiceGame/diceGame.command";
+import { HttpClientService } from "@/app/shared/utils/httpClientService";
+import { UserService } from "../User/user.service";
 
 export class Commands {
   commandsLoader(bot: Telegraf){
-    const userRepository = new UserEntity<IUser>(UserModel);
-    new UserCommands(bot, userRepository).registerCommands();
+    new UserCommands(bot, new UserService(new HttpClientService)).registerCommands();
     new Administrator(bot, new AdministratorMiddleware).administratorCommands();
-    new DiceGame(bot, userRepository).diceGame();
+    //new DiceGame(bot).diceGame();
   }
 }
